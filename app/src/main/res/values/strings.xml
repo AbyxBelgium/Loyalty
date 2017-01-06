@@ -1,0 +1,110 @@
+<resources>
+    <string name="app_name">Loyalty</string>
+    <string name="action_settings">Settings</string>
+    <string name="stores">Stores</string>
+    <string name="add_store">Add store</string>
+    <string name="store">Store name</string>
+    <string name="barcode">Barcode:</string>
+    <string name="format">Format:</string>
+    <string name="category">Category:</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="icon">Store icon url:</string>
+    <string name="title_activity_add_store">Add store</string>
+    <string name="remove_all">Remove all</string>
+    <string name="scan_image">Scan image</string>
+    <string name="no_barcode_found_error">No barcode found! Please try again&#8230;</string>
+    <string name="unexpected_io_error">An unexpected read/write error occurred. Try to erase
+    data in android/application settings if the problem persists.</string>
+    <string name="optional_field_icon_url">Add custom logo (Optional)</string>
+    <string name="title_activity_scanner">Scan barcode</string>
+    <string name="title_activity_finish">Finish</string>
+    <string name="done">Done</string>
+    <string name="end_result">Loyalty uses the advanced Loyalty API to automatically download the
+    appropriate store logo for this loyalty card. Sometimes, however, multiple stores have the same
+    name and cause Loyalty to choose the wrong one. If so, you can manually edit this by
+    long-pressing the logo.</string>
+    <string name="change_logo">Change logo</string>
+    <string name="enter_url_message">Enter a valid URL that refers to a logo
+    (jpg, png or gif). Leave blank for default icon:</string>
+    <string name="not_found_error_title">Logo not found</string>
+    <string name="not_found_error_message">We\'re very sorry but we couldn\'t find the appropriate logo
+    for this store. You can manually provide one by long-pressing the logo or you can stick to the
+    default logo.</string>
+    <string name="connect_error_title">Unable to connect</string>
+    <string name="connect_error_message">Could not connect to Loyalty API. Note that an internet
+    connection is required to download the correct logo.</string>
+    <string name="edit">Edit</string>
+    <string name="logo_url">Logo URL</string>
+    <string name="barcode_noun">Barcode</string>
+    <string name="title_activity_edit">Edit</string>
+    <string name="leave_blank_for_default">NOTE: Leave blank for default logo.</string>
+    <string name="wrong_barcode_input">Barcode is not correct</string>
+    <string name="empty_store_name">Please enter a valid store name</string>
+    <string name="title_activity_about">About</string>
+    <string name="developer">Created by:</string>
+    <string name="developer_value">ABYX Inc.</string>
+    <string name="website">Website:</string>
+    <string name="website_value">http://abyx.be</string>
+    <string name="version">Version:</string>
+    <string name="search">Search</string>
+    <string name="sort">Sort</string>
+    <string name="store_logo">Store logo</string>
+    <string name="backup_title">Backup/Restore data</string>
+    <string name="backup_summary">You can backup all of your previously saved loyalty cards here.
+    This allows you to copy them all at once to a new device. Just press \"backup\" to create
+    a backup file in the Loyalty directory on your SD-card and copy this file to a new device.</string>
+    <string name="restore_summary">Restore previously saved data by pressing \"restore\" and
+    selecting the desired file. Loyalty will then start to read the data and download the
+    desired logos. A previously made backup file is typically found in the folder \"Loyalty\" and
+    is called \"backup.ly\".</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="create_dir_error_title">Error creating directory</string>
+    <string name="create_dir_error_message">Could not create necessary directories! Please check your
+    file permissions and try again.</string>
+    <string name="unexpected_io_error_title">Unexpected IO error</string>
+    <string name="unexpected_io_error_message">An unexpected read/write error occurred. Please try again.</string>
+    <string name="successful_backup">Backup successfully saved!</string>
+    <string name="started_restore">Started to restore cards!</string>
+    <string name="successful_restore">Cards successfully restored!</string>
+    <string name="restoring">Restoring your data</string>
+    <string name="no_loyalty_file_error_title">Not a Loyalty file</string>
+    <string name="no_loyalty_file_error_message">The file you selected is not a valid Loyalty file.
+    Please select another one.</string>
+    <string name="send_with_nfc">Share file via NFC</string>
+    <string name="nfc_support_detected_title">NFC support detected</string>
+    <string name="nfc_support_detected_message">Loyalty detected that your device supports NFC and
+    Android Beam. This means you can share cards by holding your device to the back of another NFC
+    capable device. Try it out!</string>
+    <string name="title_activity_backup_restore">Backup/Restore data</string>
+    <string name="title_activity_nfcview">NFC Viewer</string>
+    <string name="title_activity_manual_input">Enter barcode</string>
+    <string name="enter_barcode">Enter barcode manually</string>
+    <string name="scan_barcode">Scan barcode</string>
+    <string name="write_permission_denied_title">Write permissions rejected</string>
+    <string name="write_permission_denied_message">You decided to reject my write permissions.
+    That\'s fine&#8230; But keep in mind that I cannot save newly made changes as long as this
+    permission is not granted.</string>
+    <string name="camera_permission_denied_title">Camera permissions rejected</string>
+    <string name="camera_permission_denied_message">You decided to deny me access to the camera.
+    I can function without these permissions, but you cannot scan barcodes. Please accept my request
+     to access the camera if you want to automatically scan barcodes.</string>
+    <string name="read_permission_denied_title">Read permissions rejected</string>
+    <string name="read_permission_denied_message">You rejected my read permissions. Please keep in
+    mind that I cannot load previously saved data without these read permissions. If you want me
+     to function properly, please grant me read permissions.</string>
+
+    <!-- No translation needed for these resources: -->
+    <string-array name="format_array">
+        <item>CODABAR</item>
+        <item>CODE_128</item>
+        <item>CODE_39</item>
+        <item>CODE_93</item>
+        <item>EAN_13</item>
+        <item>EAN_8</item>
+        <item>ITF</item>
+        <item>PDF_417</item>
+        <item>UPC_A</item>
+        <item>UPC_E</item>
+    </string-array>
+</resources>
