@@ -40,10 +40,7 @@ public class MainActivity2 extends PermissionActivity {
         mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity2.this, CardActivity.class);
-                intent.putExtra("POS", position);
-                intent.putParcelableArrayListExtra("LIST", data);
-                startActivity(intent);
+
             }
         });
 

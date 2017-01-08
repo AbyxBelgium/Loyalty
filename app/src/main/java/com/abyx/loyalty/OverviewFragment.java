@@ -1,7 +1,6 @@
 package com.abyx.loyalty;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,7 +19,7 @@ import java.util.List;
  * @author Pieter Verschaffelt
  */
 public class OverviewFragment extends Fragment {
-    private static String DATA_ARG = "CARD_DATA";
+    private static final String DATA_ARG = "CARD_DATA";
 
     private GridView mainGrid;
 
@@ -92,6 +91,18 @@ public class OverviewFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         listener = null;
+    }
+
+    /**
+     * Call this method when anything (even the order of items) changes to the data-array. This
+     * function will refresh the adapter, meaning it will update it's UI according to the new
+     * list.
+     *
+     * @param data Updated list containing all cards
+     */
+    public void refreshData(ArrayList<Card> data) {
+        this.data = data;
+        adapter.refresh(data);
     }
 
     public interface OverviewFragmentInteractionListener {
