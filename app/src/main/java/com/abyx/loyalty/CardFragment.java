@@ -19,12 +19,12 @@ import android.widget.TextView;
 public class CardFragment extends Fragment {
     private static final String CARD_ARG = "CARD";
 
-    private Card data;
     private TextView barcodeView;
     private ImageView barcodeImage;
     private ImageView logoView;
     private ProgressBar progress;
-    private Uri[] uris = new Uri[1];
+
+    private Card data;
 
     public CardFragment() {
         // Required empty public constructor

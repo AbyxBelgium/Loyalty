@@ -38,7 +38,7 @@
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity" />
+                android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
             android:name=".CardActivity"
@@ -46,7 +46,7 @@
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity" />
+                android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
             android:name=".AddStoreActivity"
@@ -55,7 +55,7 @@
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity" />
+                android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
             android:name=".ScannerActivity"
@@ -64,7 +64,7 @@
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity" />
+                android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
             android:name=".FinishActivity"
@@ -73,7 +73,7 @@
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity" />
+                android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
             android:name=".EditActivity"
@@ -91,7 +91,7 @@
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity" />
+                android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
             android:name=".SearchResultsActivity"
@@ -105,7 +105,7 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity" />
+                android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
             android:name=".NFCViewActivity"
@@ -113,7 +113,7 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity" />
+                android:value="com.abyx.loyalty.MainActivity2" />
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
