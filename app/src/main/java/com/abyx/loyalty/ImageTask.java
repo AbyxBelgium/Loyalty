@@ -16,16 +16,16 @@ public abstract class ImageTask extends AsyncTask<String, Void, Bitmap> {
     protected ImageView bmImage;
     protected Context context;
     protected String picName;
-    protected StoreData data;
+    protected Card data;
     protected ProgressIndicator progressInd;
     protected boolean showError;
 
-    public ImageTask(ImageView bmImage, Context context, String picName, StoreData data){
+    public ImageTask(ImageView bmImage, Context context, String picName, Card data){
         initialize(bmImage, context, picName, data);
         this.showError = false;
     }
 
-    public ImageTask(ImageView bmImage, Context context, String picName, StoreData data, boolean showError){
+    public ImageTask(ImageView bmImage, Context context, String picName, Card data, boolean showError){
         initialize(bmImage, context, picName, data);
         this.showError = showError;
     }
@@ -47,9 +47,9 @@ public abstract class ImageTask extends AsyncTask<String, Void, Bitmap> {
      * @param bmImage The imageview that has to be used to show the bitmap image
      * @param context The application context that originally called this function
      * @param picName The name of the image that has to be loaded onto the imageview
-     * @param data The StoreData object that belongs to this image.
+     * @param data The Card object that belongs to this image.
      */
-    protected void initialize(ImageView bmImage, Context context, String picName, StoreData data){
+    protected void initialize(ImageView bmImage, Context context, String picName, Card data){
         this.bmImage = bmImage;
         this.context = context;
         this.picName = picName;

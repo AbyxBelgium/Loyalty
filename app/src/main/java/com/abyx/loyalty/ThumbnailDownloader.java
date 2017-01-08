@@ -17,9 +17,9 @@ import java.io.InputStream;
 public class ThumbnailDownloader extends AsyncTask<String, Void, Bitmap> {
     private Context context;
     private String picName;
-    private StoreData data;
+    private Card data;
 
-    public ThumbnailDownloader(Context context, String picName, StoreData data){
+    public ThumbnailDownloader(Context context, String picName, Card data){
         this.picName = picName + "thumb";
         this.context = context;
         this.data = data;

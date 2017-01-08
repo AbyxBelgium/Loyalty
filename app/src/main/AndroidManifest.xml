@@ -41,6 +41,14 @@
                 android:value="com.abyx.loyalty.MainActivity" />
         </activity>
         <activity
+            android:name=".CardActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.abyx.loyalty.MainActivity" />
+        </activity>
+        <activity
             android:name=".AddStoreActivity"
             android:label="@string/title_activity_add_store"
             android:parentActivityName=".MainActivity"

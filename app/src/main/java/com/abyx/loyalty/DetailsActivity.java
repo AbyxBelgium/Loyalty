@@ -3,11 +3,9 @@ package com.abyx.loyalty;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -25,9 +22,9 @@ import java.util.ArrayList;
  * button available to change some of the entered information.
  */
 public class DetailsActivity extends DetailedActivity implements ProgressIndicator {
-    private ArrayList<StoreData> list;
-    private StoreData data;
-    private StoreData temp;
+    private ArrayList<Card> list;
+    private Card data;
+    private Card temp;
     private TextView barcodeView;
     private ImageView barcodeImage;
     private ImageView logoView;
@@ -40,25 +37,18 @@ public class DetailsActivity extends DetailedActivity implements ProgressIndicat
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        long start = System.currentTimeMillis();
-        System.out.println("Opening.....");
         super.onCreate(savedInstanceState);
-        System.out.println("Loaded savedInstanceState: " + (System.currentTimeMillis() - start) + "ms");
-        setContentView(R.layout.activity_details);
-        System.out.println("Set contentview: " + (System.currentTimeMillis() - start) + "ms");
+        setContentView(R.layout.fragment_card);
         barcodeImage = (ImageView) findViewById(R.id.barcodeImage);
         barcodeView = (TextView) findViewById(R.id.barcodeView);
         logoView = (ImageView) findViewById(R.id.logoView);
         progress = (ProgressBar) findViewById(R.id.progress);
-        System.out.println("FindViews: " + (System.currentTimeMillis() - start) + "ms");
         intent = getIntent();
         if (list == null) {
             list = intent.getParcelableArrayListExtra("LIST");
             data = list.get(intent.getIntExtra("POS", 0));
         }
-        System.out.println("Intent: " + (System.currentTimeMillis() - start) + "ms");
         initializeUI();
-        System.out.println("Initialize GUI: " + (System.currentTimeMillis() - start) + "ms");
 
         //TODO fix NFC here!
         //Check whether NFC and Android Beam are supported on this device
@@ -165,7 +155,7 @@ public class DetailsActivity extends DetailedActivity implements ProgressIndicat
         super.onResume();
     }
 
-    protected StoreData getStoreData(){
+    protected Card getStoreData(){
         return intent.getParcelableExtra("DATA");
     }
 

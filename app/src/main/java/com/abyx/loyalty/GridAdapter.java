@@ -1,8 +1,6 @@
 package com.abyx.loyalty;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 
 public class GridAdapter extends BaseAdapter {
     private Context context;
-    private List<StoreData> data;
+    private List<Card> data;
 
-    public GridAdapter(Context context, List<StoreData> data){
+    public GridAdapter(Context context, List<Card> data){
         this.context = context;
         this.data = data;
     }
@@ -30,7 +25,7 @@ public class GridAdapter extends BaseAdapter {
     }
 
     @Override
-    public StoreData getItem(int i) {
+    public Card getItem(int i) {
         return data.get(i);
     }
 
@@ -54,7 +49,7 @@ public class GridAdapter extends BaseAdapter {
         return view;
     }
 
-    public void refresh(List<StoreData> items) {
+    public void refresh(List<Card> items) {
         this.data = items;
         notifyDataSetChanged();
     }

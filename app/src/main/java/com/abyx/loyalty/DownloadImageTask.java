@@ -1,16 +1,10 @@
 package com.abyx.loyalty;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,11 +14,11 @@ import java.io.InputStream;
 
 public class DownloadImageTask extends ImageTask {
 
-    public DownloadImageTask(ImageView bmImage, Context context, String picName, StoreData data) {
+    public DownloadImageTask(ImageView bmImage, Context context, String picName, Card data) {
         super(bmImage, context, picName, data);
     }
 
-    public DownloadImageTask(ImageView bmImage, Context context, String picName, StoreData data, boolean showError){
+    public DownloadImageTask(ImageView bmImage, Context context, String picName, Card data, boolean showError){
         super(bmImage, context, picName, data, showError);
     }
 

@@ -6,18 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,7 +20,7 @@ import java.util.List;
 
 public class BackupRestoreActivity extends PermissionActivity {
     private Intent intent;
-    private ArrayList<StoreData> data;
+    private ArrayList<Card> data;
     private static final int READ_REQUEST_CODE = 42;
 
 
@@ -103,7 +98,7 @@ public class BackupRestoreActivity extends PermissionActivity {
                     //Open the selected file and start reading the contents
                     Utils.showToast(getString(R.string.started_restore), Toast.LENGTH_SHORT, context);
                     IO temp = new IO(context);
-                    List<StoreData> data = temp.restore(file);
+                    List<Card> data = temp.restore(file);
                     processData(data);
                 } else {
                     Utils.showInformationDialog(context.getString(R.string.no_loyalty_file_error_title),
@@ -154,7 +149,7 @@ public class BackupRestoreActivity extends PermissionActivity {
                 try {
                     InputStream input = getContentResolver().openInputStream(uri);
                     IO temp = new IO(getApplicationContext());
-                    List<StoreData> data = temp.restore(input);
+                    List<Card> data = temp.restore(input);
                     processData(data);
                 } catch (FileNotFoundException e){
                     Utils.showToast(getString(R.string.unexpected_io_error), Toast.LENGTH_LONG, getApplicationContext());
@@ -163,7 +158,7 @@ public class BackupRestoreActivity extends PermissionActivity {
         }
     }
 
-    private void processData(List<StoreData> data){
+    private void processData(List<Card> data){
         Context context = getApplicationContext();
         CurrentProgressDialog progressDialog = new CurrentProgressDialog(BackupRestoreActivity.this);
         progressDialog.show();

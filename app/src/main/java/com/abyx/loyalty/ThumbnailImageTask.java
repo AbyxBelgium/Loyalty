@@ -19,11 +19,11 @@ import java.io.InputStream;
  */
 public class ThumbnailImageTask extends ImageTask {
 
-    public ThumbnailImageTask(ImageView bmImage, Context context, String picName, StoreData data) {
+    public ThumbnailImageTask(ImageView bmImage, Context context, String picName, Card data) {
         super(bmImage, context, picName + "thumb", data);
     }
 
-    public ThumbnailImageTask(ImageView bmImage, Context context, String picName, StoreData data, boolean showError){
+    public ThumbnailImageTask(ImageView bmImage, Context context, String picName, Card data, boolean showError){
         super(bmImage, context, picName + "thumb", data, showError);
         this.picName = this.picName + "thumb";
     }

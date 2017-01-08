@@ -5,21 +5,21 @@ import android.os.Parcelable;
 
 import com.google.zxing.BarcodeFormat;
 
-public class StoreData implements Parcelable{
+public class Card implements Parcelable{
     private String name;
     private String barcode;
     private String imageLocation;
     private BarcodeFormat format;
     private String defaultURL = "https://cdn4.iconfinder.com/data/icons/devine_icons/Black/PNG/Folder%20and%20Places/Stack.png";
 
-    public StoreData(String name, String barcode, String imageLocation, BarcodeFormat format){
+    public Card(String name, String barcode, String imageLocation, BarcodeFormat format){
         this.name = name;
         this.barcode = barcode;
         this.imageLocation = imageLocation;
         this.format = format;
     }
 
-    public StoreData(String name, String barcode, BarcodeFormat format){
+    public Card(String name, String barcode, BarcodeFormat format){
         this.name = name;
         this.barcode = barcode;
         //Default image is used when nothing is set
@@ -27,7 +27,7 @@ public class StoreData implements Parcelable{
         this.format = format;
     }
 
-    public StoreData(Parcel in){
+    public Card(Parcel in){
         this.name = in.readString();
         this.barcode = in.readString();
         this.imageLocation = in.readString();
@@ -92,11 +92,11 @@ public class StoreData implements Parcelable{
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public StoreData createFromParcel(Parcel in) {
-            return new StoreData(in);
+        public Card createFromParcel(Parcel in) {
+            return new Card(in);
         }
-        public StoreData[] newArray(int size) {
-            return new StoreData[size];
+        public Card[] newArray(int size) {
+            return new Card[size];
         }
     };
 
@@ -105,10 +105,10 @@ public class StoreData implements Parcelable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        StoreData storeData = (StoreData) o;
+        Card card = (Card) o;
 
-        return !(!barcode.equals(storeData.barcode) || !name.equals(storeData.name)) &&
-                imageLocation.equals(storeData.imageLocation);
+        return !(!barcode.equals(card.barcode) || !name.equals(card.name)) &&
+                imageLocation.equals(card.imageLocation);
 
     }
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,8 +19,8 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
     private EditText searchField;
     private GridView mainGrid;
 
-    private ArrayList<StoreData> data;
-    private ArrayList<StoreData> originalData;
+    private ArrayList<Card> data;
+    private ArrayList<Card> originalData;
     private GridAdapter adapter;
 
     @Override
@@ -73,7 +72,7 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
             adapter.refresh(data);
         } else {
             data.clear();
-            for (StoreData test : originalData) {
+            for (Card test : originalData) {
                 if (test.getName().toLowerCase().contains(query)) {
                     data.add(test);
                 }

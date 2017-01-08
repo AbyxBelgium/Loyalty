@@ -18,11 +18,11 @@ import java.util.List;
  * @see android.widget.GridView
  */
 public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeListener {
-    private List<StoreData> contents;
-    private List<StoreData> selected = new ArrayList<>();
+    private List<Card> contents;
+    private List<Card> selected = new ArrayList<>();
     private Context context;
 
-    public MultiChoiceGridViewListener(List<StoreData> contents, Context context){
+    public MultiChoiceGridViewListener(List<Card> contents, Context context){
         this.contents = contents;
         this.context = context;
     }
@@ -35,8 +35,8 @@ public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeL
             selected.add(contents.get(position));
         } else {
             IO temp = new IO(context);
-            temp.removeData(((StoreData) contents.get(position)).getName());
-            temp.removeData(((StoreData) contents.get(position)).getBarcode());
+            temp.removeData(((Card) contents.get(position)).getName());
+            temp.removeData(((Card) contents.get(position)).getBarcode());
             selected.remove(contents.get(position));
         }
     }
@@ -61,7 +61,7 @@ public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeL
             case R.id.action_removeSelected:
                 // All selected items have to be removed
                 IO temp = new IO(context);
-                for (StoreData current: selected){
+                for (Card current: selected){
                     temp.removeData(current.getName());
                     temp.removeData(current.getBarcode());
                     contents.remove(current);

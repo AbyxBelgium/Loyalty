@@ -1,8 +1,6 @@
 package com.abyx.loyalty;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 
@@ -16,10 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +33,7 @@ public class IO {
         this.filename = filename;
     }
 
-    public void save(List<StoreData> data){
+    public void save(List<Card> data){
         //Write all the app's data
         String start = getDataToWrite(data);
 
@@ -51,7 +46,7 @@ public class IO {
         }
     }
 
-    public void backup(List<StoreData> data) throws MakeDirException, FileNotFoundException, IOException{
+    public void backup(List<Card> data) throws MakeDirException, FileNotFoundException, IOException{
         //backup the app's data to the SD-card so that it can be restored later (by another device)
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Loyalty/");
         if (!file.exists()){
@@ -68,26 +63,26 @@ public class IO {
         writer.close();
     }
 
-    private String getDataToWrite(List<StoreData> data){
+    private String getDataToWrite(List<Card> data){
         String start = "";
-        for (StoreData content: data){
+        for (Card content: data){
             start += content.getSaveRepresentation();
             start += "\n";
         }
         return start;
     }
 
-    public ArrayList<StoreData> load(){
+    public ArrayList<Card> load(){
         return restore(context.getFileStreamPath(filename));
     }
 
     /**
      * Restore the data contained in the given file.
      * @param file The file containing the data to be restored
-     * @return List containing all StoreData-objects contained in the stream
+     * @return List containing all Card-objects contained in the stream
      */
-    public ArrayList<StoreData> restore(File file){
-        ArrayList<StoreData> output = new ArrayList<>();
+    public ArrayList<Card> restore(File file){
+        ArrayList<Card> output = new ArrayList<>();
         if (file != null && file.exists()) {
             //Load all the app's data
             try {
@@ -95,7 +90,7 @@ public class IO {
                 String line = buffered.readLine();
                 while (line != null) {
                     String[] rawData = line.split("\t");
-                    StoreData temp = new StoreData(rawData[0], rawData[1], rawData[2], BarcodeFormat.valueOf(rawData[3]));
+                    Card temp = new Card(rawData[0], rawData[1], rawData[2], BarcodeFormat.valueOf(rawData[3]));
                     output.add(temp);
                     line = buffered.readLine();
                 }
@@ -110,17 +105,17 @@ public class IO {
     /**
      * Restore the data contained in the given InputStream.
      * @param stream InputStream containing the data to be restored
-     * @return List containing all StoreData-objects contained in the stream
+     * @return List containing all Card-objects contained in the stream
      */
-    public ArrayList<StoreData> restore(InputStream stream){
-        ArrayList<StoreData> output = new ArrayList<>();
+    public ArrayList<Card> restore(InputStream stream){
+        ArrayList<Card> output = new ArrayList<>();
         InputStreamReader is = new InputStreamReader(stream);
         try {
             BufferedReader buffer = new BufferedReader(is);
             String line = buffer.readLine();
             while (line != null){
                 String[] rawData = line.split("\t");
-                StoreData temp = new StoreData(rawData[0], rawData[1], rawData[2], BarcodeFormat.valueOf(rawData[3]));
+                Card temp = new Card(rawData[0], rawData[1], rawData[2], BarcodeFormat.valueOf(rawData[3]));
                 output.add(temp);
                 line = buffer.readLine();
             }
@@ -138,7 +133,7 @@ public class IO {
      * @param data Object which needs to be saved to the external storage
      * @return Uri location of the object on the SD-card
      */
-    public Uri copyToExternalStorage(StoreData data) throws MakeDirException, IOException {
+    public Uri copyToExternalStorage(Card data) throws MakeDirException, IOException {
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Loyalty/Cache/");
         if (!file.exists()) {
             if (!file.mkdirs()) {

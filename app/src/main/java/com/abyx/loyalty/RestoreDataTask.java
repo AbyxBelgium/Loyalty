@@ -22,10 +22,10 @@ import java.util.List;
  */
 public class RestoreDataTask extends AsyncTask<String, Integer, Void> {
     private Context context;
-    private List<StoreData> data;
+    private List<Card> data;
     private CurrentProgressDialog progressDialog;
 
-    public RestoreDataTask(Context context, List<StoreData> data, CurrentProgressDialog progressDialog){
+    public RestoreDataTask(Context context, List<Card> data, CurrentProgressDialog progressDialog){
         this.context = context;
         this.data = data;
         this.progressDialog = progressDialog;
@@ -34,7 +34,7 @@ public class RestoreDataTask extends AsyncTask<String, Integer, Void> {
 
     protected Void doInBackground(String... params){
         int i = 0;
-        for(StoreData current: data) {
+        for(Card current: data) {
             String urldisplay = current.getImageURL();
             System.out.println(current.getName());
             Bitmap mIcon11;

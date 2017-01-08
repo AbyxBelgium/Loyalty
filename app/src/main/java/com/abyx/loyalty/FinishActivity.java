@@ -16,7 +16,7 @@ import com.google.zxing.BarcodeFormat;
 
 
 public class FinishActivity extends DetailedActivity implements ProgressIndicator, APIConnectorCallback {
-    private StoreData data;
+    private Card data;
     private TextView barcodeView;
     private ImageView barcodeImage;
     private ImageView logoView;
@@ -116,7 +116,7 @@ public class FinishActivity extends DetailedActivity implements ProgressIndicato
 
     @Override
     public void onAPIReady(String url){
-        data = new StoreData(intent.getStringExtra("STORENAME"),
+        data = new Card(intent.getStringExtra("STORENAME"),
                 intent.getStringExtra("BARCODE"), url, BarcodeFormat.valueOf(intent.getStringExtra("FORMAT")));
         DownloadImageTask tempDownloader = new DownloadImageTask(logoView, this, data.getImageLocation(), data, true);
         tempDownloader.setProgressIndicator(this);
@@ -130,7 +130,7 @@ public class FinishActivity extends DetailedActivity implements ProgressIndicato
     @Override
     public void onAPIException(String title, String message){
         Utils.showInformationDialog(title, message, this, Utils.createDismissListener());
-        data = new StoreData(intent.getStringExtra("STORENAME"),
+        data = new Card(intent.getStringExtra("STORENAME"),
                 intent.getStringExtra("BARCODE"), BarcodeFormat.valueOf(intent.getStringExtra("FORMAT")));
         DownloadImageTask tempDownloader = new DownloadImageTask(logoView, this, data.getImageLocation(), data, true);
         tempDownloader.setProgressIndicator(this);

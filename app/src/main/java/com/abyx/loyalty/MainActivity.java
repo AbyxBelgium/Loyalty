@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +19,7 @@ import java.util.List;
 public class MainActivity extends PermissionActivity {
     private GridView mainGrid;
 
-    private ArrayList<StoreData> data;
+    private ArrayList<Card> data;
     private GridAdapter adapter;
     private MenuItem sortButton;
     private boolean sortedDescending;
@@ -29,7 +28,7 @@ public class MainActivity extends PermissionActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.fragment_overview);
         mainGrid = (GridView) findViewById(R.id.mainGrid);
         data = new ArrayList<>();
         adapter = new GridAdapter(this, data);
@@ -41,7 +40,7 @@ public class MainActivity extends PermissionActivity {
         mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+                Intent intent = new Intent(MainActivity.this, CardActivity.class);
                 intent.putExtra("POS", position);
                 intent.putParcelableArrayListExtra("LIST", data);
                 startActivity(intent);
@@ -78,7 +77,7 @@ public class MainActivity extends PermissionActivity {
             @Override
             public void onPermissionGranted() {
                 IO temp = new IO(MainActivity.this);
-                List<StoreData> input = temp.load();
+                List<Card> input = temp.load();
                 //Performance already optimized from O(n²) to O(n)
                 //TODO improve performance from O(n) to O(1)
                 if (input.size() > 0 && !data.contains(input.get(0))) {
@@ -92,10 +91,9 @@ public class MainActivity extends PermissionActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        System.out.println("Resume...");
         if (isPermissionGranted(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)){
             IO temp = new IO(MainActivity.this);
-            List<StoreData> input = temp.load();
+            List<Card> input = temp.load();
             //Performance already optimized from O(n²) to O(n)
             //TODO improve performance from O(n) to O(1)
             if (input.size() > 0 && !data.contains(input.get(0))) {
@@ -171,14 +169,14 @@ public class MainActivity extends PermissionActivity {
      */
     private void sort(boolean sortedDescending){
         if (sortedDescending) {
-            Collections.sort(data, new Comparator<StoreData>() {
-                public int compare(StoreData store1, StoreData store2) {
+            Collections.sort(data, new Comparator<Card>() {
+                public int compare(Card store1, Card store2) {
                     return store1.getName().toLowerCase().compareTo(store2.getName().toLowerCase());
                 }
             });
         } else {
-            Collections.sort(data, new Comparator<StoreData>() {
-                public int compare(StoreData store1, StoreData store2) {
+            Collections.sort(data, new Comparator<Card>() {
+                public int compare(Card store1, Card store2) {
                     return store1.getName().toLowerCase().compareTo(store2.getName().toLowerCase());
                 }
             });
@@ -203,7 +201,7 @@ public class MainActivity extends PermissionActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent response) {
         if (requestCode == Utils.ADD_STORE_SCANNER && resultCode == RESULT_OK) {
             // A new store was added
-            data.add((StoreData) response.getParcelableExtra("DATA"));
+            data.add((Card) response.getParcelableExtra("DATA"));
             sort(sortedDescending);
             final Context context = getApplicationContext();
             requestWritePermissions(MainActivity.this, new ReceivedPermission() {
