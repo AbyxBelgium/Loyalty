@@ -28,56 +28,13 @@ import java.util.List;
 
 public class FinishActivity extends DetailedActivity implements ProgressIndicator, APIConnectorCallback {
     private Card data;
-    private TextView barcodeView;
-    private ImageView barcodeImage;
-    private ImageView logoView;
-    private ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finish);
-        barcodeImage = (ImageView) findViewById(R.id.barcodeImage);
-        barcodeView = (TextView) findViewById(R.id.barcodeView);
-        logoView = (ImageView) findViewById(R.id.logoView);
-        progress = (ProgressBar) findViewById(R.id.progress);
         intent = getIntent();
         initStoreData();
-
-        logoView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(FinishActivity.this);
-                final EditText editText = new EditText(FinishActivity.this);
-                builder.setView(editText);
-                builder.setTitle(R.string.change_logo);
-                builder.setMessage(R.string.enter_url_message);
-
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if (editText.getText().toString().equals("")) {
-                            data.setDefaultImageLocation();
-                        } else {
-                            data.setImageLocation(editText.getText().toString());
-                        }
-                        new DownloadImageTask(logoView, FinishActivity.this, data.getImageLocation(),
-                                data).execute(data.getImageURL());
-                        dialog.dismiss();
-                    }
-                });
-
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.cancel();
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-
-                dialog.show();
-                return true;
-            }
-        });
     }
 
     @Override

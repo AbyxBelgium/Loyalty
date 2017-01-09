@@ -1,20 +1,29 @@
 package com.abyx.loyalty.fragments;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.abyx.loyalty.activities.FinishActivity;
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.extra.Utils;
+import com.abyx.loyalty.tasks.APIConnectorCallback;
+import com.abyx.loyalty.tasks.APIConnectorTask;
 import com.abyx.loyalty.tasks.DownloadImageTask;
 import com.abyx.loyalty.extra.ProgressIndicator;
 import com.abyx.loyalty.R;
+import com.abyx.loyalty.tasks.ThumbnailDownloader;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.Writer;
@@ -26,7 +35,7 @@ import com.google.zxing.common.BitMatrix;
  *
  * @author Pieter Verschaffelt
  */
-public class CardFragment extends Fragment implements ProgressIndicator {
+public class CardFragment extends Fragment implements ProgressIndicator, APIConnectorCallback {
     private static final String CARD_ARG = "CARD";
 
     private TextView barcodeView;
@@ -78,9 +87,48 @@ public class CardFragment extends Fragment implements ProgressIndicator {
                 temp.execute(data.getImageURL());
                 barcodeView.setText(data.getBarcode());
                 getActivity().setTitle(data.getName());
+
+                // Resource URL for the logo can be changed when user long presses the current logo
+                logoView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        final EditText editText = new EditText(getActivity());
+                        builder.setView(editText);
+                        builder.setTitle(R.string.change_logo);
+                        builder.setMessage(R.string.enter_url_message);
+
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                if (editText.getText().toString().equals("")) {
+                                    data.setDefaultImageLocation();
+                                } else {
+                                    data.setImageLocation(editText.getText().toString());
+                                }
+                                new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
+                                dialog.dismiss();
+                            }
+                        });
+
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+
+                        dialog.show();
+                        return true;
+                    }
+                });
             }
         }
         return view;
+    }
+
+    protected void initStoreData() {
+        new APIConnectorTask(this, getActivity()).execute(data.getName());
     }
 
     /**
@@ -126,5 +174,37 @@ public class CardFragment extends Fragment implements ProgressIndicator {
     @Override
     public void setProgress(double percentage) {
         // Nothing to do here!
+    }
+
+    @Override
+    public void onAPIReady(String url){
+        data = new Card(data.getName(), data.getBarcode(), url, data.getFormat());
+        DownloadImageTask tempDownloader = new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data, true);
+        tempDownloader.setProgressIndicator(this);
+        tempDownloader.execute(data.getImageURL());
+        new ThumbnailDownloader(getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
+        barcodeImage.setImageBitmap(encodeAsBitmap(data.getBarcode(), data.getFormat()));
+        barcodeView.setText(data.getBarcode());
+        getActivity().setTitle(data.getName());
+    }
+
+    @Override
+    public void onAPIException(String title, String message){
+        Utils.showInformationDialog(title, message, getActivity(), Utils.createDismissListener());
+        data = new Card(data.getName(), data.getBarcode(), data.getFormat());
+        DownloadImageTask tempDownloader = new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data, true);
+        tempDownloader.setProgressIndicator(this);
+        tempDownloader.execute(data.getImageURL());
+        new ThumbnailDownloader(getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
+        barcodeImage.setImageBitmap(encodeAsBitmap(data.getBarcode(), data.getFormat()));
+        barcodeView.setText(data.getBarcode());
+        getActivity().setTitle(data.getName());
+    }
+
+    /**
+     * @return The card that's currently been displayed in this fragment.
+     */
+    public Card getCard() {
+        return data;
     }
 }
