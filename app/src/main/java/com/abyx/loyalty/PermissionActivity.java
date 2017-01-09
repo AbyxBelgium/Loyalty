@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
  * Abstract class that contains some methods that request permission to use particular features.
  * Every activity that has to use certain permissions could extend this class.
  *
+ * TODO this abstraction should be revised!
+ *
  * @author Pieter Verschaffelt
  */
 public abstract class PermissionActivity extends AppCompatActivity {

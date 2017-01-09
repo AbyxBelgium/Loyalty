@@ -47,11 +47,6 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
     @Override
     protected void onPause(){
         super.onPause();
-        if (isPermissionGranted(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-            // Save all data to internal storage
-            IO temp = new IO(getApplicationContext());
-            temp.save(data);
-        }
     }
 
     @Override

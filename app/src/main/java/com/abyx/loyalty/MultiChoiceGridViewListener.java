@@ -35,11 +35,6 @@ public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeL
         // are able to delete these objects later on
         if (!selected.contains(contents.get(position))) {
             selected.add(contents.get(position));
-        } else {
-            IO temp = new IO(context);
-            temp.removeData(((Card) contents.get(position)).getName());
-            temp.removeData(((Card) contents.get(position)).getBarcode());
-            selected.remove(contents.get(position));
         }
     }
 
@@ -69,6 +64,7 @@ public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeL
                     contents.remove(current);
                 }
                 listener.itemDeleted(contents);
+                temp.save(contents);
                 mode.finish(); // Action picked, so close the CAB
                 return true;
             default:

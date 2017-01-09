@@ -1,8 +1,12 @@
 package com.abyx.loyalty;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +103,27 @@ public class OverviewFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         listener = null;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (isPermissionGranted(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            // Save all data to internal storage
+            IO temp = new IO(getActivity());
+            temp.save(data);
+        }
+    }
+
+    /**
+     * TODO this is code duplication of PermissionActivity
+     *
+     * @param activity The activity calling this method
+     * @param permission The permission for which you want to know if it's granted
+     * @return Returns true when the given permission has already been granted by the user
+     */
+    protected boolean isPermissionGranted(Activity activity, String permission){
+        return ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
