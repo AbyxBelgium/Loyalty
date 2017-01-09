@@ -61,7 +61,13 @@ public class OverviewFragment extends Fragment {
             mainGrid.setAdapter(adapter);
 
             mainGrid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
-            mainGrid.setMultiChoiceModeListener(new MultiChoiceGridViewListener(data, getActivity()));
+            mainGrid.setMultiChoiceModeListener(new MultiChoiceGridViewListener(data, getActivity(), new MultiChoiceGridViewListener.DeleteListener() {
+                @Override
+                public void itemDeleted(List<Card> list) {
+                    data = list;
+                    adapter.refresh(data);
+                }
+            }));
 
             mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

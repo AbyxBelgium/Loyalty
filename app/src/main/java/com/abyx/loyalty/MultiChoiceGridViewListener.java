@@ -21,10 +21,12 @@ public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeL
     private List<Card> contents;
     private List<Card> selected = new ArrayList<>();
     private Context context;
+    private DeleteListener listener;
 
-    public MultiChoiceGridViewListener(List<Card> contents, Context context){
+    public MultiChoiceGridViewListener(List<Card> contents, Context context, DeleteListener listener){
         this.contents = contents;
         this.context = context;
+        this.listener = listener;
     }
 
     @Override
@@ -66,6 +68,7 @@ public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeL
                     temp.removeData(current.getBarcode());
                     contents.remove(current);
                 }
+                listener.itemDeleted(contents);
                 mode.finish(); // Action picked, so close the CAB
                 return true;
             default:
@@ -75,7 +78,15 @@ public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeL
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        // Here you can make any necessary updates to the activity when
-        // the CAB is removed. By default, selected items are deselected/unchecked.
+
+    }
+
+    public interface DeleteListener {
+        /**
+         * This function is called when data has been deleted from the list.
+         *
+         * @param data The new, altered list
+         */
+        void itemDeleted(List<Card> data);
     }
 }

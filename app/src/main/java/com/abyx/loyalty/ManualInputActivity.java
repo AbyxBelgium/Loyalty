@@ -67,15 +67,4 @@ public class ManualInputActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent response) {
-        if (requestCode == Utils.ADD_STORE && resultCode == RESULT_OK) {
-            //A new store was succesfully created
-            Intent intent = new Intent();
-            intent.putExtra("DATA", response.getParcelableExtra("DATA"));
-            setResult(RESULT_OK, intent);
-            finish();
-        }
-    }
 }

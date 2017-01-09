@@ -35,7 +35,6 @@ public class MainActivity2 extends PermissionActivity {
         mainGrid.setAdapter(adapter);
 
         mainGrid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
-        mainGrid.setMultiChoiceModeListener(new MultiChoiceGridViewListener(data, this));
 
         mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

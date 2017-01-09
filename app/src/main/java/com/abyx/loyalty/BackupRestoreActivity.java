@@ -29,7 +29,7 @@ public class BackupRestoreActivity extends PermissionActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_backup_restore);
         intent = getIntent();
-        data = intent.getParcelableArrayListExtra("LIST");
+        data = intent.getParcelableArrayListExtra(MainActivity.BACKUP_INTENT_ARG);
     }
 
     @Override

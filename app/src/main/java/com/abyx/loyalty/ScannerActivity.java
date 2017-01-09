@@ -41,7 +41,7 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
             intent.putExtra("BARCODE", rawResult.getText());
             intent.putExtra("FORMAT", rawResult.getBarcodeFormat().toString());
             intent.putExtra("STORENAME", created.getStringExtra("STORENAME"));
-            startActivityForResult(intent, Utils.ADD_STORE);
+            startActivity(intent);
         } else {
             Intent intent = new Intent();
             setResult(0, intent);
@@ -52,17 +52,5 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent response){
-        if (requestCode == Utils.ADD_STORE && resultCode == RESULT_OK) {
-            //A new store was succesfully created
-            Intent intent = new Intent();
-            intent.putExtra("DATA", response.getParcelableExtra("DATA"));
-            System.out.println("Scanner: " +  response.getParcelableExtra("DATA"));
-            setResult(RESULT_OK, intent);
-            finish();
-        }
     }
 }

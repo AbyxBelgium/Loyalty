@@ -58,7 +58,7 @@ public class AddStoreActivity extends PermissionActivity {
                 public void onPermissionGranted() {
                     Intent intent = new Intent(AddStoreActivity.this, ScannerActivity.class);
                     intent.putExtra("STORENAME", storeName.getText().toString());
-                    startActivityForResult(intent, Utils.ADD_STORE_SCANNER);
+                    startActivity(intent);
                 }
             });
         }
@@ -70,19 +70,7 @@ public class AddStoreActivity extends PermissionActivity {
         } else {
             Intent intent = new Intent(AddStoreActivity.this, ManualInputActivity.class);
             intent.putExtra("STORENAME", storeName.getText().toString());
-            startActivityForResult(intent, Utils.ADD_STORE_SCANNER);
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent response){
-        if (requestCode == Utils.ADD_STORE_SCANNER && resultCode == RESULT_OK) {
-            //A new store was succesfully created
-            Intent intent = new Intent();
-            //Retrieve the new data-object created by the FinishActivity
-            intent.putExtra("DATA", response.getParcelableExtra("DATA"));
-            setResult(RESULT_OK, intent);
-            finish();
+            startActivity(intent);
         }
     }
 }

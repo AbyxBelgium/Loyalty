@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 
+import java.util.List;
+
 
 public class FinishActivity extends DetailedActivity implements ProgressIndicator, APIConnectorCallback {
     private Card data;
@@ -85,10 +87,14 @@ public class FinishActivity extends DetailedActivity implements ProgressIndicato
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
-            Intent temp = new Intent();
-            temp.putExtra("DATA", data);
-            setResult(RESULT_OK, temp);
-            finish();
+            IO io = new IO(getApplicationContext());
+            List<Card> allCards = io.load();
+            allCards.add(new Card(intent.getStringExtra("STORENAME"),
+                    intent.getStringExtra("BARCODE"), BarcodeFormat.valueOf(intent.getStringExtra("FORMAT"))));
+            io.save(allCards);
+            Intent intent = new Intent(FinishActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             return true;
         }
 

@@ -20,6 +20,7 @@ import java.util.List;
 
 public class MainActivity extends PermissionActivity implements OverviewFragment.OverviewFragmentInteractionListener{
     public static final String CARD_INTENT_ARG = "CARD";
+    public static final String BACKUP_INTENT_ARG = "LIST";
     private static final String sortedString = "sorted_descending";
 
     private FrameLayout cardContainer;
@@ -97,6 +98,15 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
             editor.putBoolean(sortedString, sortedDescending);
             editor.apply();
             return true;
+        } else if (id == R.id.action_about) {
+            Intent temp = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(temp);
+            return true;
+        } else if (id == R.id.action_backup) {
+            Intent temp = new Intent(MainActivity.this, BackupRestoreActivity.class);
+            temp.putParcelableArrayListExtra(BACKUP_INTENT_ARG, data);
+            startActivity(temp);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -114,6 +124,16 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
             intent.putExtra(CARD_INTENT_ARG, card);
             startActivity(intent);
         }
+    }
+
+    /**
+     * This function is called when the add-button (the FAB) is pressed.
+     *
+     * @param view The view that was clicked and triggered this method.
+     */
+    public void addData(View view) {
+        Intent intent = new Intent(MainActivity.this, AddStoreActivity.class);
+        startActivity(intent);
     }
 
     /**
