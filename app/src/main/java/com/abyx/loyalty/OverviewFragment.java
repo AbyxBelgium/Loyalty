@@ -12,6 +12,8 @@ import android.widget.GridView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.abyx.loyalty.R.id.barcodeImage;
+
 /**
  * This fragment provides an overview of all loyalty cards stored on this device. These cards are
  * shown in a grid.

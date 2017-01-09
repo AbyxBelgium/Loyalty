@@ -14,6 +14,8 @@ import com.google.zxing.common.BitMatrix;
 /**
  * Abstract class containing code that generates bitmaps from barcodes and their value.
  *
+ * TODO: THIS ABSTRACTION SHOULD BE REVISED SINCE ACTIVITIES ARE NOW FRAGMENTED INTO FRAGMENTS
+ *
  * @author Pieter Verschaffelt
  */
 public abstract class DetailedActivity extends PermissionActivity {

@@ -77,17 +77,11 @@ public class DetailsActivity extends DetailedActivity implements ProgressIndicat
     }
 
     private void initializeUI(){
-        long start = System.currentTimeMillis();
         barcodeImage.setImageBitmap(encodeAsBitmap(data.getBarcode(), data.getFormat()));
-        System.out.println("Set bitmap: " + (System.currentTimeMillis() - start) + "ms");
         DownloadImageTask temp = new DownloadImageTask(logoView, this, data.getImageLocation(), data);
-        System.out.println("Create DownloadImageTask: " + (System.currentTimeMillis() - start) + "ms");
         temp.setProgressIndicator(this);
-        System.out.println("Set progressindicator: " + (System.currentTimeMillis() - start) + "ms");
         temp.execute(data.getImageURL());
-        System.out.println("Execute task: " + (System.currentTimeMillis() - start) + "ms");
         barcodeView.setText(data.getBarcode());
-        System.out.println("Set barcode text: " + (System.currentTimeMillis() - start) + "ms");
         setTitle(data.getName());
     }
 
