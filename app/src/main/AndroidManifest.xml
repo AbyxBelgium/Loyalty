@@ -23,7 +23,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,85 +32,85 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailsActivity"
+            android:name=".activities.DetailsActivity"
             android:label="@string/title_activity_details"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
-            android:name=".CardActivity"
-            android:parentActivityName=".MainActivity"
+            android:name=".activities.CardActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
-            android:name=".AddStoreActivity"
+            android:name=".activities.AddStoreActivity"
             android:label="@string/title_activity_add_store"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
-            android:name=".ScannerActivity"
+            android:name=".activities.ScannerActivity"
             android:label="@string/title_activity_scanner"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
-            android:name=".FinishActivity"
+            android:name=".activities.FinishActivity"
             android:label="@string/title_activity_finish"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
-            android:name=".EditActivity"
+            android:name=".activities.EditActivity"
             android:label="@string/title_activity_edit"
-            android:parentActivityName=".DetailsActivity"
+            android:parentActivityName=".activities.DetailsActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.DetailsActivity" />
+                android:value="com.abyx.loyalty.activities.DetailsActivity" />
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name=".activities.AboutActivity"
             android:label="@string/title_activity_about"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
-            android:name=".SearchResultsActivity"
+            android:name=".activities.SearchResultsActivity"
             android:label="@string/search"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".BackupRestoreActivity"
+            android:name=".activities.BackupRestoreActivity"
             android:label="@string/title_activity_backup_restore"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.abyx.loyalty.MainActivity2" />
         </activity>
         <activity
-            android:name=".NFCViewActivity"
+            android:name=".activities.NFCViewActivity"
             android:label="@string/title_activity_nfcview"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.abyx.loyalty.MainActivity2" />
@@ -122,12 +122,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ManualInputActivity"
+            android:name=".activities.ManualInputActivity"
             android:label="@string/title_activity_manual_input"
-            android:parentActivityName=".AddStoreActivity" >
+            android:parentActivityName=".activities.AddStoreActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="AddStoreActivity" />
+                android:value=".activities.AddStoreActivity" />
         </activity>
     </application>
 
