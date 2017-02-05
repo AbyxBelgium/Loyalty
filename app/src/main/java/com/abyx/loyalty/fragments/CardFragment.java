@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
 import com.abyx.loyalty.tasks.APIConnectorCallback;
@@ -28,6 +29,8 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+
+import java.util.List;
 
 /**
  * This fragment shows all details for one loyalty card (this includes the barcode and a small logo)
@@ -175,15 +178,39 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
 
     @Override
     public void onAPIReady(String url){
-        data = new Card(data.getName(), data.getBarcode(), url, data.getFormat());
-        initGui(data);
+        if (data != null) {
+            makeImageURLPersistent(data, url);
+            initGui(data);
+        }
     }
 
     @Override
     public void onAPIException(String title, String message){
         Utils.showInformationDialog(title, message, getActivity(), Utils.createDismissListener());
-        data = new Card(data.getName(), data.getBarcode(), data.getFormat());
-        initGui(data);
+        if (data != null) {
+            initGui(data);
+        }
+    }
+
+    private void makeImageURLPersistent(Card card, String url) {
+        card.setImageLocation(url);
+        IO temp = new IO(getActivity());
+        List<Card> allCards = temp.load();
+        Card current = getCardByName(card.getName(), allCards);
+        if (current != null) {
+            current.setImageLocation(url);
+            temp.save(allCards);
+        }
+    }
+
+    // TODO this should get fixed by migrating to a database
+    private Card getCardByName(String name, List<Card> cards) {
+        for (Card card: cards) {
+            if (card.getName().toLowerCase().equals(name.toLowerCase())) {
+                return card;
+            }
+        }
+        return null;
     }
 
     private void initGui(final Card data) {

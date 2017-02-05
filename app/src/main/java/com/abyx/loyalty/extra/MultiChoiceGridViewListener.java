@@ -33,12 +33,22 @@ public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeL
         this.listener = listener;
     }
 
+    public void updateContents(List<Card> contents) {
+        this.contents = contents;
+    }
+
     @Override
     public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
         // Every selected item is added to the selected list so that we
         // are able to delete these objects later on
         if (!selected.contains(contents.get(position))) {
             selected.add(contents.get(position));
+        } else {
+            selected.remove(contents.get(position));
+        }
+        System.out.println("Selected are: ");
+        for (Card sel: selected) {
+            System.out.println("---->" + sel.getName());
         }
     }
 

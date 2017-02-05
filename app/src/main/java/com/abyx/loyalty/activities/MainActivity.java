@@ -20,6 +20,7 @@ import com.abyx.loyalty.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class MainActivity extends PermissionActivity implements OverviewFragment.OverviewFragmentInteractionListener {
     private static final String sortedString = "sorted_descending";
@@ -185,5 +186,9 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
         //Runs in O(n) time. We can do this because all data is sorted alphabetically by default
         Collections.reverse(data);
         overviewFragment.refreshData(data);
+    }
+
+    public void refreshData(ArrayList<Card> data) {
+        this.data = data;
     }
 }

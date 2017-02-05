@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.abyx.loyalty.activities.MainActivity;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.GridAdapter;
 import com.abyx.loyalty.contents.IO;
@@ -36,6 +37,7 @@ public class OverviewFragment extends Fragment {
     private List<Card> data;
     private GridAdapter adapter;
     private OverviewFragmentInteractionListener listener;
+    private MultiChoiceGridViewListener gridViewListener;
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -71,13 +73,23 @@ public class OverviewFragment extends Fragment {
             mainGrid.setAdapter(adapter);
 
             mainGrid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
-            mainGrid.setMultiChoiceModeListener(new MultiChoiceGridViewListener(data, getActivity(), new MultiChoiceGridViewListener.DeleteListener() {
+            gridViewListener = new MultiChoiceGridViewListener(data, getActivity(), new MultiChoiceGridViewListener.DeleteListener() {
                 @Override
                 public void itemDeleted(List<Card> list) {
                     data = list;
                     adapter.refresh(data);
+
+                    // Changes to list have to be propagated to parent-activity!
+                    // TODO: by changing the persistent datastructure to a database, this can be
+                    // avoided!
+                    Activity parent = getActivity();
+                    if (parent instanceof MainActivity) {
+                        ((MainActivity) parent).refreshData((ArrayList<Card>) list);
+                    }
                 }
-            }));
+            });
+
+            mainGrid.setMultiChoiceModeListener(gridViewListener);
 
             mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -140,6 +152,9 @@ public class OverviewFragment extends Fragment {
     public void refreshData(ArrayList<Card> data) {
         this.data = data;
         adapter.refresh(data);
+        if (gridViewListener != null) {
+            gridViewListener.updateContents(data);
+        }
     }
 
     public interface OverviewFragmentInteractionListener {
