@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.GridAdapter;
 import com.abyx.loyalty.R;
 
@@ -46,9 +47,8 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
         mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(SearchResultsActivity.this, DetailsActivity.class);
-                intent.putExtra("POS", position);
-                intent.putParcelableArrayListExtra("LIST", originalData);
+                Intent intent = new Intent(SearchResultsActivity.this, CardActivity.class);
+                intent.putExtra(Constants.INTENT_CARD_ARG, originalData.get(position));
                 startActivity(intent);
             }
         });
