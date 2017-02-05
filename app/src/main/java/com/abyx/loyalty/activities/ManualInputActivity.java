@@ -10,8 +10,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.abyx.loyalty.R;
+import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.IO;
+import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
 import com.google.zxing.BarcodeFormat;
+
+import java.util.List;
 
 public class ManualInputActivity extends AppCompatActivity {
     private EditText barcodeText;
@@ -50,15 +55,14 @@ public class ManualInputActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
-            if (barcodeText.getText().equals("")){
+            if (barcodeText.getText().toString().equals("")){
                 barcodeText.setError(getString(R.string.wrong_barcode_input));
             } else {
                 if (Utils.isValidBarcode(barcodeText.getText().toString(), BarcodeFormat.valueOf(formatSpinner.getSelectedItem().toString()))){
                     Intent intent = new Intent(ManualInputActivity.this, FinishActivity.class);
                     Intent created = getIntent();
-                    intent.putExtra("BARCODE", barcodeText.getText().toString());
-                    intent.putExtra("FORMAT", formatSpinner.getSelectedItem().toString());
-                    intent.putExtra("STORENAME", created.getStringExtra("STORENAME"));
+                    Card card = new Card(created.getStringExtra("STORENAME"), barcodeText.getText().toString(), BarcodeFormat.valueOf(formatSpinner.getSelectedItem().toString()));
+                    created.putExtra(Constants.INTENT_CARD_ARG, card);
                     startActivityForResult(intent, Utils.ADD_STORE);
                 } else {
                     barcodeText.setError(getString(R.string.wrong_barcode_input));

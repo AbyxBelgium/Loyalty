@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.CurrentProgressDialog;
 import com.abyx.loyalty.extra.FileChooser;
 import com.abyx.loyalty.contents.IO;
@@ -39,7 +40,7 @@ public class BackupRestoreActivity extends PermissionActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_backup_restore);
         intent = getIntent();
-        data = intent.getParcelableArrayListExtra(MainActivity.BACKUP_INTENT_ARG);
+        data = intent.getParcelableArrayListExtra(Constants.INTENT_LIST_ARG);
     }
 
     @Override

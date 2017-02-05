@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.fragments.CardFragment;
 import com.abyx.loyalty.R;
 
@@ -22,7 +23,7 @@ public class CardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_card);
         Intent data = getIntent();
         if (data != null) {
-            CardFragment fragment = CardFragment.newInstance((Card) data.getParcelableExtra(MainActivity.CARD_INTENT_ARG));
+            CardFragment fragment = CardFragment.newInstance((Card) data.getParcelableExtra(Constants.INTENT_CARD_ARG));
             getSupportFragmentManager().beginTransaction().add(R.id.cardContainer, fragment).commit();
         }
     }

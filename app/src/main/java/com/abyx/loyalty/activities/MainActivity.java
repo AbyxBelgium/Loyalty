@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.fragments.CardFragment;
 import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.fragments.OverviewFragment;
@@ -21,9 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class MainActivity extends PermissionActivity implements OverviewFragment.OverviewFragmentInteractionListener {
-    public static final String CARD_INTENT_ARG = "CARD";
-    public static final String SORT_INTENT_ARG = "LIST";
-    public static final String BACKUP_INTENT_ARG = "LIST";
     private static final String sortedString = "sorted_descending";
 
     private FrameLayout cardContainer;
@@ -102,12 +100,12 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
             return true;
         } else if (id == R.id.action_backup) {
             Intent temp = new Intent(MainActivity.this, BackupRestoreActivity.class);
-            temp.putParcelableArrayListExtra(BACKUP_INTENT_ARG, data);
+            temp.putParcelableArrayListExtra(Constants.INTENT_LIST_ARG, data);
             startActivity(temp);
             return true;
         } else if (id == R.id.search) {
             Intent temp = new Intent(MainActivity.this, SearchResultsActivity.class);
-            temp.putParcelableArrayListExtra(SORT_INTENT_ARG, data);
+            temp.putParcelableArrayListExtra(Constants.INTENT_LIST_ARG, data);
             startActivity(temp);
             return true;
         }
@@ -124,7 +122,7 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
             getSupportFragmentManager().beginTransaction().replace(R.id.cardContainer, fragment).commit();
         } else {
             Intent intent = new Intent(MainActivity.this, CardActivity.class);
-            intent.putExtra(CARD_INTENT_ARG, card);
+            intent.putExtra(Constants.INTENT_CARD_ARG, card);
             startActivity(intent);
         }
     }

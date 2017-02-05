@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.extra.Constants;
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -38,9 +41,8 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
         if (rawResult != null) {
             Intent intent = new Intent(ScannerActivity.this, FinishActivity.class);
             Intent created = getIntent();
-            intent.putExtra("BARCODE", rawResult.getText());
-            intent.putExtra("FORMAT", rawResult.getBarcodeFormat().toString());
-            intent.putExtra("STORENAME", created.getStringExtra("STORENAME"));
+            Card card = new Card(created.getStringExtra("STORENAME"), rawResult.getText(), BarcodeFormat.valueOf(rawResult.getBarcodeFormat().toString()));
+            intent.putExtra(Constants.INTENT_CARD_ARG, card);
             startActivity(intent);
         } else {
             Intent intent = new Intent();
