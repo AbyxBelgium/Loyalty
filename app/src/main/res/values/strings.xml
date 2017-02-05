@@ -93,6 +93,8 @@
     <string name="read_permission_denied_message">You rejected my read permissions. Please keep in
     mind that I cannot load previously saved data without these read permissions. If you want me
      to function properly, please grant me read permissions.</string>
+    <string name="internal_exception_title">Internal exception</string>
+    <string name="internal_exception_message">An internal exception occurred. Please try again&#8230;</string>
 
     <!-- No translation needed for these resources: -->
     <string-array name="format_array">

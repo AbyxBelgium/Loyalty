@@ -36,7 +36,12 @@ public class APIConnectorTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         try {
             ApiConnector temp = new ApiConnector();
-            return temp.getStoreLogo(params[0]);
+            if (params.length > 0) {
+                return temp.getStoreLogo(params[0]);
+            } else {
+                exceptionTitle = context.getString(R.string.internal_exception_title);
+                exceptionMessage = context.getString(R.string.internal_exception_message);
+            }
         } catch (IOException e){
             //An unexpected exception occurred while connecting to the Loyalty API. We will inform
             //the user that he has to provide one manually

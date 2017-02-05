@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
 import com.abyx.loyalty.tasks.APIConnectorCallback;
 import com.abyx.loyalty.tasks.APIConnectorTask;
@@ -34,8 +35,6 @@ import com.google.zxing.common.BitMatrix;
  * @author Pieter Verschaffelt
  */
 public class CardFragment extends Fragment implements ProgressIndicator, APIConnectorCallback {
-    private static final String CARD_ARG = "CARD";
-
     private TextView barcodeView;
     private ImageView barcodeImage;
     private ImageView logoView;
@@ -48,8 +47,8 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Use this factory method to create a new instance of this fragment using the provided
+     * parameters.
      *
      * @return A new instance of fragment CardFragment.
      */
@@ -76,13 +75,8 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
         progress = (ProgressBar) view.findViewById(R.id.progress);
 
         if (getArguments() != null) {
-            data = getArguments().getParcelable("CARD");
+            data = getArguments().getParcelable(Constants.INTENT_CARD_ARG);
             if (data != null) {
-                barcodeView.setText(data.getBarcode());
-                barcodeImage.setImageBitmap(encodeAsBitmap(data.getBarcode(), data.getFormat()));
-                DownloadImageTask temp = new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data);
-                temp.setProgressIndicator(this);
-                temp.execute(data.getImageURL());
                 barcodeView.setText(data.getBarcode());
                 getActivity().setTitle(data.getName());
 
@@ -120,13 +114,18 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
                         return true;
                     }
                 });
+
+                if (data.getImageURL().contains("Stack.png") || data.getImageURL().equals("")) {
+                    progress.setVisibility(View.VISIBLE);
+                    APIConnectorTask connectorTask = new APIConnectorTask(this, getActivity());
+                    connectorTask.execute(data.getName());
+                } else {
+                    data = new Card(data.getName(), data.getBarcode(), data.getImageURL(), data.getFormat());
+                    initGui(data);
+                }
             }
         }
         return view;
-    }
-
-    protected void initStoreData() {
-        new APIConnectorTask(this, getActivity()).execute(data.getName());
     }
 
     /**
@@ -177,19 +176,17 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
     @Override
     public void onAPIReady(String url){
         data = new Card(data.getName(), data.getBarcode(), url, data.getFormat());
-        DownloadImageTask tempDownloader = new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data, true);
-        tempDownloader.setProgressIndicator(this);
-        tempDownloader.execute(data.getImageURL());
-        new ThumbnailDownloader(getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
-        barcodeImage.setImageBitmap(encodeAsBitmap(data.getBarcode(), data.getFormat()));
-        barcodeView.setText(data.getBarcode());
-        getActivity().setTitle(data.getName());
+        initGui(data);
     }
 
     @Override
     public void onAPIException(String title, String message){
         Utils.showInformationDialog(title, message, getActivity(), Utils.createDismissListener());
         data = new Card(data.getName(), data.getBarcode(), data.getFormat());
+        initGui(data);
+    }
+
+    private void initGui(final Card data) {
         DownloadImageTask tempDownloader = new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data, true);
         tempDownloader.setProgressIndicator(this);
         tempDownloader.execute(data.getImageURL());
