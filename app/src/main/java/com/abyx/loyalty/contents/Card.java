@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.zxing.BarcodeFormat;
 
 public class Card implements Parcelable{
+    private long id;
     private String name;
     private String barcode;
     private String imageLocation;
@@ -13,6 +14,8 @@ public class Card implements Parcelable{
     private String defaultURL = "https://cdn4.iconfinder.com/data/icons/devine_icons/Black/PNG/Folder%20and%20Places/Stack.png";
 
     public Card(String name, String barcode, String imageLocation, BarcodeFormat format){
+        // A card without specific ID has ID -1
+        this.id = -1;
         this.name = name;
         this.barcode = barcode;
         this.imageLocation = imageLocation;
@@ -20,6 +23,8 @@ public class Card implements Parcelable{
     }
 
     public Card(String name, String barcode, BarcodeFormat format){
+        // A card without specific ID has ID -1
+        this.id = -1;
         this.name = name;
         this.barcode = barcode;
         //Default image is used when nothing is set
@@ -28,6 +33,7 @@ public class Card implements Parcelable{
     }
 
     public Card(Parcel in){
+        this.id = in.readLong();
         this.name = in.readString();
         this.barcode = in.readString();
         this.imageLocation = in.readString();
@@ -78,6 +84,14 @@ public class Card implements Parcelable{
         this.imageLocation = defaultURL;
     }
 
+    public void setID(long id) {
+        this.id = id;
+    }
+
+    public long getID() {
+        return this.id;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -85,6 +99,7 @@ public class Card implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(id);
         parcel.writeString(name);
         parcel.writeString(barcode);
         parcel.writeString(imageLocation);
