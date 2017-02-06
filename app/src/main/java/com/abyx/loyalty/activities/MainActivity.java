@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.fragments.CardFragment;
 import com.abyx.loyalty.contents.IO;
@@ -56,17 +57,15 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
         super.onResume();
         if (isPermissionGranted(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)){
             // Read all data from the internal storage
-            IO temp = new IO(MainActivity.this);
-            ArrayList<Card> input = temp.load();
-
-            if (input.size() > 0 && !data.contains(input.get(0))) {
-                data.addAll(input);
-            }
+            Database db = new Database(MainActivity.this);
+            db.openDatabase();
+            data = (ArrayList<Card>) db.getAllCards();
+            db.closeDatabase();
 
             // Sort data according to the previous order
             sort(sortedDescending);
-            overviewFragment = OverviewFragment.newInstance(input);
-            getSupportFragmentManager().beginTransaction().add(R.id.overviewContainer, overviewFragment).commit();
+            overviewFragment = OverviewFragment.newInstance(data);
+            getSupportFragmentManager().beginTransaction().replace(R.id.overviewContainer, overviewFragment).commit();
         }
     }
 

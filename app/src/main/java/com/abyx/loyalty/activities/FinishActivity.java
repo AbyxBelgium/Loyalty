@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.fragments.CardFragment;
@@ -49,12 +50,12 @@ public class FinishActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done){
-            IO io = new IO(getApplicationContext());
+            Database db = new Database(getApplicationContext());
+            db.openDatabase();
             if (card != null) {
-                List<Card> allCards = io.load();
-                allCards.add(card);
-                io.save(allCards);
+                db.addCard(card);
             }
+            db.closeDatabase();
             Intent intent = new Intent(FinishActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

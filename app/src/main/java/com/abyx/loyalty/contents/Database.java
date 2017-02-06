@@ -58,7 +58,7 @@ public class Database {
         temp.put(DatabaseContract.COLUMN_NAME, card.getName());
         temp.put(DatabaseContract.COLUMN_BARCODE, card.getBarcode());
         temp.put(DatabaseContract.COLUMN_BARCODE_FORMAT, card.getFormat().toString());
-        temp.put(DatabaseContract.COLUMN_IMAGE_URL, card.getImageLocation());
+        temp.put(DatabaseContract.COLUMN_IMAGE_URL, card.getImageURL());
         return temp;
     }
 
@@ -144,6 +144,8 @@ public class Database {
                 Card card = new Card(name, barcode, imageURL, format);
                 card.setID(id);
                 cards.add(card);
+
+                cursor.moveToNext();
             }
         }
 

@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -15,7 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.abyx.loyalty.contents.Card;
-import com.abyx.loyalty.contents.IO;
+import com.abyx.loyalty.contents.Database;
+import com.abyx.loyalty.exceptions.InvalidCardException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
 import com.abyx.loyalty.tasks.APIConnectorCallback;
@@ -42,6 +44,7 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
     private ImageView barcodeImage;
     private ImageView logoView;
     private ProgressBar progress;
+    private View rootView;
 
     private Card data;
 
@@ -76,6 +79,7 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
         barcodeImage = (ImageView) view.findViewById(R.id.barcodeImage);
         logoView = (ImageView) view.findViewById(R.id.logoView);
         progress = (ProgressBar) view.findViewById(R.id.progress);
+        rootView = view.findViewById(R.id.rootLayout);
 
         if (getArguments() != null) {
             data = getArguments().getParcelable(Constants.INTENT_CARD_ARG);
@@ -194,16 +198,15 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
 
     private void makeImageURLPersistent(Card card, String url) {
         card.setImageLocation(url);
-        IO temp = new IO(getActivity());
-        List<Card> allCards = temp.load();
-        Card current = getCardByName(card.getName(), allCards);
-        if (current != null) {
-            current.setImageLocation(url);
-            temp.save(allCards);
+        Database db = new Database(getActivity());
+        db.openDatabase();
+        try {
+            db.updateCard(card);
+        } catch (InvalidCardException e) {
+            Snackbar.make(rootView, getString(R.string.invalid_card_exception), Snackbar.LENGTH_LONG);
         }
     }
 
-    // TODO this should get fixed by migrating to a database
     private Card getCardByName(String name, List<Card> cards) {
         for (Card card: cards) {
             if (card.getName().toLowerCase().equals(name.toLowerCase())) {
