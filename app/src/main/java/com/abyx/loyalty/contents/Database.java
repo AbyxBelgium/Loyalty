@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.abyx.loyalty.exceptions.InvalidCardException;
 import com.google.zxing.BarcodeFormat;
 
 import java.util.ArrayList;
@@ -32,32 +33,58 @@ public class Database {
      * @param card The card that should be added to the database.
      */
     public void addCard(Card card) {
-        ContentValues toAdd = new ContentValues();
-        toAdd.put(DatabaseContract.COLUMN_NAME, card.getName());
-        toAdd.put(DatabaseContract.COLUMN_BARCODE, card.getBarcode());
-        toAdd.put(DatabaseContract.COLUMN_BARCODE_FORMAT, card.getFormat().toString());
-        toAdd.put(DatabaseContract.COLUMN_IMAGE_URL, card.getImageLocation());
+        ContentValues toAdd = generateCardContentValues(card);
         long newID = database.insert(DatabaseContract.TABLE_CARD, null, toAdd);
         card.setID(newID);
     }
 
     /**
-     * All changes to the given Card-object will be saved persistently in the database. The Card-
-     * object is uniquely identified by it's ID.
+     * Converts the given Card-object to a ContentValues-object that can be used to update or add
+     * the card to the database.
      *
-     * @param card The card that should be updated
+     * @param card The Card-object whose values should be used to populate the ContentValues-object.
+     * @return A ContentValues-object containing the correct values and columns for the given card.
      */
-    public void updateCard(Card card) {
+    private ContentValues generateCardContentValues(Card card) {
+        ContentValues temp = new ContentValues();
+        temp.put(DatabaseContract.COLUMN_NAME, card.getName());
+        temp.put(DatabaseContract.COLUMN_BARCODE, card.getBarcode());
+        temp.put(DatabaseContract.COLUMN_BARCODE_FORMAT, card.getFormat().toString());
+        temp.put(DatabaseContract.COLUMN_IMAGE_URL, card.getImageLocation());
+        return temp;
+    }
 
+    /**
+     * All changes to the given Card-object will be saved persistently in the database. The Card-
+     * object is uniquely identified by it's ID (Must be bigger than 0).
+     *
+     * @param card The card that should be updated.
+     * @throws InvalidCardException Whenever a card is being updated with an invalid ID (-1).
+     */
+    public void updateCard(Card card) throws InvalidCardException {
+        if (card.getID() <= 0) {
+            throw new InvalidCardException("Card has invalid id: " + card.getName());
+        }
+
+        ContentValues toUpdate = generateCardContentValues(card);
+
+        String selection = DatabaseContract.COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(card.getID())};
+
+        database.update(DatabaseContract.TABLE_CARD, toUpdate, selection, selectionArgs);
     }
 
     /**
      * Remove the given card from the persistent storage. This object should not be used afterwards.
+     * This Card-object is uniquely identified by it's ID (Must be bigger than 0).
      *
      * @param card The card that should be removed from the persistent storage.
+     * @throws InvalidCardException Whenever a card is being deleted with an invalid ID (-1).
      */
-    public void deleteCard(Card card) {
-
+    public void deleteCard(Card card) throws InvalidCardException {
+        if (card.getID() <= 0) {
+            throw new InvalidCardException("Card has invalid id: " + card.getName());
+        }
     }
 
     /**
