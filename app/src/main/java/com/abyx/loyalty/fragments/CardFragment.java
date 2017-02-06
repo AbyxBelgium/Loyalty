@@ -61,14 +61,9 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
     public static CardFragment newInstance(Card data) {
         CardFragment fragment = new CardFragment();
         Bundle args = new Bundle();
-        args.putParcelable("CARD", data);
+        args.putParcelable(Constants.INTENT_CARD_ARG, data);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
