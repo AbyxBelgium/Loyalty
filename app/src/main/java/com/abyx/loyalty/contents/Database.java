@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.abyx.loyalty.exceptions.DatabaseNotOpenException;
 import com.abyx.loyalty.exceptions.InvalidCardException;
 import com.google.zxing.BarcodeFormat;
 
@@ -23,6 +24,9 @@ public class Database {
 
     public Database(Context context) {
         helper = new DatabaseHelper(context);
+    }
+
+    public void openDatabase() {
         database = helper.getWritableDatabase();
     }
 
@@ -33,6 +37,10 @@ public class Database {
      * @param card The card that should be added to the database.
      */
     public void addCard(Card card) {
+        if (database == null) {
+            throw new DatabaseNotOpenException("Database is not open!");
+        }
+
         ContentValues toAdd = generateCardContentValues(card);
         long newID = database.insert(DatabaseContract.TABLE_CARD, null, toAdd);
         card.setID(newID);
@@ -62,6 +70,10 @@ public class Database {
      * @throws InvalidCardException Whenever a card is being updated with an invalid ID (-1).
      */
     public void updateCard(Card card) throws InvalidCardException {
+        if (database == null) {
+            throw new DatabaseNotOpenException("Database is not open!");
+        }
+
         if (card.getID() <= 0) {
             throw new InvalidCardException("Card has invalid id: " + card.getName());
         }
@@ -82,9 +94,18 @@ public class Database {
      * @throws InvalidCardException Whenever a card is being deleted with an invalid ID (-1).
      */
     public void deleteCard(Card card) throws InvalidCardException {
+        if (database == null) {
+            throw new DatabaseNotOpenException("Database is not open!");
+        }
+
         if (card.getID() <= 0) {
             throw new InvalidCardException("Card has invalid id: " + card.getName());
         }
+
+        String selection = DatabaseContract.COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(card.getID())};
+
+        database.delete(DatabaseContract.TABLE_CARD, selection, selectionArgs);
     }
 
     /**
@@ -93,6 +114,10 @@ public class Database {
      * @return All loyalty cards that are stored in this application by the current user.
      */
     public List<Card> getAllCards() {
+        if (database == null) {
+            throw new DatabaseNotOpenException("Database is not open!");
+        }
+
         String[] projection = {
                 DatabaseContract.COLUMN_ID,
                 DatabaseContract.COLUMN_NAME,
@@ -127,5 +152,11 @@ public class Database {
         }
 
         return cards;
+    }
+
+    public void closeDatabase() {
+        database.close();
+        helper.close();
+        database = null;
     }
 }
