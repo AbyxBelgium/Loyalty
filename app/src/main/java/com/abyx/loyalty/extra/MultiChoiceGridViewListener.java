@@ -1,6 +1,7 @@
 package com.abyx.loyalty.extra;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,7 +10,9 @@ import android.widget.AbsListView;
 
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.contents.IO;
+import com.abyx.loyalty.exceptions.InvalidCardException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +49,6 @@ public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeL
         } else {
             selected.remove(contents.get(position));
         }
-        System.out.println("Selected are: ");
-        for (Card sel: selected) {
-            System.out.println("---->" + sel.getName());
-        }
     }
 
     @Override
@@ -72,13 +71,21 @@ public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeL
             case R.id.action_removeSelected:
                 // All selected items have to be removed
                 IO temp = new IO(context);
-                for (Card current: selected){
-                    temp.removeData(current.getName());
-                    temp.removeData(current.getBarcode());
-                    contents.remove(current);
+                Database db = new Database(context);
+                db.openDatabase();
+                try {
+                    for (Card current : selected) {
+                        temp.removeData(current.getName());
+                        temp.removeData(current.getBarcode());
+                        contents.remove(current);
+                        db.deleteCard(current);
+                    }
+                } catch (InvalidCardException e) {
+                    // TODO make a proper error message for this.
+                    e.printStackTrace();
                 }
+                db.closeDatabase();
                 listener.itemDeleted(contents);
-                temp.save(contents);
                 mode.finish(); // Action picked, so close the CAB
                 return true;
             default:

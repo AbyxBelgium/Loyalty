@@ -121,16 +121,6 @@ public class OverviewFragment extends Fragment {
         listener = null;
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (isPermissionGranted(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-            // Save all data to internal storage
-            IO temp = new IO(getActivity());
-            temp.save(data);
-        }
-    }
-
     /**
      * TODO this is code duplication of PermissionActivity
      *
