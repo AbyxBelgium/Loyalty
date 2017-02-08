@@ -12,8 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
@@ -77,7 +79,11 @@ public class EditFragment extends Fragment implements AdapterView.OnItemSelected
         barcode.setText(data.getBarcode());
 
         formatSpinner = (Spinner) view.findViewById(R.id.formatSpinner);
-        // TODO FIX FORMATSPINNER
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.format_array, android.R.layout.simple_spinner_item);
+        formatSpinner.setOnItemSelectedListener(this);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        formatSpinner.setAdapter(adapter);
+        formatSpinner.setSelection(adapter.getPosition(data.getFormat().toString()));
 
         return view;
     }
@@ -87,13 +93,13 @@ public class EditFragment extends Fragment implements AdapterView.OnItemSelected
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        data.setFormat(BarcodeFormat.valueOf((String) parent.getItemAtPosition(pos)));
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        data.setFormat(BarcodeFormat.valueOf((String) parent.getItemAtPosition(position)));
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-        // Nothing has to be done here
+
     }
 
     @Override
