@@ -2,6 +2,7 @@ package com.abyx.loyalty.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -34,27 +35,55 @@ public class EditFragment extends Fragment implements AdapterView.OnItemSelected
     private Spinner formatSpinner;
 
     private Card data;
+    private Database db;
+    private EditListener listener;
 
     public EditFragment() {
 
     }
 
-    public static EditFragment newInstance(Card data) {
+    public static EditFragment newInstance(long cardID) {
         EditFragment fragment = new EditFragment();
         Bundle args = new Bundle();
-        args.putParcelable(Constants.INTENT_CARD_ARG, data);
+        args.putLong(Constants.INTENT_CARD_ID_ARG, cardID);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        this.setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Bundle args = getArguments();
+
+        db = new Database(getActivity());
+        db.openDatabase();
+        data = db.getCardByID(args.getLong(Constants.INTENT_CARD_ID_ARG));
+        db.closeDatabase();
+
         View view = inflater.inflate(R.layout.fragment_edit, container, false);
+
         storeName = (EditText) view.findViewById(R.id.storeName);
+        storeName.setText(data.getName());
+
         logoURL = (EditText) view.findViewById(R.id.logoURL);
+        logoURL.setText(data.getImageURL());
+
         barcode = (EditText) view.findViewById(R.id.barcode);
+        barcode.setText(data.getBarcode());
+
         formatSpinner = (Spinner) view.findViewById(R.id.formatSpinner);
+        // TODO FIX FORMATSPINNER
+
         return view;
+    }
+
+    public void registerListener(EditListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -70,6 +99,7 @@ public class EditFragment extends Fragment implements AdapterView.OnItemSelected
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_edit, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -92,11 +122,14 @@ public class EditFragment extends Fragment implements AdapterView.OnItemSelected
                 data.setImageLocation(logoURL.getText().toString());
                 data.setBarcode(barcode.getText().toString());
                 // Save changes to database
-                Database db = new Database(getActivity());
                 db.openDatabase();
                 db.updateCard(data);
                 db.closeDatabase();
-                getActivity().finish();
+                if (listener != null) {
+                    listener.doneEditing();
+                } else {
+                    throw new RuntimeException("A valid EditListener must be registered!");
+                }
                 return true;
             } else {
                 barcode.setError(getString(R.string.wrong_barcode_input));
@@ -105,5 +138,12 @@ public class EditFragment extends Fragment implements AdapterView.OnItemSelected
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public interface EditListener {
+        /**
+         * This function is called whenever the user is done editing the loyalty card.
+         */
+        void doneEditing();
     }
 }

@@ -9,7 +9,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:background="@color/white"
-    tools:context="com.abyx.loyalty.activities.EditActivity">
+    tools:context="com.abyx.loyalty.activities.CardActivity">
     <android.support.design.widget.TextInputLayout
         android:layout_gravity="center"
         android:focusable="true"
@@ -63,7 +63,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
             android:textSize="18sp"
             android:textColor="@color/black"
             android:hint="@string/logo_url"

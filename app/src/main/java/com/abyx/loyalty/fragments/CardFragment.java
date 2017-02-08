@@ -76,59 +76,57 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
         progress = (ProgressBar) view.findViewById(R.id.progress);
         rootView = view.findViewById(R.id.rootLayout);
 
-        if (getArguments() != null) {
-            long id = getArguments().getLong(Constants.INTENT_CARD_ID_ARG);
-            Database db = new Database(getActivity());
-            db.openDatabase();
-            data = db.getCardByID(id);
-            db.closeDatabase();
-            if (data != null) {
-                barcodeView.setText(data.getBarcode());
-                getActivity().setTitle(data.getName());
+        long id = getArguments().getLong(Constants.INTENT_CARD_ID_ARG);
+        Database db = new Database(getActivity());
+        db.openDatabase();
+        data = db.getCardByID(id);
+        db.closeDatabase();
+        if (data != null) {
+            barcodeView.setText(data.getBarcode());
+            getActivity().setTitle(data.getName());
 
-                // Resource URL for the logo can be changed when user long presses the current logo
-                logoView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        final EditText editText = new EditText(getActivity());
-                        builder.setView(editText);
-                        builder.setTitle(R.string.change_logo);
-                        builder.setMessage(R.string.enter_url_message);
+            // Resource URL for the logo can be changed when user long presses the current logo
+            logoView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    final EditText editText = new EditText(getActivity());
+                    builder.setView(editText);
+                    builder.setTitle(R.string.change_logo);
+                    builder.setMessage(R.string.enter_url_message);
 
-                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                if (editText.getText().toString().equals("")) {
-                                    data.setDefaultImageLocation();
-                                } else {
-                                    data.setImageLocation(editText.getText().toString());
-                                }
-                                new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
-                                dialog.dismiss();
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            if (editText.getText().toString().equals("")) {
+                                data.setDefaultImageLocation();
+                            } else {
+                                data.setImageLocation(editText.getText().toString());
                             }
-                        });
+                            new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
+                            dialog.dismiss();
+                        }
+                    });
 
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.cancel();
-                            }
-                        });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                        }
+                    });
 
-                        AlertDialog dialog = builder.create();
+                    AlertDialog dialog = builder.create();
 
-                        dialog.show();
-                        return true;
-                    }
-                });
-
-                if (data.getImageURL().contains("Stack.png") || data.getImageURL().equals("")) {
-                    progress.setVisibility(View.VISIBLE);
-                    APIConnectorTask connectorTask = new APIConnectorTask(this, getActivity());
-                    connectorTask.execute(data.getName());
-                } else {
-                    data = new Card(data.getName(), data.getBarcode(), data.getImageURL(), data.getFormat());
-                    initGui(data);
+                    dialog.show();
+                    return true;
                 }
+            });
+
+            if (data.getImageURL().contains("Stack.png") || data.getImageURL().equals("")) {
+                progress.setVisibility(View.VISIBLE);
+                APIConnectorTask connectorTask = new APIConnectorTask(this, getActivity());
+                connectorTask.execute(data.getName());
+            } else {
+                data = new Card(data.getName(), data.getBarcode(), data.getImageURL(), data.getFormat());
+                initGui(data);
             }
         }
         return view;

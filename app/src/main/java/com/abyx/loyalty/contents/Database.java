@@ -136,12 +136,15 @@ public class Database {
 
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
+            long cardID = cursor.getLong(cursor.getColumnIndex(DatabaseContract.COLUMN_ID));
             String name = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_NAME));
             String barcode = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE));
             String barcodeFormat = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE_FORMAT));
             String imageURL = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_IMAGE_URL));
+            Card output = new Card(name, barcode, imageURL, BarcodeFormat.valueOf(barcodeFormat));
+            output.setID(cardID);
             cursor.close();
-            return new Card(name, barcode, imageURL, BarcodeFormat.valueOf(barcodeFormat));
+            return output;
         } else {
             cursor.close();
             return null;
