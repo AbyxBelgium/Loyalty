@@ -73,16 +73,11 @@ public class MultiChoiceGridViewListener implements AbsListView.MultiChoiceModeL
                 IO temp = new IO(context);
                 Database db = new Database(context);
                 db.openDatabase();
-                try {
-                    for (Card current : selected) {
-                        temp.removeData(current.getName());
-                        temp.removeData(current.getBarcode());
-                        contents.remove(current);
-                        db.deleteCard(current);
-                    }
-                } catch (InvalidCardException e) {
-                    // TODO make a proper error message for this.
-                    e.printStackTrace();
+                for (Card current : selected) {
+                    temp.removeData(current.getName());
+                    temp.removeData(current.getBarcode());
+                    contents.remove(current);
+                    db.deleteCard(current);
                 }
                 db.closeDatabase();
                 listener.itemDeleted(contents);

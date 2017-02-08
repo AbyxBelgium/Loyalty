@@ -68,8 +68,9 @@ public class Database {
      *
      * @param card The card that should be updated.
      * @throws InvalidCardException Whenever a card is being updated with an invalid ID (-1).
+     * @throws DatabaseNotOpenException Whenever this method is used before calling openDatabase()
      */
-    public void updateCard(Card card) throws InvalidCardException {
+    public void updateCard(Card card) {
         if (database == null) {
             throw new DatabaseNotOpenException("Database is not open!");
         }
@@ -92,8 +93,9 @@ public class Database {
      *
      * @param card The card that should be removed from the persistent storage.
      * @throws InvalidCardException Whenever a card is being deleted with an invalid ID (-1).
+     * @throws DatabaseNotOpenException Whenever this method is used before calling openDatabase()
      */
-    public void deleteCard(Card card) throws InvalidCardException {
+    public void deleteCard(Card card) {
         if (database == null) {
             throw new DatabaseNotOpenException("Database is not open!");
         }

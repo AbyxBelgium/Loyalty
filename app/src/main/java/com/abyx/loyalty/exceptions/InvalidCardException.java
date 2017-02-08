@@ -6,7 +6,7 @@ package com.abyx.loyalty.exceptions;
  *
  * @author Pieter Verschaffelt
  */
-public class InvalidCardException extends Exception {
+public class InvalidCardException extends RuntimeException {
     public InvalidCardException() {
         super();
     }
