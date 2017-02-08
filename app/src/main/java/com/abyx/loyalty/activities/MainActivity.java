@@ -118,11 +118,11 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
         // Device is big enough and orientated in landscape when cardContainer exists!
         if (cardContainer != null) {
             // Replace a fragment that might have been placed before!
-            CardFragment fragment = CardFragment.newInstance(card);
+            CardFragment fragment = CardFragment.newInstance(card.getID());
             getSupportFragmentManager().beginTransaction().replace(R.id.cardContainer, fragment).commit();
         } else {
             Intent intent = new Intent(MainActivity.this, CardActivity.class);
-            intent.putExtra(Constants.INTENT_CARD_ARG, card);
+            intent.putExtra(Constants.INTENT_CARD_ID_ARG, card.getID());
             startActivity(intent);
         }
     }

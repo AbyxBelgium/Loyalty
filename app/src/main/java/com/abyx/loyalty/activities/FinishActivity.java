@@ -25,6 +25,7 @@ import java.util.List;
 
 public class FinishActivity extends AppCompatActivity {
     private Card card;
+    private Database db;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +34,10 @@ public class FinishActivity extends AppCompatActivity {
         Intent data = getIntent();
         if (data != null) {
             card = data.getParcelableExtra(Constants.INTENT_CARD_ARG);
-            CardFragment fragment = CardFragment.newInstance((Card) data.getParcelableExtra(Constants.INTENT_CARD_ARG));
+            db = new Database(getApplicationContext());
+            db.openDatabase();
+            db.addCard(card);
+            CardFragment fragment = CardFragment.newInstance(card.getID());
             getSupportFragmentManager().beginTransaction().add(R.id.cardContainer, fragment).commit();
         }
     }
@@ -45,21 +49,33 @@ public class FinishActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        // Remove card and go back to MainActivity
+        db.deleteCard(card);
+        Intent intent = new Intent(FinishActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        db.closeDatabase();
+        super.onPause();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done){
-            Database db = new Database(getApplicationContext());
-            db.openDatabase();
-            if (card != null) {
-                db.addCard(card);
-            }
-            db.closeDatabase();
             Intent intent = new Intent(FinishActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             return true;
+        } else if (id == android.R.id.home) {
+            // Parent button was clicked (Delete the card from the database!)
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);

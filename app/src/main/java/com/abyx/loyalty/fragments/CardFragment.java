@@ -58,10 +58,10 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
      *
      * @return A new instance of fragment CardFragment.
      */
-    public static CardFragment newInstance(Card data) {
+    public static CardFragment newInstance(long cardID) {
         CardFragment fragment = new CardFragment();
         Bundle args = new Bundle();
-        args.putParcelable(Constants.INTENT_CARD_ARG, data);
+        args.putLong(Constants.INTENT_CARD_ID_ARG, cardID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,7 +77,11 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
         rootView = view.findViewById(R.id.rootLayout);
 
         if (getArguments() != null) {
-            data = getArguments().getParcelable(Constants.INTENT_CARD_ARG);
+            long id = getArguments().getLong(Constants.INTENT_CARD_ID_ARG);
+            Database db = new Database(getActivity());
+            db.openDatabase();
+            data = db.getCardByID(id);
+            db.closeDatabase();
             if (data != null) {
                 barcodeView.setText(data.getBarcode());
                 getActivity().setTitle(data.getName());
@@ -200,15 +204,6 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
         } catch (InvalidCardException e) {
             Snackbar.make(rootView, getString(R.string.invalid_card_exception), Snackbar.LENGTH_LONG);
         }
-    }
-
-    private Card getCardByName(String name, List<Card> cards) {
-        for (Card card: cards) {
-            if (card.getName().toLowerCase().equals(name.toLowerCase())) {
-                return card;
-            }
-        }
-        return null;
     }
 
     private void initGui(final Card data) {

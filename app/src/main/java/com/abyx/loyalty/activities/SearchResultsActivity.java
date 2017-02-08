@@ -48,7 +48,7 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SearchResultsActivity.this, CardActivity.class);
-                intent.putExtra(Constants.INTENT_CARD_ARG, originalData.get(position));
+                intent.putExtra(Constants.INTENT_CARD_ID_ARG, originalData.get(position).getID());
                 startActivity(intent);
             }
         });

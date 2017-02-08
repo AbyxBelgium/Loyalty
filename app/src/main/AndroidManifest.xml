@@ -32,21 +32,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.DetailsActivity"
-            android:label="@string/title_activity_details"
-            android:parentActivityName=".activities.MainActivity"
-            android:screenOrientation="portrait" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity2" />
-        </activity>
-        <activity
             android:name=".activities.CardActivity"
             android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity2" />
+                android:value="com.abyx.loyalty.activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.AddStoreActivity"
@@ -55,7 +46,7 @@
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity2" />
+                android:value="com.abyx.loyalty.activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.ScannerActivity"
@@ -64,7 +55,7 @@
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity2" />
+                android:value="com.abyx.loyalty.activities.AddStoreActivity" />
         </activity>
         <activity
             android:name=".activities.FinishActivity"
@@ -73,16 +64,16 @@
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity2" />
+                android:value="com.abyx.loyalty.activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.EditActivity"
             android:label="@string/title_activity_edit"
-            android:parentActivityName=".activities.DetailsActivity"
+            android:parentActivityName=".activities.CardActivity"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.activities.DetailsActivity" />
+                android:value="com.abyx.loyalty.activities.CardActivity" />
         </activity>
         <activity
             android:name=".activities.AboutActivity"
@@ -91,7 +82,7 @@
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity2" />
+                android:value="com.abyx.loyalty.activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.SearchResultsActivity"
@@ -105,21 +96,7 @@
             android:parentActivityName=".activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity2" />
-        </activity>
-        <activity
-            android:name=".activities.NFCViewActivity"
-            android:label="@string/title_activity_nfcview"
-            android:parentActivityName=".activities.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.abyx.loyalty.MainActivity2" />
-
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+                android:value="com.abyx.loyalty.activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.ManualInputActivity"

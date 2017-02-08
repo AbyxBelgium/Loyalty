@@ -25,7 +25,7 @@ public class CardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_card);
         Intent data = getIntent();
         if (data != null) {
-            CardFragment fragment = CardFragment.newInstance((Card) data.getParcelableExtra(Constants.INTENT_CARD_ARG));
+            CardFragment fragment = CardFragment.newInstance(data.getLongExtra(Constants.INTENT_CARD_ID_ARG, 0));
             getSupportFragmentManager().beginTransaction().add(R.id.cardContainer, fragment).commit();
         }
     }
@@ -43,7 +43,7 @@ public class CardActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_edit) {
-            Intent intent = new Intent(CardActivity.this, EditActivity.class);
+            // TODO IMPLEMENT
         }
 
         return super.onOptionsItemSelected(item);

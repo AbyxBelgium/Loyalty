@@ -111,6 +111,44 @@ public class Database {
     }
 
     /**
+     * Returns the Card-object associated with the given database ID.
+     *
+     * @param id Valid database id from whom a new Card-object should be created.
+     * @return A new Card-object associated with this ID.
+     */
+    public Card getCardByID(long id) {
+        if (database == null) {
+            throw new DatabaseNotOpenException("Database is not open!");
+        }
+
+        String[] projection = {
+                DatabaseContract.COLUMN_ID,
+                DatabaseContract.COLUMN_NAME,
+                DatabaseContract.COLUMN_BARCODE,
+                DatabaseContract.COLUMN_BARCODE_FORMAT,
+                DatabaseContract.COLUMN_IMAGE_URL
+        };
+
+        String selection = DatabaseContract.COLUMN_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
+
+        Cursor cursor = database.query(DatabaseContract.TABLE_CARD, projection, selection, selectionArgs, null, null, null);
+
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            String name = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_NAME));
+            String barcode = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE));
+            String barcodeFormat = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE_FORMAT));
+            String imageURL = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_IMAGE_URL));
+            cursor.close();
+            return new Card(name, barcode, imageURL, BarcodeFormat.valueOf(barcodeFormat));
+        } else {
+            cursor.close();
+            return null;
+        }
+    }
+
+    /**
      * This function returns all loyalty cards that are stored by this application.
      *
      * @return All loyalty cards that are stored in this application by the current user.
