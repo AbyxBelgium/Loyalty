@@ -16,7 +16,6 @@
         android:verticalSpacing="4dp"
         android:horizontalSpacing="4dp"
         android:numColumns="2"/>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addFAB"
         android:layout_width="wrap_content"

@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.extra.CurrentProgressDialog;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
@@ -38,16 +39,17 @@ public class RestoreDataTask extends AsyncTask<String, Integer, Void> {
     }
 
     protected Void doInBackground(String... params){
+        IO io = new IO(context);
+        io.clearData();
+        io.clearCache();
         int i = 0;
         for(Card current: data) {
             String urldisplay = current.getImageURL();
             System.out.println(current.getName());
             Bitmap mIcon11;
             try {
-                System.out.println("Starting...");
                 File file = context.getFileStreamPath(current.getImageLocation());
                 if (file == null || !file.exists()) {
-                    System.out.println("Not null!");
                     //Download full res image
                     InputStream in = new java.net.URL(urldisplay).openStream();
                     mIcon11 = BitmapFactory.decodeStream(in);
