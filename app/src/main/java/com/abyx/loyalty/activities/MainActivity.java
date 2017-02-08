@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
+import com.abyx.loyalty.contents.StorageMigrator;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.fragments.CardFragment;
 import com.abyx.loyalty.contents.IO;
@@ -38,11 +39,18 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Check if this application last used the old storage method (v1.3.1)
+        IO io = new IO(getApplicationContext());
+        if (io.hasData()) {
+            StorageMigrator migrator = new StorageMigrator(getApplicationContext());
+            migrator.migrate();
+        }
+
         cardContainer = (FrameLayout) findViewById(R.id.cardContainer);
 
         data = new ArrayList<>();
 
-        //The sortedDescending value from the last time the user used this app
+        // The sortedDescending value from the last time the user used this app
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         sortedDescending = sharedPref.getBoolean(sortedString, true);
     }

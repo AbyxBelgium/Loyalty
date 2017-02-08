@@ -172,6 +172,19 @@ public class IO {
         file.delete();
     }
 
+    public boolean hasData() {
+        return context.getFileStreamPath(this.filename).exists();
+    }
+
+    /**
+     * Remove the file containing all card data.
+     *
+     * @return true If deletion was successful.
+     */
+    public boolean clearData() {
+        return context.deleteFile(filename);
+    }
+
     /* Checks if external storage is available for read and write */
     public boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
