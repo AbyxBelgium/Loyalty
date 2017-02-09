@@ -39,7 +39,7 @@
     <string name="unexpected_io_error">Een onverwachte leesfout is opgetreden. Probeer de data in android/app instellingen te wissen wanneer het probleem aanhoudt.</string>
     <string name="version">Versie:</string>
     <string name="website">Website:</string>
-    <string name="website_value">http://abyx.be</string>
+    <string name="website_value">https://abyx.be</string>
     <string name="wrong_barcode_input">Ongeldige barcode</string>
     <string name="store_logo">Winkel logo</string>
 
@@ -78,4 +78,13 @@
     <string name="title_activity_manual_input">Geef barcode op</string>
     <string name="scan_barcode">Scan barcode</string>
     <string name="enter_barcode">Barcode manueel opgeven</string>
+    <string name="camera_permission_denied_message">Je hebt toegang tot de camera geblokkeerd. Loyalty kan werken zonder deze permissie, maar je zal geen barcodes kunnen scannen. Geef me toegang tot de camera om wel barcodes te kunnen scannen.</string>
+    <string name="camera_permission_denied_title">Camera-permissies geweigerd</string>
+    <string name="internal_exception_message">Er is een interne fout opgetreden. Probeer opnieuw aub&#8230;</string>
+    <string name="internal_exception_title">Interne fout</string>
+    <string name="invalid_card_exception">Er werd geprobeerd een ongeldige kaart bij te werken&#8230;</string>
+    <string name="read_permission_denied_message">Lees-permissies geweigerd. Loyalty kan werken zonder deze permissie, maar dan zal je geen nieuwe klantenkaarten kunnen opslaan of bekijken.</string>
+    <string name="read_permission_denied_title">Lees-permissies geweigerd</string>
+    <string name="write_permission_denied_message">Schrijf-permissies geweigerd. Loyalty kan zonder deze permissies werken, maar er zullen geen nieuwe klantenkaarten opgeslagen kunnen worden!</string>
+    <string name="write_permission_denied_title">Schrijf-permissies geweigers</string>
 </resources>

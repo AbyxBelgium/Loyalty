@@ -44,7 +44,7 @@
     <string name="developer">Created by:</string>
     <string name="developer_value">ABYX Inc.</string>
     <string name="website">Website:</string>
-    <string name="website_value">http://abyx.be</string>
+    <string name="website_value">https://abyx.be</string>
     <string name="version">Version:</string>
     <string name="search">Search</string>
     <string name="sort">Sort</string>
@@ -110,7 +110,4 @@
         <item>UPC_A</item>
         <item>UPC_E</item>
     </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
