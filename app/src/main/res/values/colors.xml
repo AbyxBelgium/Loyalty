@@ -5,4 +5,9 @@
     <item name="black" type="color">#000000</item>
     <color name="black_overlay">#66000000</color>
     <item name="lightGray" type="color">#EEEEEE</item>
+
+    <color name="background_color">#3C484D</color>
+    <color name="primary_text_color">#f2f2f2</color>
+    <color name="secondary_text_color">#cbf1fe</color>
+    <color name="inactive_text_color">#DFDCDC</color>
 </resources>
