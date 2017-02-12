@@ -17,7 +17,6 @@
 package com.abyx.loyalty.extra;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,8 +29,6 @@ import com.abyx.loyalty.tasks.ThumbnailImageTask;
 import com.abyx.loyalty.contents.Card;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CardAdapter extends BaseAdapter {
     private Context context;
@@ -61,17 +58,14 @@ public class CardAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (view == null) {
-            view = inflater.inflate(R.layout.single_line, null);
+            view = inflater.inflate(R.layout.single_grid, null);
         }
-        TextView storeName = (TextView) view.findViewById(R.id.storeName);
-        TextView barcodeText = (TextView) view.findViewById(R.id.barcodeText);
-        CircleImageView logoView = (CircleImageView) view.findViewById(R.id.logoView);
-        // This is deprecated but still in use and will only be replaced in a future release of
-        // the CircleImageView library (https://github.com/hdodenhof/CircleImageView/issues/143)
-        logoView.setFillColor(Color.argb(255, 255, 255, 255));
-        storeName.setText(data.get(i).getName());
-        barcodeText.setText(data.get(i).getBarcode());
-        new ThumbnailImageTask(logoView, context, data.get(i).getImageLocation(), data.get(i)).execute(data.get(i).getImageURL());
+        TextView textView = (TextView) view.findViewById(R.id.textView);
+        TextView barcodeView = (TextView) view.findViewById(R.id.barcodeView);
+        ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+        textView.setText(data.get(i).getName());
+        barcodeView.setText(data.get(i).getBarcode());
+        new ThumbnailImageTask(imageView, context, data.get(i).getImageLocation(), data.get(i)).execute(data.get(i).getImageURL());
         return view;
     }
 

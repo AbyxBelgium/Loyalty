@@ -6,26 +6,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10dp"
-        android:id="@+id/mainList">
-    </ListView>
-    <!--<GridView-->
+    <!--<ListView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
         <!--android:layout_gravity="center"-->
-        <!--android:paddingTop="5dp"-->
-        <!--android:paddingBottom="5dp"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:id="@+id/mainGrid"-->
-        <!--android:layout_height="fill_parent"-->
-        <!--android:verticalSpacing="4dp"-->
-        <!--android:horizontalSpacing="4dp"-->
-        <!--android:numColumns="2"/>-->
+        <!--android:paddingTop="16dp"-->
+        <!--android:paddingBottom="16dp"-->
+        <!--android:divider="@android:color/transparent"-->
+        <!--android:dividerHeight="10dp"-->
+        <!--android:id="@+id/mainList">-->
+    <!--</ListView>-->
+    <GridView
+        android:layout_gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_width="fill_parent"
+        android:id="@+id/mainGrid"
+        android:layout_height="fill_parent"
+        android:verticalSpacing="4dp"
+        android:horizontalSpacing="4dp"
+        android:numColumns="2"/>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addFAB"
         android:layout_width="wrap_content"
