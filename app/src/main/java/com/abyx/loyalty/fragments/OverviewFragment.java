@@ -12,10 +12,10 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
+
 package com.abyx.loyalty.fragments;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -27,11 +27,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ListView;
 
 import com.abyx.loyalty.activities.MainActivity;
 import com.abyx.loyalty.contents.Card;
-import com.abyx.loyalty.extra.GridAdapter;
-import com.abyx.loyalty.contents.IO;
+import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.extra.MultiChoiceGridViewListener;
 import com.abyx.loyalty.R;
 
@@ -47,10 +47,10 @@ import java.util.List;
 public class OverviewFragment extends Fragment {
     private static final String DATA_ARG = "CARD_DATA";
 
-    private GridView mainGrid;
+    private ListView mainList;
 
     private List<Card> data;
-    private GridAdapter adapter;
+    private CardAdapter adapter;
     private OverviewFragmentInteractionListener listener;
     private MultiChoiceGridViewListener gridViewListener;
 
@@ -83,11 +83,11 @@ public class OverviewFragment extends Fragment {
         Bundle args = getArguments();
         if (args != null) {
             data = args.getParcelableArrayList(DATA_ARG);
-            mainGrid = (GridView) view.findViewById(R.id.mainGrid);
-            adapter = new GridAdapter(getActivity(), data);
-            mainGrid.setAdapter(adapter);
+            mainList = (ListView) view.findViewById(R.id.mainList);
+            adapter = new CardAdapter(getActivity(), data);
+            mainList.setAdapter(adapter);
 
-            mainGrid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+            mainList.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
             gridViewListener = new MultiChoiceGridViewListener(data, getActivity(), new MultiChoiceGridViewListener.DeleteListener() {
                 @Override
                 public void itemDeleted(List<Card> list) {
@@ -104,9 +104,9 @@ public class OverviewFragment extends Fragment {
                 }
             });
 
-            mainGrid.setMultiChoiceModeListener(gridViewListener);
+            mainList.setMultiChoiceModeListener(gridViewListener);
 
-            mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (listener != null) {

@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
+
 package com.abyx.loyalty.activities;
 
 import android.content.Context;
@@ -30,7 +31,7 @@ import android.widget.GridView;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.Constants;
-import com.abyx.loyalty.extra.GridAdapter;
+import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.R;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
 
     private ArrayList<Card> data;
     private ArrayList<Card> originalData;
-    private GridAdapter adapter;
+    private CardAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -57,7 +58,7 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
         actionBar.setDisplayHomeAsUpEnabled(true);
         originalData = getIntent().getParcelableArrayListExtra("LIST");
         data = new ArrayList<>();
-        adapter = new GridAdapter(this, originalData);
+        adapter = new CardAdapter(this, originalData);
         mainGrid.setAdapter(adapter);
         mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
