@@ -10,13 +10,8 @@
     <color name="accent">#E91E63</color>
     <color name="primary_dark">#0097A7</color>
 
-    <!--<color name="background_color">#435056</color>-->
-    <!--<color name="primary_text_color">#f2f2f2</color>-->
-    <!--<color name="secondary_text_color">#cbf1fe</color>-->
-    <!--<color name="inactive_text_color">#c4c1c1</color>-->
-
     <color name="background_color">#435056</color>
-    <color name="primary_text_color">#006073</color>
-    <color name="secondary_text_color">#515151</color>
+    <color name="primary_text_color">#f2f2f2</color>
+    <color name="secondary_text_color">#cbf1fe</color>
     <color name="inactive_text_color">#c4c1c1</color>
 </resources>
