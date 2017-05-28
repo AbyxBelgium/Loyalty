@@ -5,30 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg">
-    <!--<RelativeLayout-->
-        <!--android:layout_marginTop="24dp"-->
-        <!--android:layout_height="56dp"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:background="@color/semi_transparent"-->
-        <!--android:id="@+id/actionBar">-->
-        <!--<ImageView-->
-            <!--android:layout_width="32dp"-->
-            <!--android:layout_height="32dp"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginStart="10dp"-->
-            <!--android:clickable="true"-->
-            <!--android:background="?attr/selectableItemBackgroundBorderless"-->
-            <!--android:src="@drawable/ic_arrow_back_white_48dp"/>-->
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:textSize="22sp"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:gravity="center"-->
-            <!--android:textStyle="bold"-->
-            <!--android:text="Home" />-->
-    <!--</RelativeLayout>-->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
