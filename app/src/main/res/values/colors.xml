@@ -5,4 +5,6 @@
     <item name="black" type="color">#000000</item>
     <color name="black_overlay">#66000000</color>
     <item name="lightGray" type="color">#EEEEEE</item>
+    <color name="accent">#2196F3</color>
+    <color name="semi_transparent">#33000000</color>
 </resources>
