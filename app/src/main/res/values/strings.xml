@@ -96,6 +96,7 @@
     <string name="internal_exception_title">Internal exception</string>
     <string name="internal_exception_message">An internal exception occurred. Please try again&#8230;</string>
     <string name="invalid_card_exception">An invalid card was trying to be updated&#8230;</string>
+    <string name="no_cards_yet">There are no Loyalty cards in your library at the moment. Click the big plus to add a new one!</string>
 
     <!-- No translation needed for these resources: -->
     <string-array name="format_array">
