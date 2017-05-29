@@ -7,4 +7,6 @@
     <item name="lightGray" type="color">#EEEEEE</item>
     <color name="accent">#2196F3</color>
     <color name="semi_transparent">#33000000</color>
+    <color name="primary_home">#424242</color>
+    <color name="bg_home">#212121</color>
 </resources>

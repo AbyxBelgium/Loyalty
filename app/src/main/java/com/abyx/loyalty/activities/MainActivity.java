@@ -72,11 +72,6 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
         // The sortedDescending value from the last time the user used this app
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         sortedDescending = sharedPref.getBoolean(sortedString, true);
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33000000")));
-        }
     }
 
     @Override
