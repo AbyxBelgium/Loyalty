@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
+
 package com.abyx.loyalty.activities;
 
 import android.content.Intent;
@@ -70,9 +71,9 @@ public class AddStoreActivity extends PermissionActivity {
             requestCameraPermissions(AddStoreActivity.this, new ReceivedPermission() {
                 @Override
                 public void onPermissionGranted() {
-                    Intent intent = new Intent(AddStoreActivity.this, ScannerActivity.class);
-                    intent.putExtra("STORENAME", storeName.getText().toString());
-                    startActivity(intent);
+                Intent intent = new Intent(AddStoreActivity.this, ScannerActivity.class);
+                intent.putExtra("STORENAME", storeName.getText().toString());
+                startActivity(intent);
                 }
             });
         }

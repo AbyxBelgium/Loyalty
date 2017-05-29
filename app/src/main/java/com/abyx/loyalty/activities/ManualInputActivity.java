@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
+
 package com.abyx.loyalty.activities;
 
 import android.content.Intent;
@@ -77,7 +78,7 @@ public class ManualInputActivity extends AppCompatActivity {
                     Intent intent = new Intent(ManualInputActivity.this, FinishActivity.class);
                     Intent created = getIntent();
                     Card card = new Card(created.getStringExtra("STORENAME"), barcodeText.getText().toString(), BarcodeFormat.valueOf(formatSpinner.getSelectedItem().toString()));
-                    created.putExtra(Constants.INTENT_CARD_ARG, card);
+                    intent.putExtra(Constants.INTENT_CARD_ARG, card);
                     startActivityForResult(intent, Utils.ADD_STORE);
                 } else {
                     barcodeText.setError(getString(R.string.wrong_barcode_input));
