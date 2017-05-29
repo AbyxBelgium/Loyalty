@@ -32,6 +32,7 @@
         <activity
             android:name=".activities.CardActivity"
             android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/DetailedTheme"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
