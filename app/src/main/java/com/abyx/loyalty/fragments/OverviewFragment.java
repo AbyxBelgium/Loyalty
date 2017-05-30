@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
+
 package com.abyx.loyalty.fragments;
 
 import android.Manifest;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 
 import com.abyx.loyalty.activities.MainActivity;
 import com.abyx.loyalty.contents.Card;
@@ -48,6 +50,7 @@ public class OverviewFragment extends Fragment {
     private static final String DATA_ARG = "CARD_DATA";
 
     private GridView mainGrid;
+    private RelativeLayout placeholder;
 
     private List<Card> data;
     private GridAdapter adapter;
@@ -81,8 +84,13 @@ public class OverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         Bundle args = getArguments();
+        this.placeholder = (RelativeLayout) view.findViewById(R.id.placeholder);
+
         if (args != null) {
             data = args.getParcelableArrayList(DATA_ARG);
+
+            changePlaceholderVisibility(data);
+
             mainGrid = (GridView) view.findViewById(R.id.mainGrid);
             adapter = new GridAdapter(getActivity(), data);
             mainGrid.setAdapter(adapter);
@@ -92,7 +100,9 @@ public class OverviewFragment extends Fragment {
                 @Override
                 public void itemDeleted(List<Card> list) {
                     data = list;
+
                     adapter.refresh(data);
+                    changePlaceholderVisibility(data);
 
                     // Changes to list have to be propagated to parent-activity!
                     // TODO: by changing the persistent datastructure to a database, this can be
@@ -116,6 +126,7 @@ public class OverviewFragment extends Fragment {
                 }
             });
         }
+
         return view;
     }
 
@@ -154,11 +165,22 @@ public class OverviewFragment extends Fragment {
      *
      * @param data Updated list containing all cards
      */
-    public void refreshData(ArrayList<Card> data) {
+    public void refreshData(List<Card> data) {
         this.data = data;
+
+        changePlaceholderVisibility(data);
+
         adapter.refresh(data);
         if (gridViewListener != null) {
             gridViewListener.updateContents(data);
+        }
+    }
+
+    private void changePlaceholderVisibility(List<Card> data) {
+        if (data.size() != 0) {
+            this.placeholder.setVisibility(View.GONE);
+        } else {
+            this.placeholder.setVisibility(View.VISIBLE);
         }
     }
 
