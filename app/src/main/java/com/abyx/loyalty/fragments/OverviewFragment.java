@@ -16,7 +16,6 @@
 
 package com.abyx.loyalty.fragments;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -33,7 +32,6 @@ import android.widget.RelativeLayout;
 import com.abyx.loyalty.activities.MainActivity;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.GridAdapter;
-import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.extra.MultiChoiceGridViewListener;
 import com.abyx.loyalty.R;
 
