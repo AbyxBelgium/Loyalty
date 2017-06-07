@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -57,6 +58,11 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import java.util.List;
+
+import be.abyx.aurora.AuroraFactory;
+import be.abyx.aurora.BlurryAurora;
+import be.abyx.aurora.DefaultAuroraFactory;
+import be.abyx.aurora.ParallelAuroraFactory;
 
 /**
  * This fragment shows all details for one loyalty card (this includes the barcode and a small logo)
@@ -205,6 +211,15 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
     public void setDone(boolean done) {
         if (done){
             progress.setVisibility(View.INVISIBLE);
+            // Also change the background of the app
+            AuroraFactory factory = new ParallelAuroraFactory(this.getContext());
+
+            BitmapDrawable drawable = (BitmapDrawable) this.logoView.getDrawable();
+            Bitmap logo = drawable.getBitmap();
+
+            Bitmap aurora = factory.createAuroraBasedUponDrawable(logo, new BlurryAurora(this.getContext()), 1080, 1920);
+
+            this.getActivity().findViewById(R.id.rootLayout).setBackground(new BitmapDrawable(getResources(), aurora));
         } else {
             progress.setVisibility(View.VISIBLE);
         }
