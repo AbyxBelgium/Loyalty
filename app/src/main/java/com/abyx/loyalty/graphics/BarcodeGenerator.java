@@ -14,9 +14,12 @@ import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import be.abyx.aurora.ImageCoordinate;
 import be.abyx.aurora.ParallelShapeFactory;
 import be.abyx.aurora.RectangleShape;
 import be.abyx.aurora.ShapeFactory;
+
+import static android.R.attr.x;
 
 /**
  * This class contains some methods that are used for generating Bitmaps that represent barcode's of
@@ -26,6 +29,8 @@ import be.abyx.aurora.ShapeFactory;
  */
 public class BarcodeGenerator {
     private Context context;
+    private int defaultFontSize = 24;
+    private int padding = 10;
 
     public BarcodeGenerator(Context context) {
         this.context = context;
@@ -43,12 +48,22 @@ public class BarcodeGenerator {
      * the digits included underneath it.
      */
     public Bitmap renderBarcode(String barcode, BarcodeFormat format, int width, int height) throws WriterException {
+        float scale = this.context.getResources().getDisplayMetrics().density;
+
         // 100 additional pixels are used for rendering text underneath the barcode.
         int textHeight = 100;
         height += textHeight;
+
+        height *= scale;
+        width *= scale;
+
         Writer barWriter = new MultiFormatWriter();
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         BitMatrix bm = barWriter.encode(barcode, format, width, height);
+
+        int textPosX = getTextPositionX(barcode, width);
+        int textWidth = getTextWidth(barcode);
+
         for (int j = 0; j < height - textHeight; j++) {
             int[] row = new int[width];
             for (int i = 0; i < width; i++) {
@@ -58,10 +73,20 @@ public class BarcodeGenerator {
             bitmap.setPixels(row, 0, width, 0, j, width, 1);
         }
 
+        for (int j = height - textHeight; j < height - 10; j++) {
+            int[] row = new int[width];
+            for (int i = 0; i < width; i++) {
+                if (i < (textPosX - padding * 2) || i > (textPosX + textWidth + padding * 2)) {
+                    row[i] = bm.get(i, j) ? Color.BLACK : Color.TRANSPARENT;
+                }
+            }
+            bitmap.setPixels(row, 0, width, 0, j, width, 1);
+        }
+
         this.renderTextOnBitmap(bitmap, barcode);
         ShapeFactory factory = new ParallelShapeFactory();
         // TODO the background colour should be made a constant
-        return factory.createShape(new RectangleShape(this.context), bitmap, Color.argb(143, 175, 175, 175), 10);
+        return factory.createShape(new RectangleShape(this.context), bitmap, Color.argb(143, 175, 175, 175), padding);
     }
 
     /**
@@ -72,17 +97,10 @@ public class BarcodeGenerator {
      * @param text The text that should be rendered.
      */
     private void renderTextOnBitmap(Bitmap input, String text) {
-        float scale = this.context.getResources().getDisplayMetrics().density;
-
-        int defaultFontSize = 24;
 
         Canvas canvas = new Canvas(input);
 
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.BLACK);
-        paint.setTextSize((int) (defaultFontSize * scale));
-        // Change the font to match a more barcode-like font
-        paint.setTypeface(Typeface.MONOSPACE);
+        Paint paint = getBarcodePaint();
 
         Rect bounds = new Rect();
         paint.getTextBounds(text, 0, text.length(), bounds);
@@ -90,5 +108,35 @@ public class BarcodeGenerator {
         int y = input.getHeight() - 25;
 
         canvas.drawText(text, x, y, paint);
+    }
+
+    private Paint getBarcodePaint() {
+        float scale = this.context.getResources().getDisplayMetrics().density;
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.BLACK);
+        paint.setTextSize((int) (defaultFontSize * scale));
+        // Change the font to match a more barcode-like font
+        Typeface font = Typeface.createFromAsset(context.getAssets(), "font/terminal.ttf");
+        paint.setTypeface(font);
+        return paint;
+    }
+
+    private int getTextPositionX(String text, int bitmapWidth) {
+        Rect bounds = new Rect();
+        getBarcodePaint().getTextBounds(text, 0, text.length(), bounds);
+        return (bitmapWidth - bounds.width()) / 2;
+    }
+
+    private int getTextWidth(String text) {
+        Rect bounds = new Rect();
+        getBarcodePaint().getTextBounds(text, 0, text.length(), bounds);
+        return bounds.width();
+    }
+
+    private int getTextPositionY(String text, int bitmapHeight) {
+        Rect bounds = new Rect();
+        getBarcodePaint().getTextBounds(text, 0, text.length(), bounds);
+        return bitmapHeight - 25;
     }
 }

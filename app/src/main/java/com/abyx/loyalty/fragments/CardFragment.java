@@ -76,7 +76,6 @@ import be.abyx.aurora.ShapeFactory;
  * @author Pieter Verschaffelt
  */
 public class CardFragment extends Fragment implements ProgressIndicator, APIConnectorCallback {
-    private TextView barcodeView;
     private ImageView barcodeImage;
     private ImageView logoView;
     private ProgressBar progress;
@@ -120,7 +119,6 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
         }
 
         // Now, we look for all views that need to be initialized with a specific value
-        barcodeView = (TextView) view.findViewById(R.id.barcodeView);
         barcodeImage = (ImageView) view.findViewById(R.id.barcodeImage);
         logoView = (ImageView) view.findViewById(R.id.logoView);
         progress = (ProgressBar) view.findViewById(R.id.progress);
@@ -132,7 +130,6 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
         data = db.getCardByID(id);
         db.closeDatabase();
         if (data != null) {
-            barcodeView.setText(data.getBarcode());
             getActivity().setTitle(data.getName());
 
             // Resource URL for the logo can be changed when user long presses the current logo
@@ -195,7 +192,7 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
     public Bitmap encodeAsBitmap(String barcode, BarcodeFormat format) {
         BarcodeGenerator generator = new BarcodeGenerator(getContext());
         try {
-            return generator.renderBarcode(barcode, format, 700, 300);
+            return generator.renderBarcode(barcode, format, 300, 50);
         } catch (WriterException e) {
             // TODO implement error handling here!
             System.err.println(e);
@@ -266,7 +263,6 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
         tempDownloader.execute(data.getImageURL());
         new ThumbnailDownloader(getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
         barcodeImage.setImageBitmap(encodeAsBitmap(data.getBarcode(), data.getFormat()));
-        barcodeView.setText(data.getBarcode());
         getActivity().setTitle(data.getName());
     }
 
