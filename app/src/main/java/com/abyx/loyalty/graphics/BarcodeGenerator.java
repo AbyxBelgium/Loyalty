@@ -39,10 +39,13 @@ public class BarcodeGenerator {
      * the digits included underneath it.
      */
     public Bitmap renderBarcode(String barcode, BarcodeFormat format, int width, int height) throws WriterException {
+        // 150 additional pixels are used for rendering text underneath the barcode.
+        int textHeight = 150;
+        height += textHeight;
         Writer barWriter = new MultiFormatWriter();
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         BitMatrix bm = barWriter.encode(barcode, format, width, height);
-        for (int j = 0; j < height; j++) {
+        for (int j = 0; j < height - textHeight; j++) {
             int[] row = new int[width];
             for (int i = 0; i < width; i++) {
                 row[i] = bm.get(i, j) ? Color.BLACK : Color.TRANSPARENT;
@@ -52,6 +55,19 @@ public class BarcodeGenerator {
         }
 
         ShapeFactory factory = new ParallelShapeFactory();
+        // TODO the background colour should be made a constant
         return factory.createShape(new RectangleShape(this.context), bitmap, Color.argb(143, 175, 175, 175), 10);
+    }
+
+    /**
+     * Renders an arbitrary string (centered) at the bottom of the given input Bitmap. The given
+     * input Bitmap will be altered and must thus be mutable.
+     *
+     * @param input The Bitmap on which a String should be rendered (This Bitmap must be mutable)
+     * @param text The text that should be rendered.
+     */
+    private void renderTextOnBitmap(Bitmap input, String text) {
+        float scale = this.context.getResources().getDisplayMetrics().density;
+
     }
 }

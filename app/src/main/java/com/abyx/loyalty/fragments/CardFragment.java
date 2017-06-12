@@ -45,6 +45,7 @@ import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.exceptions.InvalidCardException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
+import com.abyx.loyalty.graphics.BarcodeGenerator;
 import com.abyx.loyalty.tasks.APIConnectorCallback;
 import com.abyx.loyalty.tasks.APIConnectorTask;
 import com.abyx.loyalty.tasks.DownloadImageTask;
@@ -184,34 +185,23 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
     /**
      * This function returns a bitmap that's generated using the given barcode (as a string) and
      * it's format.
-     * TODO: this function should be executed asynchronously in a seperate thread to avoid jank
+     * TODO: this function should be executed asynchronously in a separate thread to avoid jank.
+     * TODO: proper error handling should be implemented for this function.
      *
      * @param barcode The value of the barcode that has to be processed into a bitmap
      * @param format The format of the barcode that has to be processed into a bitmap
      * @return A bitmap representing the given barcode and it's format
      */
-    public Bitmap encodeAsBitmap(String barcode, BarcodeFormat format){
-        Writer barWriter = new MultiFormatWriter();
-        int width = 700;
-        int height = 300;
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+    public Bitmap encodeAsBitmap(String barcode, BarcodeFormat format) {
+        BarcodeGenerator generator = new BarcodeGenerator(getContext());
         try {
-            BitMatrix bm = barWriter.encode(barcode, format, width, height);
-            for (int j = 0; j < height; j++) {
-                int[] row = new int[width];
-                for (int i = 0; i < width; i++) {
-                    row[i] = bm.get(i, j) ? Color.BLACK : Color.TRANSPARENT;
-                }
-                //We use setPixels to set the pixels of a whole row at once to increase performance
-                bitmap.setPixels(row, 0, width, 0, j, width, 1);
-            }
-
-            ShapeFactory factory = new ParallelShapeFactory();
-            return factory.createShape(new RectangleShape(getContext()), bitmap, Color.argb(143, 175, 175, 175), 10);
-        } catch (WriterException e){
-            System.err.println("An error occured: " + e);
+            return generator.renderBarcode(barcode, format, 700, 300);
+        } catch (WriterException e) {
+            // TODO implement error handling here!
+            System.err.println(e);
         }
-        return bitmap;
+
+        return null;
     }
 
     @Override
