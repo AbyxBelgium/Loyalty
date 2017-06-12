@@ -2,7 +2,11 @@ package com.abyx.loyalty.graphics;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -39,8 +43,8 @@ public class BarcodeGenerator {
      * the digits included underneath it.
      */
     public Bitmap renderBarcode(String barcode, BarcodeFormat format, int width, int height) throws WriterException {
-        // 150 additional pixels are used for rendering text underneath the barcode.
-        int textHeight = 150;
+        // 100 additional pixels are used for rendering text underneath the barcode.
+        int textHeight = 100;
         height += textHeight;
         Writer barWriter = new MultiFormatWriter();
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -54,6 +58,7 @@ public class BarcodeGenerator {
             bitmap.setPixels(row, 0, width, 0, j, width, 1);
         }
 
+        this.renderTextOnBitmap(bitmap, barcode);
         ShapeFactory factory = new ParallelShapeFactory();
         // TODO the background colour should be made a constant
         return factory.createShape(new RectangleShape(this.context), bitmap, Color.argb(143, 175, 175, 175), 10);
@@ -69,5 +74,21 @@ public class BarcodeGenerator {
     private void renderTextOnBitmap(Bitmap input, String text) {
         float scale = this.context.getResources().getDisplayMetrics().density;
 
+        int defaultFontSize = 24;
+
+        Canvas canvas = new Canvas(input);
+
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.BLACK);
+        paint.setTextSize((int) (defaultFontSize * scale));
+        // Change the font to match a more barcode-like font
+        paint.setTypeface(Typeface.MONOSPACE);
+
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+        int x = (input.getWidth() - bounds.width())/2;
+        int y = input.getHeight() - 25;
+
+        canvas.drawText(text, x, y, paint);
     }
 }
