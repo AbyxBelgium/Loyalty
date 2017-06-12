@@ -191,7 +191,6 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
      * @return A bitmap representing the given barcode and it's format
      */
     public Bitmap encodeAsBitmap(String barcode, BarcodeFormat format){
-        long start = System.currentTimeMillis();
         Writer barWriter = new MultiFormatWriter();
         int width = 700;
         int height = 300;
