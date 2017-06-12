@@ -61,8 +61,13 @@ import java.util.List;
 
 import be.abyx.aurora.AuroraFactory;
 import be.abyx.aurora.BlurryAurora;
+import be.abyx.aurora.CircleShape;
 import be.abyx.aurora.DefaultAuroraFactory;
 import be.abyx.aurora.ParallelAuroraFactory;
+import be.abyx.aurora.ImageUtils;
+import be.abyx.aurora.ParallelShapeFactory;
+import be.abyx.aurora.RectangleShape;
+import be.abyx.aurora.ShapeFactory;
 
 /**
  * This fragment shows all details for one loyalty card (this includes the barcode and a small logo)
@@ -196,11 +201,14 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
             for (int j = 0; j < height; j++) {
                 int[] row = new int[width];
                 for (int i = 0; i < width; i++) {
-                    row[i] = bm.get(i, j) ? Color.BLACK : Color.WHITE;
+                    row[i] = bm.get(i, j) ? Color.BLACK : Color.TRANSPARENT;
                 }
                 //We use setPixels to set the pixels of a whole row at once to increase performance
                 bitmap.setPixels(row, 0, width, 0, j, width, 1);
             }
+
+            ShapeFactory factory = new ParallelShapeFactory();
+            return factory.createShape(new RectangleShape(getContext()), bitmap, Color.argb(143, 175, 175, 175), 10);
         } catch (WriterException e){
             System.err.println("An error occured: " + e);
         }
@@ -216,6 +224,12 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
 
             BitmapDrawable drawable = (BitmapDrawable) this.logoView.getDrawable();
             Bitmap logo = drawable.getBitmap();
+            ImageUtils utils = new ImageUtils(getContext());
+            Bitmap croppedLogo = utils.magicCrop(logo, Color.WHITE, 0.2f);
+            ShapeFactory shapeFactory = new ParallelShapeFactory();
+            Bitmap circle = shapeFactory.createShape(new CircleShape(getContext()), croppedLogo, Color.argb(143, 175, 175, 175), 150);
+            BitmapDrawable newLogo = new BitmapDrawable(getResources(), circle);
+            this.logoView.setImageDrawable(newLogo);
 
             Bitmap aurora = factory.createAuroraBasedUponDrawable(logo, new BlurryAurora(this.getContext()), 1080, 1920);
 
