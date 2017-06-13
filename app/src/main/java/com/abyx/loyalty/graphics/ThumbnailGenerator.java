@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import com.abyx.loyalty.extra.Constants;
+
 import be.abyx.aurora.CircleShape;
 import be.abyx.aurora.ImageUtils;
 import be.abyx.aurora.ParallelShapeFactory;
@@ -31,6 +33,6 @@ public class ThumbnailGenerator {
         Bitmap cropped = utils.magicCrop(logo, Color.WHITE, 0.2f);
 
         ShapeFactory factory = new ParallelShapeFactory();
-        return factory.createShape(new CircleShape(this.context), cropped, Color.parseColor("#EAEAEA"), 50);
+        return factory.createShape(new CircleShape(this.context), cropped, Constants.BACKGROUND_COLOUR, 50);
     }
 }

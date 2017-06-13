@@ -19,6 +19,9 @@ package com.abyx.loyalty.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -37,6 +40,10 @@ import com.abyx.loyalty.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import be.abyx.aurora.AuroraFactory;
+import be.abyx.aurora.BlurryAurora;
+import be.abyx.aurora.ParallelAuroraFactory;
 
 /**
  * This fragment provides an overview of all loyalty cards stored on this device. These cards are

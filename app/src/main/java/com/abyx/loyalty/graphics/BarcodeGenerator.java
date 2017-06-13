@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 
+import com.abyx.loyalty.extra.Constants;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.Writer;
@@ -86,7 +87,7 @@ public class BarcodeGenerator {
         this.renderTextOnBitmap(bitmap, barcode);
         ShapeFactory factory = new ParallelShapeFactory();
         // TODO the background colour should be made a constant
-        return factory.createShape(new RectangleShape(this.context), bitmap, Color.argb(143, 175, 175, 175), padding);
+        return factory.createShape(new RectangleShape(this.context), bitmap, Constants.BACKGROUND_COLOUR, padding);
     }
 
     /**

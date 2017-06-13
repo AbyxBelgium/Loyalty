@@ -12,8 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
+
 package com.abyx.loyalty.extra;
+
+import android.graphics.Color;
 
 /**
  * Class containing some contracts and constants that can be used throughout the application.
@@ -28,4 +31,6 @@ public class Constants {
     public static final String INTENT_CARD_ID_ARG = "CARD_ID";
     // This constant is used for passing on a list of Card-objects
     public static final String INTENT_LIST_ARG = "LIST";
+
+    public static final int BACKGROUND_COLOUR = Color.argb(143, 175, 175, 175);
 }
