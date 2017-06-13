@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
+
 package com.abyx.loyalty.extra;
 
 import android.content.Context;
@@ -60,10 +61,8 @@ public class GridAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.single_grid, null);
         }
         TextView textView = (TextView) view.findViewById(R.id.textView);
-        TextView barcodeView = (TextView) view.findViewById(R.id.barcodeView);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
         textView.setText(data.get(i).getName());
-        barcodeView.setText(data.get(i).getBarcode());
         new ThumbnailImageTask(imageView, context, data.get(i).getImageLocation(), data.get(i)).execute(data.get(i).getImageURL());
         return view;
     }

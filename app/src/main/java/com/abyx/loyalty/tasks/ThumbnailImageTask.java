@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
+
 package com.abyx.loyalty.tasks;
 
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.graphics.Paint;
 import android.widget.ImageView;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.graphics.ThumbnailGenerator;
 import com.abyx.loyalty.tasks.ImageTask;
 
 import java.io.File;
@@ -33,7 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by Pieter on 26/07/2015.
+ * @author Pieter Verschaffelt
  */
 public class ThumbnailImageTask extends ImageTask {
 
@@ -65,7 +67,9 @@ public class ThumbnailImageTask extends ImageTask {
         } catch (IOException | IllegalArgumentException | NullPointerException e){
             return null;
         }
-        return mIcon11;
+
+        ThumbnailGenerator generator = new ThumbnailGenerator(this.context);
+        return generator.generateThumbnail(mIcon11);
     }
 
     private Bitmap scaleBitmap(Bitmap originalImage, int width, int height){
