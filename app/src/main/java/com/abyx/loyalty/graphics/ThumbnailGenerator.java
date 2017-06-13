@@ -27,10 +27,10 @@ public class ThumbnailGenerator {
      */
     public Bitmap generateThumbnail(Bitmap logo) {
         // Logo does not need to be cropped as it is placed onto a white background!
-        //ImageUtils utils = new ImageUtils(this.context);
-        //Bitmap cropped = utils.magicCrop(logo, Color.WHITE, 0.2f);
+        ImageUtils utils = new ImageUtils(this.context);
+        Bitmap cropped = utils.magicCrop(logo, Color.WHITE, 0.2f);
 
         ShapeFactory factory = new ParallelShapeFactory();
-        return factory.createShape(new CircleShape(this.context), logo, Color.WHITE, 50);
+        return factory.createShape(new CircleShape(this.context), cropped, Color.parseColor("#EAEAEA"), 50);
     }
 }
