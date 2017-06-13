@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -150,7 +151,9 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
         } else {
             Intent intent = new Intent(MainActivity.this, CardActivity.class);
             intent.putExtra(Constants.INTENT_CARD_ID_ARG, card.getID());
-            startActivity(intent);
+            // TODO replace with circular reveal
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_in);
+            startActivity(intent, options.toBundle());
         }
     }
 
