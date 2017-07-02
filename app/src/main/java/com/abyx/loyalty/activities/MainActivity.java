@@ -152,8 +152,8 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
             Intent intent = new Intent(MainActivity.this, CardActivity.class);
             intent.putExtra(Constants.INTENT_CARD_ID_ARG, card.getID());
             // TODO replace with circular reveal
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_in);
-            startActivity(intent, options.toBundle());
+            //ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_in);
+            startActivity(intent);
         }
     }
 

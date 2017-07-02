@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/selected_row">
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/imageView"
         android:layout_gravity="center_horizontal" />
     <TextView
         android:layout_width="fill_parent"
         android:maxLines="1"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:layout_height="60dp"
+        android:textSize="30sp"
         android:textColor="@color/white"
         android:id="@+id/textView"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:textAlignment="center" />
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:gravity="center_vertical"/>
 </LinearLayout>

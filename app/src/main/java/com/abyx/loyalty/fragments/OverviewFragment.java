@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.abyx.loyalty.activities.MainActivity;
@@ -54,7 +55,7 @@ import be.abyx.aurora.ParallelAuroraFactory;
 public class OverviewFragment extends Fragment {
     private static final String DATA_ARG = "CARD_DATA";
 
-    private GridView mainGrid;
+    private ListView mainList;
     private RelativeLayout placeholder;
 
     private List<Card> data;
@@ -96,11 +97,11 @@ public class OverviewFragment extends Fragment {
 
             changePlaceholderVisibility(data);
 
-            mainGrid = (GridView) view.findViewById(R.id.mainGrid);
+            mainList = (ListView) view.findViewById(R.id.mainList);
             adapter = new GridAdapter(getActivity(), data);
-            mainGrid.setAdapter(adapter);
+            mainList.setAdapter(adapter);
 
-            mainGrid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+            mainList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
             gridViewListener = new MultiChoiceGridViewListener(data, getActivity(), new MultiChoiceGridViewListener.DeleteListener() {
                 @Override
                 public void itemDeleted(List<Card> list) {
@@ -119,9 +120,9 @@ public class OverviewFragment extends Fragment {
                 }
             });
 
-            mainGrid.setMultiChoiceModeListener(gridViewListener);
+            mainList.setMultiChoiceModeListener(gridViewListener);
 
-            mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (listener != null) {
