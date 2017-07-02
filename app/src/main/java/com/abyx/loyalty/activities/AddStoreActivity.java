@@ -19,6 +19,7 @@ package com.abyx.loyalty.activities;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,16 +38,16 @@ import com.abyx.loyalty.extra.ReceivedPermission;
  */
 public class AddStoreActivity extends PermissionActivity {
     private EditText storeName;
-    private Button scanButton;
-    private Button enterButton;
+    private FloatingActionButton scanButton;
+    private FloatingActionButton enterButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_store);
         storeName = (EditText) findViewById(R.id.storeName);
-        scanButton = (Button) findViewById(R.id.scanButton);
-        enterButton = (Button) findViewById(R.id.enterButton);
+        scanButton = (FloatingActionButton) findViewById(R.id.scanButton);
+        enterButton = (FloatingActionButton) findViewById(R.id.enterButton);
         PackageManager pm = getApplicationContext().getPackageManager();
         //Remove the "scan barcode" button if the device doesn't have a camera
         if (!pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)){

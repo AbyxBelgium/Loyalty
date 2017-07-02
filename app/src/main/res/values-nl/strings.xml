@@ -3,6 +3,7 @@
     <string name="app_name">Loyalty</string>
     <string name="action_settings">Instellingen</string>
     <string name="add_store">Winkel toevoegen</string>
+    <string name="add_store_hint">Naam</string>
     <string name="barcode">Barcode:</string>
     <string name="barcode_noun">Barcode</string>
     <string name="category">Categorie:</string>
