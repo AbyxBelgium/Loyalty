@@ -61,6 +61,7 @@
             android:name=".activities.FinishActivity"
             android:label="@string/title_activity_finish"
             android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/DetailedTheme"
             android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
