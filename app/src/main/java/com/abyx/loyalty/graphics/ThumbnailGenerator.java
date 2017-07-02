@@ -28,7 +28,6 @@ public class ThumbnailGenerator {
      * @return A new Bitmap that represents a circular thumbnail with the given logo at the center.
      */
     public Bitmap generateThumbnail(Bitmap logo) {
-        // Logo does not need to be cropped as it is placed onto a white background!
         ImageUtils utils = new ImageUtils(this.context);
         Bitmap cropped = utils.magicCrop(logo, Color.WHITE, 0.2f);
 
