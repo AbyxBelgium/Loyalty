@@ -3,16 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <GridView
+    android:layout_height="match_parent"
+    android:background="@color/bg_home">
+    <ListView
         android:layout_gravity="center"
-        android:paddingTop="5dp"
+        android:paddingTop="10dp"
         android:paddingBottom="5dp"
-        android:layout_width="fill_parent"
-        android:id="@+id/mainGrid"
-        android:layout_height="fill_parent"
-        android:verticalSpacing="4dp"
-        android:horizontalSpacing="4dp"
-        android:numColumns="2"/>
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="wrap_content"
+        android:id="@+id/mainList"
+        android:layout_height="wrap_content"
+        android:dividerHeight="8dp"
+        android:divider="@android:color/transparent"/>
 </LinearLayout>

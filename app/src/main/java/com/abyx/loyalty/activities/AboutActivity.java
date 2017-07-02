@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
+
 package com.abyx.loyalty.activities;
 
 import android.content.pm.PackageManager;
@@ -42,7 +43,7 @@ public class AboutActivity extends AppCompatActivity {
         //in the layout files.
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            ((TextView) findViewById(R.id.versionField)).setText(versionName);
+            ((TextView) findViewById(R.id.versionField)).setText("Loyalty v" + versionName);
         } catch (PackageManager.NameNotFoundException e){
             //The version number is simply not shown when something goes wrong. No further
             //information has to be given here.

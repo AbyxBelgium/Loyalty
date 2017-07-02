@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */
+
 package com.abyx.loyalty.activities;
 
 import android.content.Context;
@@ -27,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ListView;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.Constants;
@@ -37,7 +39,7 @@ import java.util.ArrayList;
 
 public class SearchResultsActivity extends AppCompatActivity implements TextWatcher{
     private EditText searchField;
-    private GridView mainGrid;
+    private ListView mainList;
 
     private ArrayList<Card> data;
     private ArrayList<Card> originalData;
@@ -47,7 +49,7 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
-        mainGrid = (GridView) findViewById(R.id.mainGrid);
+        mainList = (ListView) findViewById(R.id.mainList);
         ActionBar actionBar = getSupportActionBar();
         // add the custom view to the action bar
         actionBar.setCustomView(R.layout.search_actionbar);
@@ -58,8 +60,8 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
         originalData = getIntent().getParcelableArrayListExtra("LIST");
         data = new ArrayList<>();
         adapter = new GridAdapter(this, originalData);
-        mainGrid.setAdapter(adapter);
-        mainGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mainList.setAdapter(adapter);
+        mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SearchResultsActivity.this, CardActivity.class);
