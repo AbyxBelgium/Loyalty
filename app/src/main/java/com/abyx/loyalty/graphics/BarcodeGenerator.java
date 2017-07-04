@@ -31,12 +31,9 @@ import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
-import be.abyx.aurora.ImageCoordinate;
 import be.abyx.aurora.ParallelShapeFactory;
 import be.abyx.aurora.RectangleShape;
 import be.abyx.aurora.ShapeFactory;
-
-import static android.R.attr.x;
 
 /**
  * This class contains some methods that are used for generating Bitmaps that represent barcode's of
@@ -103,7 +100,7 @@ public class BarcodeGenerator {
         this.renderTextOnBitmap(bitmap, barcode);
         ShapeFactory factory = new ParallelShapeFactory();
         // TODO the background colour should be made a constant
-        return factory.createShape(new RectangleShape(this.context), bitmap, Constants.BACKGROUND_COLOUR, padding);
+        return factory.createShape(new RectangleShape(this.context), bitmap, Constants.LOGO_BACKGROUND_COLOUR, padding);
     }
 
     /**

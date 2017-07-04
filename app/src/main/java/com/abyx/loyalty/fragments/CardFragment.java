@@ -22,12 +22,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -38,7 +35,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
@@ -53,21 +49,14 @@ import com.abyx.loyalty.extra.ProgressIndicator;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.tasks.ThumbnailDownloader;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-
-import java.util.List;
 
 import be.abyx.aurora.AuroraFactory;
 import be.abyx.aurora.BlurryAurora;
 import be.abyx.aurora.CircleShape;
-import be.abyx.aurora.DefaultAuroraFactory;
 import be.abyx.aurora.ParallelAuroraFactory;
 import be.abyx.aurora.ImageUtils;
 import be.abyx.aurora.ParallelShapeFactory;
-import be.abyx.aurora.RectangleShape;
 import be.abyx.aurora.ShapeFactory;
 
 /**
@@ -147,7 +136,7 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
                             if (editText.getText().toString().equals("")) {
                                 data.setDefaultImageLocation();
                             } else {
-                                data.setImageLocation(editText.getText().toString());
+                                data.setImageURL(editText.getText().toString());
                             }
                             new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
                             dialog.dismiss();
@@ -247,7 +236,7 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
     }
 
     private void makeImageURLPersistent(Card card, String url) {
-        card.setImageLocation(url);
+        card.setImageURL(url);
         Database db = new Database(getActivity());
         db.openDatabase();
         try {

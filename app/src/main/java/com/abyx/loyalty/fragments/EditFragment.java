@@ -16,9 +16,7 @@
 
 package com.abyx.loyalty.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -31,7 +29,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
@@ -141,7 +138,7 @@ public class EditFragment extends Fragment implements AdapterView.OnItemSelected
 
             if (Utils.isValidBarcode(barcode.getText().toString(), data.getFormat())) {
                 data.setName(storeName.getText().toString());
-                data.setImageLocation(logoURL.getText().toString());
+                data.setImageURL(logoURL.getText().toString());
                 data.setBarcode(barcode.getText().toString());
                 // Save changes to database
                 db.openDatabase();

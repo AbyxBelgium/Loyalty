@@ -16,6 +16,7 @@
 
 package com.abyx.loyalty.extra;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 
 /**
@@ -32,5 +33,23 @@ public class Constants {
     // This constant is used for passing on a list of Card-objects
     public static final String INTENT_LIST_ARG = "LIST";
 
-    public static final int BACKGROUND_COLOUR = Color.argb(143, 175, 175, 175);
+    // The background colour for a store's logo shown in a circle.
+    public static final int LOGO_BACKGROUND_COLOUR = Color.argb(143, 175, 175, 175);
+
+    // Name of the directory that contains all raw, unprocessed logo's (thus without any background
+    // or magic crop).
+    public static final String CACHE_DIR_LOGO_RAW= "raw";
+    // Name of the directory that contains all logo's that are already processed for display in
+    // a detailed component.
+    public static final String CACHE_DIR_LOGO_DETAIL = "detail";
+    // Name of the directory that contains all logo's that are already processed for display in an
+    // overview component.
+    public static final String CACHE_DIR_LOGO_OVERVIEW = "overview";
+
+    // The format that's used to persistently store all logos in the application.
+    public static final String IMAGE_FORMAT = "png";
+    public static final Bitmap.CompressFormat IMAGE_COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
+    // Image quality settings used for storing the logos in the persistent storage.
+    public static final int IMAGE_QUALITY = 95;
+
 }
