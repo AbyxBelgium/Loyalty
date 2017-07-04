@@ -17,7 +17,14 @@
 package com.abyx.loyalty.tasks;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.widget.ImageView;
+
+import com.abyx.loyalty.contents.Card;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * Class that retrieves the correct logo for a store and generates an appropriate thumbnail for
@@ -28,9 +35,62 @@ import android.widget.ImageView;
 public class OverviewLogoManager {
     private ImageView view;
     private Context context;
+    private Card card;
+    private ThreadPoolExecutor executor;
 
-    public OverviewLogoManager(Context context, ImageView view) {
+    public OverviewLogoManager(Context context, ImageView view, Card card, ThreadPoolExecutor executor) {
         this.view = view;
         this.context = context;
+        this.card = card;
+        this.executor = executor;
+    }
+
+    /**
+     * Generate the desired thumbnail and apply it to the ImageView given in the constructor. The
+     * generation process will run completely asynchronously.
+     */
+    public void start() {
+        LogoTask logoTask = new LogoTask(this.context, new LogoTaskListener());
+        logoTask.executeOnExecutor(executor, card);
+    }
+
+    /**
+     * This Listener handles all the callback-methods for the LogoTask class and can be used for
+     * retrieving a Bitmap of the desired logo.
+     */
+    private class LogoTaskListener implements TaskListener<Bitmap> {
+        @Override
+        public void onProgressUpdate(double progress) {
+            // Nothing to do here
+        }
+
+        @Override
+        public void onFailed(Throwable exception) {
+            // TODO: handle exceptions
+        }
+
+        @Override
+        public void onDone(Bitmap result) {
+            // Start the OverviewLogoTask now that we have the raw logo.
+            OverviewLogoTask task = new OverviewLogoTask(context, new OverviewLogoTaskListener(), card);
+            task.executeOnExecutor(executor, result);
+        }
+    }
+
+    private class OverviewLogoTaskListener implements TaskListener<Bitmap> {
+        @Override
+        public void onProgressUpdate(double progress) {
+            // Nothing to do here
+        }
+
+        @Override
+        public void onFailed(Throwable exception) {
+            // TODO: handle exceptions
+        }
+
+        @Override
+        public void onDone(Bitmap result) {
+            view.setImageDrawable(new BitmapDrawable(context.getResources(), result));
+        }
     }
 }
