@@ -87,6 +87,7 @@ public class DetailedLogoTask extends AsyncTask<Bitmap, Void, Bitmap> {
 
             // Save file in persistent storage
             try (FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE)) {
+                output.setHasAlpha(true);
                 output.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
             } catch (IOException e) {
                 this.listener.onFailed(e);

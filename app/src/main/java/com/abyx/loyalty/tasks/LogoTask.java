@@ -126,6 +126,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
         try (InputStream in = new java.net.URL(url).openStream()) {
             Bitmap output = BitmapFactory.decodeStream(in);
             FileOutputStream fos = context.openFileOutput(logoFileName, Context.MODE_PRIVATE);
+            output.setHasAlpha(true);
             output.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
             return output;
         } catch (Throwable e) {
