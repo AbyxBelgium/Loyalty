@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.Constants;
 
 import org.json.JSONException;
@@ -89,6 +90,13 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             try {
                 String logo = connector.getStoreLogo(card.getName());
                 card.setImageURL(logo);
+
+                // Make new image url persistent
+                Database db = new Database(this.context);
+                db.openDatabase();
+                db.updateCard(card);
+                db.closeDatabase();
+
                 output = downloadLogo(card.getImageURL(), logoFileName);
             } catch (IOException | JSONException e) {
                 this.listener.onFailed(new IOException(e));

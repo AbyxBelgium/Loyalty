@@ -23,6 +23,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -44,9 +45,12 @@ import com.abyx.loyalty.extra.Utils;
 import com.abyx.loyalty.graphics.BarcodeGenerator;
 import com.abyx.loyalty.tasks.APIConnectorCallback;
 import com.abyx.loyalty.tasks.APIConnectorTask;
+import com.abyx.loyalty.tasks.DetailedLogoTask;
 import com.abyx.loyalty.tasks.DownloadImageTask;
 import com.abyx.loyalty.extra.ProgressIndicator;
 import com.abyx.loyalty.R;
+import com.abyx.loyalty.tasks.LogoTask;
+import com.abyx.loyalty.tasks.TaskListener;
 import com.abyx.loyalty.tasks.ThumbnailDownloader;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -64,7 +68,7 @@ import be.abyx.aurora.ShapeFactory;
  *
  * @author Pieter Verschaffelt
  */
-public class CardFragment extends Fragment implements ProgressIndicator, APIConnectorCallback {
+public class CardFragment extends Fragment {
     private ImageView barcodeImage;
     private ImageView logoView;
     private ProgressBar progress;
@@ -156,16 +160,17 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
                 }
             });
 
-            if (data.getImageURL().contains("Stack.png") || data.getImageURL().equals("")) {
-                progress.setVisibility(View.VISIBLE);
-                APIConnectorTask connectorTask = new APIConnectorTask(this, getActivity());
-                connectorTask.execute(data.getName());
-            } else {
-                data = new Card(data.getName(), data.getBarcode(), data.getImageURL(), data.getFormat());
-                initGui(data);
-            }
+            progress.setVisibility(View.VISIBLE);
+            LogoTask task = new LogoTask(this.getContext(), new LogoTaskListener());
+            task.execute(getCard());
         }
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle(data.getName());
     }
 
     /**
@@ -190,69 +195,49 @@ public class CardFragment extends Fragment implements ProgressIndicator, APIConn
         return null;
     }
 
-    @Override
-    public void setDone(boolean done) {
-        if (done){
-            progress.setVisibility(View.INVISIBLE);
-            // Also change the background of the app
-            AuroraFactory factory = new ParallelAuroraFactory(this.getContext());
+    private class LogoTaskListener implements TaskListener<Bitmap> {
+        @Override
+        public void onProgressUpdate(double progress) {
+            // Nothing to do here!
+        }
 
-            BitmapDrawable drawable = (BitmapDrawable) this.logoView.getDrawable();
-            Bitmap logo = drawable.getBitmap();
-            ImageUtils utils = new ImageUtils(getContext());
-            Bitmap croppedLogo = utils.magicCrop(logo, Color.WHITE, 0.2f);
-            ShapeFactory shapeFactory = new ParallelShapeFactory();
-            Bitmap circle = shapeFactory.createShape(new CircleShape(getContext()), croppedLogo, Color.argb(143, 175, 175, 175), 150);
-            BitmapDrawable newLogo = new BitmapDrawable(getResources(), circle);
-            this.logoView.setImageDrawable(newLogo);
+        @Override
+        public void onFailed(Throwable exception) {
+            // TODO: Handle exceptions
+        }
 
-            Bitmap aurora = factory.createAuroraBasedUponDrawable(logo, new BlurryAurora(this.getContext()), 1080, 1920);
+        @Override
+        public void onDone(Bitmap result) {
+            // TODO a new Aurora task should also be started here!
+            // TODO a new Barcode task should also be started here!
+            DetailedLogoTask task = new DetailedLogoTask(getContext(), new DetailedTaskListener(), getCard());
+            task.execute(result);
 
-            this.getActivity().findViewById(R.id.rootLayout).setBackground(new BitmapDrawable(getResources(), aurora));
-        } else {
-            progress.setVisibility(View.VISIBLE);
+            barcodeImage.setImageBitmap(encodeAsBitmap(data.getBarcode(), data.getFormat()));
+
+            AuroraFactory factory = new ParallelAuroraFactory(getContext());
+            // TODO automatically get resolution
+            Bitmap aurora = factory.createAuroraBasedUponDrawable(result, new BlurryAurora(getContext()), 1080, 1920);
         }
     }
 
-    @Override
-    public void setProgress(double percentage) {
-        // Nothing to do here!
-    }
-
-    @Override
-    public void onAPIReady(String url){
-        if (data != null) {
-            makeImageURLPersistent(data, url);
-            initGui(data);
+    private class DetailedTaskListener implements TaskListener<Bitmap> {
+        @Override
+        public void onProgressUpdate(double progressValue) {
+            if (progressValue == 1.0) {
+                progress.setVisibility(View.GONE);
+            }
         }
-    }
 
-    @Override
-    public void onAPIException(String title, String message){
-        Utils.showInformationDialog(title, message, getActivity(), Utils.createDismissListener());
-        if (data != null) {
-            initGui(data);
+        @Override
+        public void onFailed(Throwable exception) {
+            // TODO: Handle exceptions
         }
-    }
 
-    private void makeImageURLPersistent(Card card, String url) {
-        card.setImageURL(url);
-        Database db = new Database(getActivity());
-        db.openDatabase();
-        try {
-            db.updateCard(card);
-        } catch (InvalidCardException e) {
-            Snackbar.make(rootView, getString(R.string.invalid_card_exception), Snackbar.LENGTH_LONG);
+        @Override
+        public void onDone(Bitmap result) {
+            logoView.setImageDrawable(new BitmapDrawable(getResources(), result));
         }
-    }
-
-    private void initGui(final Card data) {
-        DownloadImageTask tempDownloader = new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data, true);
-        tempDownloader.setProgressIndicator(this);
-        tempDownloader.execute(data.getImageURL());
-        new ThumbnailDownloader(getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
-        barcodeImage.setImageBitmap(encodeAsBitmap(data.getBarcode(), data.getFormat()));
-        getActivity().setTitle(data.getName());
     }
 
     /**

@@ -27,7 +27,6 @@ public class Card implements Parcelable{
     private String barcode;
     private String imageLocation;
     private BarcodeFormat format;
-    private String defaultURL = "https://cdn4.iconfinder.com/data/icons/devine_icons/Black/PNG/Folder%20and%20Places/Stack.png";
 
     public Card(String name, String barcode, String imageLocation, BarcodeFormat format){
         // A card without specific ID has ID -1
@@ -43,8 +42,7 @@ public class Card implements Parcelable{
         this.id = -1;
         this.name = name;
         this.barcode = barcode;
-        //Default image is used when nothing is set
-        this.imageLocation = defaultURL;
+        this.imageLocation = "";
         this.format = format;
     }
 
@@ -98,7 +96,7 @@ public class Card implements Parcelable{
     }
 
     public void setDefaultImageLocation(){
-        this.imageLocation = defaultURL;
+        this.imageLocation = "";
     }
 
     public void setID(long id) {
