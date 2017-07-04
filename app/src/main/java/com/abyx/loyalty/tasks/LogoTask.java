@@ -127,12 +127,17 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
     }
 
     @Override
-    protected void onProgressUpdate(Void... values) {
-        super.onProgressUpdate(values);
+    protected void onPreExecute() {
+        super.onPreExecute();
+        this.listener.onProgressUpdate(0.0);
     }
 
     @Override
     protected void onPostExecute(Bitmap bitmap) {
         super.onPostExecute(bitmap);
+        if (bitmap != null) {
+            this.listener.onProgressUpdate(1.0);
+            this.listener.onDone(bitmap);
+        }
     }
 }

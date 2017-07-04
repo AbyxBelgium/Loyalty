@@ -28,7 +28,8 @@ public interface TaskListener<T> {
      * entity about this.
      *
      * @param progress A value between 0.0 and 1.0 indicating the current progress level. The 1.0-
-     *                 value will always be passed when the task finishes it's execution.
+     *                 value will always be passed when the task finishes it's execution. The 0.0-
+     *                 value will always be passed when the task starts execution.
      */
     void onProgressUpdate(double progress);
 
