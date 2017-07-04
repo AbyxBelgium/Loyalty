@@ -17,6 +17,7 @@
 package com.abyx.loyalty.extra;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,18 +26,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.abyx.loyalty.R;
+import com.abyx.loyalty.tasks.OverviewLogoTask;
+import com.abyx.loyalty.tasks.TaskListener;
 import com.abyx.loyalty.tasks.ThumbnailImageTask;
 import com.abyx.loyalty.contents.Card;
 
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class CardAdapter extends BaseAdapter {
     private Context context;
     private List<Card> data;
+    private ThreadPoolExecutor executor;
 
     public CardAdapter(Context context, List<Card> data){
         this.context = context;
         this.data = data;
+
+        this.executor = new ThreadPoolExecutor(8, 20, 10000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(100));
     }
 
     @Override
@@ -63,7 +72,8 @@ public class CardAdapter extends BaseAdapter {
         TextView textView = (TextView) view.findViewById(R.id.textView);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
         textView.setText(data.get(i).getName());
-        new ThumbnailImageTask(imageView, context, data.get(i).getImageLocation(), data.get(i)).execute(data.get(i).getImageURL());
+        //OverviewLogoTask task = new OverviewLogoTask(context, , data.get(i), imageView);
+
         return view;
     }
 

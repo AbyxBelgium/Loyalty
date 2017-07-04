@@ -39,19 +39,19 @@ public class Constants {
 
     // Name of the directory that contains all raw, unprocessed logo's (thus without any background
     // or magic crop).
-    public static final String CACHE_DIR_LOGO_RAW= "raw/";
+    public static final String CACHE_DIR_LOGO_RAW= "raw";
     // Name of the directory that contains all logo's that are already processed for display in
     // a detailed component.
-    public static final String CACHE_DIR_LOGO_DETAIL = "detail/";
+    public static final String CACHE_DIR_LOGO_DETAIL = "detail";
     // Name of the directory that contains all logo's that are already processed for display in an
     // overview component.
-    public static final String CACHE_DIR_LOGO_OVERVIEW = "overview/";
+    public static final String CACHE_DIR_LOGO_OVERVIEW = "overview";
 
     // The format that's used to persistently store all logos in the application.
-    public static final String IMAGE_FORMAT = "png";
-    public static final Bitmap.CompressFormat IMAGE_COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
+    public static final String IMAGE_FORMAT = "webp";
+    public static final Bitmap.CompressFormat IMAGE_COMPRESS_FORMAT = Bitmap.CompressFormat.WEBP;
     // Image quality settings used for storing the logos in the persistent storage.
-    public static final int IMAGE_QUALITY = 0;
+    public static final int IMAGE_QUALITY = 100;
 
     // The logo that's situated at this URL will be used when no logo is set for a specific card.
     public static final String DEFAULT_LOGO_URL = "https://cdn4.iconfinder.com/data/icons/devine_icons/Black/PNG/Folder%20and%20Places/Stack.png";
