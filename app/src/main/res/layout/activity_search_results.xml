@@ -16,4 +16,4 @@
         android:layout_height="wrap_content"
         android:dividerHeight="8dp"
         android:divider="@android:color/transparent"/>
-</LinearLayout>
+    </LinearLayout>
