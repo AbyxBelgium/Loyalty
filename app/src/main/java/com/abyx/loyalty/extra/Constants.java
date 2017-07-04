@@ -39,13 +39,13 @@ public class Constants {
 
     // Name of the directory that contains all raw, unprocessed logo's (thus without any background
     // or magic crop).
-    public static final String CACHE_DIR_LOGO_RAW= "raw";
+    public static final String CACHE_DIR_LOGO_RAW= "raw/";
     // Name of the directory that contains all logo's that are already processed for display in
     // a detailed component.
-    public static final String CACHE_DIR_LOGO_DETAIL = "detail";
+    public static final String CACHE_DIR_LOGO_DETAIL = "detail/";
     // Name of the directory that contains all logo's that are already processed for display in an
     // overview component.
-    public static final String CACHE_DIR_LOGO_OVERVIEW = "overview";
+    public static final String CACHE_DIR_LOGO_OVERVIEW = "overview/";
 
     // The format that's used to persistently store all logos in the application.
     public static final String IMAGE_FORMAT = "png";

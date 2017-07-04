@@ -100,7 +100,9 @@ public class DetailedLogoTask extends AsyncTask<Bitmap, Void, Bitmap> {
         } else {
             // Retrieve previously generated file from storage.
             try (FileInputStream in = context.openFileInput(fileName)) {
-                output = BitmapFactory.decodeStream(in);
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                output = BitmapFactory.decodeStream(in, null, opts);
             } catch (IOException e) {
                 this.listener.onFailed(e);
                 return null;
