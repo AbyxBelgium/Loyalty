@@ -55,6 +55,10 @@ import com.abyx.loyalty.tasks.ThumbnailDownloader;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import be.abyx.aurora.AuroraFactory;
 import be.abyx.aurora.BlurryAurora;
 import be.abyx.aurora.CircleShape;
@@ -73,6 +77,8 @@ public class CardFragment extends Fragment {
     private ImageView logoView;
     private ProgressBar progress;
     private View rootView;
+
+    private ThreadPoolExecutor poolExecutor;
 
     private Card data;
 
@@ -122,6 +128,9 @@ public class CardFragment extends Fragment {
         db.openDatabase();
         data = db.getCardByID(id);
         db.closeDatabase();
+
+        this.poolExecutor = new ThreadPoolExecutor(4, 8, 10000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(10));
+
         if (data != null) {
             getActivity().setTitle(data.getName());
 
@@ -162,7 +171,7 @@ public class CardFragment extends Fragment {
 
             progress.setVisibility(View.VISIBLE);
             LogoTask task = new LogoTask(this.getContext(), new LogoTaskListener());
-            task.execute(getCard());
+            task.executeOnExecutor(poolExecutor, getCard());
         }
         return view;
     }
@@ -211,13 +220,14 @@ public class CardFragment extends Fragment {
             // TODO a new Aurora task should also be started here!
             // TODO a new Barcode task should also be started here!
             DetailedLogoTask task = new DetailedLogoTask(getContext(), new DetailedTaskListener(), getCard());
-            task.execute(result);
+            task.executeOnExecutor(poolExecutor, result);
 
             barcodeImage.setImageBitmap(encodeAsBitmap(data.getBarcode(), data.getFormat()));
 
             AuroraFactory factory = new ParallelAuroraFactory(getContext());
             // TODO automatically get resolution
             Bitmap aurora = factory.createAuroraBasedUponDrawable(result, new BlurryAurora(getContext()), 1080, 1920);
+            getActivity().findViewById(R.id.rootLayout).setBackground(new BitmapDrawable(getResources(), aurora));
         }
     }
 
