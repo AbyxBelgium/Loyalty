@@ -35,6 +35,7 @@ public class Constants {
 
     // The background colour for a store's logo shown in a circle.
     public static final int LOGO_BACKGROUND_COLOUR = Color.argb(143, 175, 175, 175);
+    public static final float MAGIC_CROP_TOLERANCE = 0.2f;
 
     // Name of the directory that contains all raw, unprocessed logo's (thus without any background
     // or magic crop).
