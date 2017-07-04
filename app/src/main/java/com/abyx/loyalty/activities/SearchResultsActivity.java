@@ -27,12 +27,11 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ListView;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.Constants;
-import com.abyx.loyalty.extra.GridAdapter;
+import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.R;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
 
     private ArrayList<Card> data;
     private ArrayList<Card> originalData;
-    private GridAdapter adapter;
+    private CardAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -59,7 +58,7 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
         actionBar.setDisplayHomeAsUpEnabled(true);
         originalData = getIntent().getParcelableArrayListExtra("LIST");
         data = new ArrayList<>();
-        adapter = new GridAdapter(this, originalData);
+        adapter = new CardAdapter(this, originalData);
         mainList.setAdapter(adapter);
         mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

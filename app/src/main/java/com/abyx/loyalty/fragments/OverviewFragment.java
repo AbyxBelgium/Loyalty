@@ -19,9 +19,6 @@ package com.abyx.loyalty.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -29,22 +26,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.abyx.loyalty.activities.MainActivity;
 import com.abyx.loyalty.contents.Card;
-import com.abyx.loyalty.extra.GridAdapter;
+import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.extra.MultiChoiceGridViewListener;
 import com.abyx.loyalty.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import be.abyx.aurora.AuroraFactory;
-import be.abyx.aurora.BlurryAurora;
-import be.abyx.aurora.ParallelAuroraFactory;
 
 /**
  * This fragment provides an overview of all loyalty cards stored on this device. These cards are
@@ -59,7 +51,7 @@ public class OverviewFragment extends Fragment {
     private RelativeLayout placeholder;
 
     private List<Card> data;
-    private GridAdapter adapter;
+    private CardAdapter adapter;
     private OverviewFragmentInteractionListener listener;
     private MultiChoiceGridViewListener gridViewListener;
 
@@ -98,7 +90,7 @@ public class OverviewFragment extends Fragment {
             changePlaceholderVisibility(data);
 
             mainList = (ListView) view.findViewById(R.id.mainList);
-            adapter = new GridAdapter(getActivity(), data);
+            adapter = new CardAdapter(getActivity(), data);
             mainList.setAdapter(adapter);
 
             mainList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
