@@ -58,16 +58,17 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
         actionBar.setDisplayHomeAsUpEnabled(true);
         originalData = getIntent().getParcelableArrayListExtra("LIST");
         data = new ArrayList<>();
-        adapter = new CardAdapter(this, originalData);
-        mainList.setAdapter(adapter);
-        mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(SearchResultsActivity.this, CardActivity.class);
-                intent.putExtra(Constants.INTENT_CARD_ID_ARG, originalData.get(position).getID());
-                startActivity(intent);
-            }
-        });
+        // TODO FIX
+        //adapter = new CardAdapter(originalData, getApplicationContext());
+        //mainList.setAdapter(adapter);
+//        mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(SearchResultsActivity.this, CardActivity.class);
+//                intent.putExtra(Constants.INTENT_CARD_ID_ARG, originalData.get(position).getID());
+//                startActivity(intent);
+//            }
+//        });
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT);
     }
@@ -89,7 +90,7 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
         if (query.equals("")){
             data.clear();
             data.addAll(originalData);
-            adapter.refresh(data);
+            //adapter.refresh(data);
         } else {
             data.clear();
             for (Card test : originalData) {
@@ -98,6 +99,6 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
                 }
             }
         }
-        adapter.refresh(data);
+        //adapter.refresh(data);
     }
 }

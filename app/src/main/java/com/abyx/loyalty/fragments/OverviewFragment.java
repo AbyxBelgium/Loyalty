@@ -22,21 +22,23 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.abyx.loyalty.activities.MainActivity;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.CardAdapter;
-import com.abyx.loyalty.extra.MultiChoiceGridViewListener;
 import com.abyx.loyalty.R;
+import com.abyx.loyalty.extra.RecyclerItemListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This fragment provides an overview of all loyalty cards stored on this device. These cards are
@@ -47,13 +49,11 @@ import java.util.List;
 public class OverviewFragment extends Fragment {
     private static final String DATA_ARG = "CARD_DATA";
 
-    private ListView mainList;
+    private RecyclerView mainList;
     private RelativeLayout placeholder;
 
     private List<Card> data;
-    private CardAdapter adapter;
     private OverviewFragmentInteractionListener listener;
-    private MultiChoiceGridViewListener gridViewListener;
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -89,40 +89,27 @@ public class OverviewFragment extends Fragment {
 
             changePlaceholderVisibility(data);
 
-            mainList = (ListView) view.findViewById(R.id.mainList);
-            adapter = new CardAdapter(getActivity(), data);
+            mainList = (RecyclerView) view.findViewById(R.id.mainList);
+
+            CardAdapter adapter = new CardAdapter(data, getContext());
             mainList.setAdapter(adapter);
 
-            mainList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-            gridViewListener = new MultiChoiceGridViewListener(data, getActivity(), new MultiChoiceGridViewListener.DeleteListener() {
+            LinearLayoutManager llm = new LinearLayoutManager(getContext());
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            mainList.setLayoutManager(llm);
+
+            mainList.addOnItemTouchListener(new RecyclerItemListener(getContext(), mainList, new RecyclerItemListener.RecyclerTouchListener() {
                 @Override
-                public void itemDeleted(List<Card> list) {
-                    data = list;
-
-                    adapter.refresh(data);
-                    changePlaceholderVisibility(data);
-
-                    // Changes to list have to be propagated to parent-activity!
-                    // TODO: by changing the persistent datastructure to a database, this can be
-                    // avoided!
-                    Activity parent = getActivity();
-                    if (parent instanceof MainActivity) {
-                        ((MainActivity) parent).refreshData((ArrayList<Card>) list);
-                    }
+                public void onClickItem(View v, int position) {
+                    Card c = data.get(position);
+                    listener.onItemClicked(c);
                 }
-            });
 
-            mainList.setMultiChoiceModeListener(gridViewListener);
-
-            mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (listener != null) {
-                        // Inform the surrounding activity that a card was selected by the user!
-                        listener.onItemClicked(data.get(position));
-                    }
+                public void onLongClickItem(View v, int position) {
+                    // TODO implement
                 }
-            });
+            }));
         }
 
         return view;
@@ -168,10 +155,10 @@ public class OverviewFragment extends Fragment {
 
         changePlaceholderVisibility(data);
 
-        adapter.refresh(data);
-        if (gridViewListener != null) {
-            gridViewListener.updateContents(data);
-        }
+//        adapter.refresh(data);
+//        if (gridViewListener != null) {
+//            gridViewListener.updateContents(data);
+//        }
     }
 
     private void changePlaceholderVisibility(List<Card> data) {

@@ -17,67 +17,68 @@
 package com.abyx.loyalty.extra;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.abyx.loyalty.R;
-import com.abyx.loyalty.tasks.OverviewLogoManager;
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.tasks.OverviewLogoManager;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class CardAdapter extends BaseAdapter {
+/**
+ * Implementation of the RecyclerView.Adapter-interface that's used for displaying information about
+ * individual Loyalty cards as a summary.
+ */
+public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder> {
+    private List<Card> cards;
     private Context context;
-    private List<Card> data;
+
     private ThreadPoolExecutor executor;
 
-    public CardAdapter(Context context, List<Card> data){
-        this.context = context;
-        this.data = data;
+    public class CardViewHolder extends RecyclerView.ViewHolder {
+        public TextView textView;
+        public ImageView imageView;
 
-        this.executor = new ThreadPoolExecutor(8, 20, 10000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(100));
-    }
-
-    @Override
-    public int getCount() {
-        return data.size();
-    }
-
-    @Override
-    public Card getItem(int i) {
-        return data.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        System.out.println("Refresh view " + i + "!");
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (view == null) {
-            view = inflater.inflate(R.layout.single_grid, null);
+        public CardViewHolder(View itemView) {
+            super(itemView);
+            textView = (TextView) itemView.findViewById(R.id.textView);
+            imageView = (ImageView) itemView.findViewById(R.id.imageView);
         }
-        TextView textView = (TextView) view.findViewById(R.id.textView);
-        ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-        textView.setText(data.get(i).getName());
-        OverviewLogoManager logoManager = new OverviewLogoManager(context, imageView, data.get(i), executor, view);
-        logoManager.start();
-        return view;
     }
 
-    public void refresh(List<Card> items) {
-        this.data = items;
-        notifyDataSetChanged();
+    public CardAdapter(List<Card> cards, Context context) {
+        this.cards = cards;
+        this.context = context;
+        this.executor = new ThreadPoolExecutor(4, 8, 10000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(100));
+    }
+
+    @Override
+    public void onBindViewHolder(CardViewHolder holder, int position) {
+        Card c = this.cards.get(position);
+        holder.textView.setText(c.getName());
+        holder.imageView.setImageDrawable(null);
+
+        // Start task to set correct image in ImageView
+        OverviewLogoManager manager = new OverviewLogoManager(context, holder.imageView, c, executor);
+        manager.start();
+    }
+
+    @Override
+    public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_card, parent, false);
+        return new CardViewHolder(v);
+    }
+
+    @Override
+    public int getItemCount() {
+        return this.cards.size();
     }
 }

@@ -41,14 +41,12 @@ public class OverviewLogoManager {
     private Card card;
     private ThreadPoolExecutor executor;
 
-    private View parent;
 
-    public OverviewLogoManager(Context context, ImageView view, Card card, ThreadPoolExecutor executor, View parent) {
+    public OverviewLogoManager(Context context, ImageView view, Card card, ThreadPoolExecutor executor) {
         this.view = view;
         this.context = context;
         this.card = card;
         this.executor = executor;
-        this.parent = parent;
     }
 
     /**

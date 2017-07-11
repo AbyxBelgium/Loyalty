@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:layout_gravity="center"
         android:paddingTop="10dp"
         android:paddingBottom="5dp"
