@@ -26,9 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.abyx.loyalty.R;
-import com.abyx.loyalty.tasks.OverviewLogoTask;
-import com.abyx.loyalty.tasks.TaskListener;
-import com.abyx.loyalty.tasks.ThumbnailImageTask;
+import com.abyx.loyalty.tasks.OverviewLogoManager;
 import com.abyx.loyalty.contents.Card;
 
 import java.util.List;
@@ -65,6 +63,7 @@ public class CardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        System.out.println("Refresh view " + i + "!");
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (view == null) {
             view = inflater.inflate(R.layout.single_grid, null);
@@ -72,8 +71,8 @@ public class CardAdapter extends BaseAdapter {
         TextView textView = (TextView) view.findViewById(R.id.textView);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
         textView.setText(data.get(i).getName());
-        //OverviewLogoTask task = new OverviewLogoTask(context, , data.get(i), imageView);
-
+        OverviewLogoManager logoManager = new OverviewLogoManager(context, imageView, data.get(i), executor, view);
+        logoManager.start();
         return view;
     }
 

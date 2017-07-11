@@ -5,7 +5,7 @@
     tools:context="com.abyx.loyalty.activities.EditActivity">
     <item
         android:id="@+id/action_done"
-        android:icon="@drawable/ic_done_white_48dp"
+        android:icon="@drawable/ic_done_white_24dp"
         android:title="@string/done"
         app:showAsAction="ifRoom" />
 </menu>

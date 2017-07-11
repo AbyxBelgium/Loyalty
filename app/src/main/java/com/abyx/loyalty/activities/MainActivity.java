@@ -48,7 +48,6 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
     private static final String sortedString = "sorted_descending";
 
     private FrameLayout cardContainer;
-    private MenuItem sortButton;
 
     private ArrayList<Card> data;
     private boolean sortedDescending;
@@ -101,8 +100,6 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        sortButton = menu.findItem(R.id.action_sort);
-        setSortIcon(sortedDescending);
         return true;
     }
 
@@ -114,7 +111,6 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
         if (id == R.id.action_sort){
             reverse();
             sortedDescending = !sortedDescending;
-            setSortIcon(sortedDescending);
             // Save the sort preference of the user, so he doesn't has to choose this every time
             // the app starts
             SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
@@ -165,19 +161,6 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
     public void addData(View view) {
         Intent intent = new Intent(MainActivity.this, AddStoreActivity.class);
         startActivity(intent);
-    }
-
-    /**
-     * Change the icon of the sort-button in the ActionBar according to the current sorting order.
-     *
-     * @param descending Whether the current sorting order is descending or not (ascending).
-     */
-    private void setSortIcon(boolean descending){
-        if (descending){
-            sortButton.setIcon(R.drawable.ic_sort_descending_white_48dp);
-        } else {
-            sortButton.setIcon(R.drawable.ic_sort_ascending_white_48dp);
-        }
     }
 
     /**

@@ -48,7 +48,7 @@ public class ThumbnailGenerator {
         Bitmap cropped = utils.magicCrop(logo, Color.WHITE, 0.2f);
 
         ShapeFactory factory = new ParallelShapeFactory();
-        Bitmap circle = factory.createShape(new CircleShape(this.context), cropped, Color.BLACK, 100);
+        Bitmap circle = factory.createShape(new CircleShape(this.context), cropped, Color.BLACK, 200);
 
         return factory.createShape(new CircleShape(this.context), circle, Color.WHITE, 10);
     }

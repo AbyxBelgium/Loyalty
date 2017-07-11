@@ -19,9 +19,12 @@ package com.abyx.loyalty.tasks;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.extra.CardAdapter;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -38,11 +41,14 @@ public class OverviewLogoManager {
     private Card card;
     private ThreadPoolExecutor executor;
 
-    public OverviewLogoManager(Context context, ImageView view, Card card, ThreadPoolExecutor executor) {
+    private View parent;
+
+    public OverviewLogoManager(Context context, ImageView view, Card card, ThreadPoolExecutor executor, View parent) {
         this.view = view;
         this.context = context;
         this.card = card;
         this.executor = executor;
+        this.parent = parent;
     }
 
     /**
@@ -77,7 +83,7 @@ public class OverviewLogoManager {
         }
     }
 
-    private class OverviewLogoTaskListener implements TaskListener<Bitmap> {
+    private class OverviewLogoTaskListener implements TaskListener<Drawable> {
         @Override
         public void onProgressUpdate(double progress) {
             // Nothing to do here
@@ -89,8 +95,8 @@ public class OverviewLogoManager {
         }
 
         @Override
-        public void onDone(Bitmap result) {
-            view.setImageDrawable(new BitmapDrawable(context.getResources(), result));
+        public void onDone(Drawable result) {
+            view.setImageDrawable(result);
         }
     }
 }

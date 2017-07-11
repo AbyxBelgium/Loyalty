@@ -43,15 +43,11 @@ import com.abyx.loyalty.exceptions.InvalidCardException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
 import com.abyx.loyalty.graphics.BarcodeGenerator;
-import com.abyx.loyalty.tasks.APIConnectorCallback;
-import com.abyx.loyalty.tasks.APIConnectorTask;
 import com.abyx.loyalty.tasks.DetailedLogoTask;
-import com.abyx.loyalty.tasks.DownloadImageTask;
 import com.abyx.loyalty.extra.ProgressIndicator;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.tasks.LogoTask;
 import com.abyx.loyalty.tasks.TaskListener;
-import com.abyx.loyalty.tasks.ThumbnailDownloader;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
@@ -151,7 +147,8 @@ public class CardFragment extends Fragment {
                             } else {
                                 data.setImageURL(editText.getText().toString());
                             }
-                            new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
+                            // TODO FIX THIS
+                            //new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
                             dialog.dismiss();
                         }
                     });
