@@ -26,7 +26,9 @@ import android.widget.TextView;
 
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.fragments.OverviewFragment;
 import com.abyx.loyalty.tasks.OverviewLogoManager;
+import com.davidecirillo.multichoicerecyclerview.MultiChoiceAdapter;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -81,4 +83,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
     public int getItemCount() {
         return this.cards.size();
     }
+
+
 }

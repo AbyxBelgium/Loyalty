@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.extra.RecyclerItemListener;
+import com.abyx.loyalty.extra.RecyclerTouchListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,6 +56,8 @@ public class OverviewFragment extends Fragment {
 
     private List<Card> data;
     private OverviewFragmentInteractionListener listener;
+
+    private boolean multiSelectionMode = false;
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -98,16 +102,15 @@ public class OverviewFragment extends Fragment {
             llm.setOrientation(LinearLayoutManager.VERTICAL);
             mainList.setLayoutManager(llm);
 
-            mainList.addOnItemTouchListener(new RecyclerItemListener(getContext(), mainList, new RecyclerItemListener.RecyclerTouchListener() {
+            mainList.addOnItemTouchListener(new RecyclerItemListener(getContext(), mainList, new RecyclerTouchListener() {
                 @Override
                 public void onClickItem(View v, int position) {
-                    Card c = data.get(position);
-                    listener.onItemClicked(c);
-                }
-
-                @Override
-                public void onLongClickItem(View v, int position) {
-                    // TODO implement
+                    if (multiSelectionMode) {
+                        v.setActivated(!v.isActivated());
+                    } else {
+                        Card c = data.get(position);
+                        listener.onItemClicked(c);
+                    }
                 }
             }));
         }
