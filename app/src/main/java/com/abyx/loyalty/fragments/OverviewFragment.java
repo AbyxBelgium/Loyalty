@@ -57,6 +57,8 @@ public class OverviewFragment extends Fragment {
     private List<Card> data;
     private OverviewFragmentInteractionListener listener;
 
+    private CardAdapter adapter;
+
     public OverviewFragment() {
         // Required empty public constructor
     }
@@ -93,7 +95,7 @@ public class OverviewFragment extends Fragment {
 
             mainList = (RecyclerView) view.findViewById(R.id.mainList);
 
-            CardAdapter adapter = new CardAdapter(data, getContext());
+            adapter = new CardAdapter(data, getContext());
             mainList.setAdapter(adapter);
 
             LinearLayoutManager llm = new LinearLayoutManager(getContext());
@@ -149,13 +151,8 @@ public class OverviewFragment extends Fragment {
      */
     public void refreshData(List<Card> data) {
         this.data = data;
-
         changePlaceholderVisibility(data);
-
-//        adapter.refresh(data);
-//        if (gridViewListener != null) {
-//            gridViewListener.updateContents(data);
-//        }
+        adapter.notifyDataSetChanged();
     }
 
     private void changePlaceholderVisibility(List<Card> data) {

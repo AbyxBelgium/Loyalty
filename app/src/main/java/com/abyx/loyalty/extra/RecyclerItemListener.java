@@ -22,9 +22,6 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * This listener manages all clicks on the items inside of an RecyclerView.
  *
