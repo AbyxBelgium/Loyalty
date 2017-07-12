@@ -5,15 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_home">
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:layout_gravity="center"
         android:paddingTop="10dp"
         android:paddingBottom="5dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:id="@+id/mainList"
         android:layout_height="wrap_content"
-        android:dividerHeight="8dp"
         android:divider="@android:color/transparent"/>
-    </LinearLayout>
+</LinearLayout>

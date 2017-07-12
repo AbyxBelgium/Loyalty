@@ -21,6 +21,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -33,12 +35,14 @@ import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.R;
+import com.abyx.loyalty.extra.RecyclerItemListener;
+import com.abyx.loyalty.extra.RecyclerTouchListener;
 
 import java.util.ArrayList;
 
 public class SearchResultsActivity extends AppCompatActivity implements TextWatcher{
     private EditText searchField;
-    private ListView mainList;
+    private RecyclerView mainList;
 
     private ArrayList<Card> data;
     private ArrayList<Card> originalData;
@@ -47,28 +51,42 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_search_results);
-        mainList = (ListView) findViewById(R.id.mainList);
+
+        mainList = (RecyclerView) findViewById(R.id.mainList);
+
         ActionBar actionBar = getSupportActionBar();
         // add the custom view to the action bar
         actionBar.setCustomView(R.layout.search_actionbar);
+
         searchField = (EditText) actionBar.getCustomView().findViewById(R.id.searchField);
         searchField.addTextChangedListener(this);
+
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
         originalData = getIntent().getParcelableArrayListExtra("LIST");
+
         data = new ArrayList<>();
-        // TODO FIX
-        //adapter = new CardAdapter(originalData, getApplicationContext());
-        //mainList.setAdapter(adapter);
-//        mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(SearchResultsActivity.this, CardActivity.class);
-//                intent.putExtra(Constants.INTENT_CARD_ID_ARG, originalData.get(position).getID());
-//                startActivity(intent);
-//            }
-//        });
+        data.addAll(originalData);
+
+        adapter = new CardAdapter(data, getApplicationContext());
+        mainList.setAdapter(adapter);
+
+        LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        mainList.setLayoutManager(llm);
+
+        mainList.addOnItemTouchListener(new RecyclerItemListener(getApplicationContext(), mainList, new RecyclerTouchListener() {
+            @Override
+            public void onClickItem(View v, int position) {
+                Intent intent = new Intent(SearchResultsActivity.this, CardActivity.class);
+                intent.putExtra(Constants.INTENT_CARD_ID_ARG, originalData.get(position).getID());
+                startActivity(intent);
+            }
+        }));
+
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT);
     }
@@ -90,7 +108,6 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
         if (query.equals("")){
             data.clear();
             data.addAll(originalData);
-            //adapter.refresh(data);
         } else {
             data.clear();
             for (Card test : originalData) {
@@ -99,6 +116,6 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
                 }
             }
         }
-        //adapter.refresh(data);
+        adapter.notifyDataSetChanged();
     }
 }
