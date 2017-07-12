@@ -48,8 +48,8 @@ public class Constants {
     public static final String CACHE_DIR_LOGO_OVERVIEW = "overview";
 
     // The format that's used to persistently store all logos in the application.
-    public static final String IMAGE_FORMAT = "webp";
-    public static final Bitmap.CompressFormat IMAGE_COMPRESS_FORMAT = Bitmap.CompressFormat.WEBP;
+    public static final String IMAGE_FORMAT = "png";
+    public static final Bitmap.CompressFormat IMAGE_COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
     // Image quality settings used for storing the logos in the persistent storage.
     public static final int IMAGE_QUALITY = 100;
 

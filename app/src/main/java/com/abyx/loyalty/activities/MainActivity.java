@@ -30,6 +30,7 @@ import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.contents.StorageMigrator;
 import com.abyx.loyalty.extra.Constants;
+import com.abyx.loyalty.extra.ReceivedPermission;
 import com.abyx.loyalty.fragments.CardFragment;
 import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.fragments.OverviewFragment;
@@ -77,18 +78,29 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
     @Override
     protected void onResume(){
         super.onResume();
-        if (isPermissionGranted(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)){
-            // Read all data from the internal storage
-            Database db = new Database(MainActivity.this);
-            db.openDatabase();
-            data = (ArrayList<Card>) db.getAllCards();
-            db.closeDatabase();
-
-            // Sort data according to the previous order
-            sort(sortedDescending);
-            overviewFragment = OverviewFragment.newInstance(data);
-            getSupportFragmentManager().beginTransaction().replace(R.id.overviewContainer, overviewFragment).commit();
+        if (isPermissionGranted(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            loadData();
+        } else {
+            requestWritePermissions(MainActivity.this, new ReceivedPermission() {
+                @Override
+                public void onPermissionGranted() {
+                    loadData();
+                }
+            });
         }
+    }
+
+    private void loadData() {
+        // Read all data from the internal storage
+        Database db = new Database(MainActivity.this);
+        db.openDatabase();
+        data = (ArrayList<Card>) db.getAllCards();
+        db.closeDatabase();
+
+        // Sort data according to the previous order
+        sort(sortedDescending);
+        overviewFragment = OverviewFragment.newInstance(data);
+        getSupportFragmentManager().beginTransaction().replace(R.id.overviewContainer, overviewFragment).commit();
     }
 
     @Override

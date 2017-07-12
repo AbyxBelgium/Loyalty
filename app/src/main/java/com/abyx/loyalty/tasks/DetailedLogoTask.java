@@ -74,40 +74,15 @@ public class DetailedLogoTask extends AsyncTask<Bitmap, Void, Bitmap> {
     @Override
     @Nullable
     protected Bitmap doInBackground(Bitmap... params) {
-        String fileName = Constants.CACHE_DIR_LOGO_DETAIL + Integer.toString(card.getName().hashCode()) + "." + Constants.IMAGE_FORMAT;
-
-        File file = context.getFileStreamPath(fileName);
+        //String fileName = Constants.CACHE_DIR_LOGO_DETAIL + Integer.toString(card.getName().hashCode()) + "." + Constants.IMAGE_FORMAT;
 
         Bitmap output;
 
-        if (file == null || !file.exists()) {
-            // Create the desired output from scratch and save it in persistent storage.
-            Bitmap logo = params[0];
-            ImageUtils utils = new ImageUtils(this.context);
-            Bitmap croppedLogo = utils.magicCrop(logo, Color.WHITE, Constants.MAGIC_CROP_TOLERANCE);
-            ShapeFactory shapeFactory = new ParallelShapeFactory();
-            output = shapeFactory.createShape(new CircleShape(this.context), croppedLogo, Constants.LOGO_BACKGROUND_COLOUR, 150);
-
-            // Save file in persistent storage
-            try (FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE)) {
-                output.setHasAlpha(true);
-                output.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
-            } catch (IOException e) {
-                this.listener.onFailed(e);
-                return null;
-            }
-
-        } else {
-            // Retrieve previously generated file from storage.
-            try (FileInputStream in = context.openFileInput(fileName)) {
-                BitmapFactory.Options opts = new BitmapFactory.Options();
-                opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                output = BitmapFactory.decodeStream(in, null, opts);
-            } catch (IOException e) {
-                this.listener.onFailed(e);
-                return null;
-            }
-        }
+        Bitmap logo = params[0];
+        ImageUtils utils = new ImageUtils(this.context);
+        Bitmap croppedLogo = utils.magicCrop(logo, Color.WHITE, Constants.MAGIC_CROP_TOLERANCE);
+        ShapeFactory shapeFactory = new ParallelShapeFactory();
+        output = shapeFactory.createShape(new CircleShape(this.context), croppedLogo, Constants.LOGO_BACKGROUND_COLOUR, 150);
 
         return output;
     }
