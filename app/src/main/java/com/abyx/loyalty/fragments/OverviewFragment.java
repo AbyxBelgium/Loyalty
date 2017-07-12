@@ -57,8 +57,6 @@ public class OverviewFragment extends Fragment {
     private List<Card> data;
     private OverviewFragmentInteractionListener listener;
 
-    private boolean multiSelectionMode = false;
-
     public OverviewFragment() {
         // Required empty public constructor
     }
@@ -105,12 +103,8 @@ public class OverviewFragment extends Fragment {
             mainList.addOnItemTouchListener(new RecyclerItemListener(getContext(), mainList, new RecyclerTouchListener() {
                 @Override
                 public void onClickItem(View v, int position) {
-                    if (multiSelectionMode) {
-                        v.setActivated(!v.isActivated());
-                    } else {
-                        Card c = data.get(position);
-                        listener.onItemClicked(c);
-                    }
+                    Card c = data.get(position);
+                    listener.onItemClicked(c);
                 }
             }));
         }

@@ -22,7 +22,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This listener manages all clicks on the items inside of an RecyclerView.
@@ -38,15 +39,8 @@ public class RecyclerItemListener implements RecyclerView.OnItemTouchListener  {
         gd = new GestureDetector(ctx,
                 new GestureDetector.SimpleOnGestureListener() {
                     @Override
-                    public void onLongPress(MotionEvent e) {
-                        // We find the view
-                        View v = rv.findChildViewUnder(e.getX(), e.getY());
-                    }
-
-                    @Override
                     public boolean onSingleTapUp(MotionEvent e) {
                         View v = rv.findChildViewUnder(e.getX(), e.getY());
-                        // Notify the even
                         listener.onClickItem(v, rv.getChildAdapterPosition(v));
                         return true;
                     }
