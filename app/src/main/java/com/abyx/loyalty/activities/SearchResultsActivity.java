@@ -82,7 +82,7 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
             @Override
             public void onClickItem(View v, int position) {
                 Intent intent = new Intent(SearchResultsActivity.this, CardActivity.class);
-                intent.putExtra(Constants.INTENT_CARD_ID_ARG, originalData.get(position).getID());
+                intent.putExtra(Constants.INTENT_CARD_ID_ARG, data.get(position).getID());
                 startActivity(intent);
             }
         }));
