@@ -16,8 +16,11 @@
 
 package com.abyx.loyalty.tasks;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+
+import com.abyx.loyalty.contents.Card;
 
 /**
  * This task is responsible for rendering Aurora's that can be used as background for an Activity.
@@ -25,8 +28,33 @@ import android.os.AsyncTask;
  * @author Pieter Verschaffelt
  */
 public class AuroraTask extends AsyncTask<Bitmap, Void, Bitmap> {
+    private Context context;
+    private TaskListener<Bitmap> listener;
+    private Card card;
+
+    public AuroraTask(Context context, TaskListener<Bitmap> listener, Card card) {
+        this.context = context;
+        this.listener = listener;
+        this.card = card;
+    }
+
     @Override
     protected Bitmap doInBackground(Bitmap... params) {
         return null;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        listener.onProgressUpdate(0.0);
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap bitmap) {
+        super.onPostExecute(bitmap);
+        if (bitmap != null) {
+            listener.onProgressUpdate(1.0);
+            listener.onDone(bitmap);
+        }
     }
 }
