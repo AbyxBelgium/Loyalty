@@ -182,28 +182,6 @@ public class CardFragment extends Fragment {
         getActivity().setTitle(data.getName());
     }
 
-    /**
-     * This function returns a bitmap that's generated using the given barcode (as a string) and
-     * it's format.
-     * TODO: this function should be executed asynchronously in a separate thread to avoid jank.
-     * TODO: proper error handling should be implemented for this function.
-     *
-     * @param barcode The value of the barcode that has to be processed into a bitmap
-     * @param format The format of the barcode that has to be processed into a bitmap
-     * @return A bitmap representing the given barcode and it's format
-     */
-    public Bitmap encodeAsBitmap(String barcode, BarcodeFormat format) {
-        BarcodeGenerator generator = new BarcodeGenerator(getContext());
-        try {
-            return generator.renderBarcode(barcode, format, 300, 50);
-        } catch (WriterException e) {
-            // TODO implement error handling here!
-            System.err.println(e);
-        }
-
-        return null;
-    }
-
     private class LogoTaskListener implements TaskListener<Bitmap> {
         @Override
         public void onProgressUpdate(double progress) {
