@@ -40,7 +40,7 @@ import com.abyx.loyalty.extra.RecyclerTouchListener;
 
 import java.util.ArrayList;
 
-public class SearchResultsActivity extends AppCompatActivity implements TextWatcher{
+public class SearchResultsActivity extends AppCompatActivity implements TextWatcher {
     private EditText searchField;
     private RecyclerView mainList;
 

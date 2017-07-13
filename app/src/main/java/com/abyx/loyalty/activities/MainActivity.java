@@ -54,9 +54,10 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Check if this application last used the old storage method (v1.3.1)
+        // Check if this application last used the old storage method (v1.3.1 or below)
         IO io = new IO(getApplicationContext());
         if (io.hasData()) {
+            // Migrate data from previous system to database
             StorageMigrator migrator = new StorageMigrator(getApplicationContext());
             migrator.migrate();
         }

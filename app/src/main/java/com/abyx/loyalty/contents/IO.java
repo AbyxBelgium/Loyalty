@@ -167,13 +167,6 @@ public class IO {
         return Uri.parse("file:/" + file.getAbsolutePath());
     }
 
-    public void removeData(String bitmap){
-        File file = context.getFileStreamPath(bitmap);
-        if (file != null && file.exists()){
-            file.delete();
-        }
-    }
-
     /**
      * Clear the app's cache folder on the external storage so that we don't waste memory.
      */
@@ -206,5 +199,4 @@ public class IO {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
     }
-
 }

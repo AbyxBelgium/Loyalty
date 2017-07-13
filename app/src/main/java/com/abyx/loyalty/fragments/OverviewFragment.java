@@ -132,17 +132,6 @@ public class OverviewFragment extends Fragment {
     }
 
     /**
-     * TODO this is code duplication of PermissionActivity
-     *
-     * @param activity The activity calling this method
-     * @param permission The permission for which you want to know if it's granted
-     * @return Returns true when the given permission has already been granted by the user
-     */
-    protected boolean isPermissionGranted(Activity activity, String permission){
-        return ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    /**
      * Call this method when anything (even the order of items) changes to the data-array. This
      * function will refresh the adapter, meaning it will update it's UI according to the new
      * list.
