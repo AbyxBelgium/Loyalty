@@ -41,6 +41,9 @@ public class Database extends ChangeObservable<List<Card>> {
 
     private List<Card> cards;
 
+    // Default sort order is ascending...
+    private String orderBy = DatabaseContract.COLUMN_NAME + " ASC";
+
     public Database(Context context) {
         helper = new DatabaseHelper(context);
     }
@@ -174,6 +177,15 @@ public class Database extends ChangeObservable<List<Card>> {
         }
     }
 
+    public void getAllCardsSorted(boolean ascending) {
+        if (ascending) {
+            this.orderBy = DatabaseContract.COLUMN_NAME + " ASC";
+        } else {
+            this.orderBy = DatabaseContract.COLUMN_NAME + " DESC";
+        }
+        this.getAllCards();
+    }
+
     /**
      * This method receives all cards from the database and sends the queried data to all listeners.
      * NOTE: Database must be open before invoking this function.
@@ -191,7 +203,7 @@ public class Database extends ChangeObservable<List<Card>> {
                 DatabaseContract.COLUMN_IMAGE_URL
         };
 
-        Cursor cursor = database.query(DatabaseContract.TABLE_CARD, projection, null, null, null, null, null);
+        Cursor cursor = database.query(DatabaseContract.TABLE_CARD, projection, null, null, null, null, this.orderBy);
 
         cards = new ArrayList<>();
 

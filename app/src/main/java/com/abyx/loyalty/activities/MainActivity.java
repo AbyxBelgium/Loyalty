@@ -33,21 +33,25 @@ import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.ReceivedPermission;
 import com.abyx.loyalty.fragments.CardFragment;
 import com.abyx.loyalty.contents.IO;
+import com.abyx.loyalty.fragments.Filter;
+import com.abyx.loyalty.fragments.ListFragment;
+import com.abyx.loyalty.fragments.ListInteractor;
 import com.abyx.loyalty.fragments.OverviewFragment;
 import com.abyx.loyalty.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
-public class MainActivity extends PermissionActivity implements OverviewFragment.OverviewFragmentInteractionListener {
+public class MainActivity extends PermissionActivity implements ListInteractor<Card> {
     private static final String sortedString = "sorted_descending";
 
     private FrameLayout cardContainer;
 
     private ArrayList<Card> data;
     private boolean sortedDescending;
-    private OverviewFragment overviewFragment;
+    private ListFragment<Card> overviewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +67,6 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
         }
 
         cardContainer = (FrameLayout) findViewById(R.id.cardContainer);
-
-        data = new ArrayList<>();
 
         // The sortedDescending value from the last time the user used this app
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
@@ -89,19 +91,6 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
                 }
             });
         }
-    }
-
-    private void loadData() {
-        // Read all data from the internal storage
-        Database db = new Database(MainActivity.this);
-        db.openDatabase();
-        data = (ArrayList<Card>) db.getAllCards();
-        db.closeDatabase();
-
-        // Sort data according to the previous order
-        sort(sortedDescending);
-        overviewFragment = OverviewFragment.newInstance(data);
-        getSupportFragmentManager().beginTransaction().replace(R.id.overviewContainer, overviewFragment).commit();
     }
 
     @Override
@@ -146,19 +135,32 @@ public class MainActivity extends PermissionActivity implements OverviewFragment
     }
 
     @Override
-    public void onItemClicked(Card card) {
-        // Device is big enough and orientated in landscape when cardContainer exists!
-        if (cardContainer != null) {
-            // Replace a fragment that might have been placed before!
-            CardFragment fragment = CardFragment.newInstance(card.getID());
-            getSupportFragmentManager().beginTransaction().replace(R.id.cardContainer, fragment).commit();
+    public List<Card> requestData() {
+        if (this.data == null) {
+            return new ArrayList<>();
         } else {
-            Intent intent = new Intent(MainActivity.this, CardActivity.class);
-            intent.putExtra(Constants.INTENT_CARD_ID_ARG, card.getID());
-            // TODO replace with circular reveal
-            //ActivityOptionsCompat options = ActivityOptionsCompat.makeCustomAnimation(getApplicationContext(), android.R.anim.fade_in, android.R.anim.fade_in);
-            startActivity(intent);
+            return data;
         }
+    }
+
+    @Override
+    public void onItemClick(int dataPos, Card item) {
+        Intent intent = new Intent(MainActivity.this, CardActivity.class);
+        intent.putExtra(Constants.INTENT_CARD_ID_ARG, item.getID());
+        startActivity(intent);
+    }
+
+    private void loadData() {
+        // Read all data from the internal storage
+        Database db = new Database(MainActivity.this);
+        db.openDatabase();
+        data = (ArrayList<Card>) db.getAllCards();
+        db.closeDatabase();
+
+        // Sort data according to the previous order
+        sort(sortedDescending);
+        overviewFragment = OverviewFragment.newInstance(data);
+        getSupportFragmentManager().beginTransaction().replace(R.id.overviewContainer, overviewFragment).commit();
     }
 
     /**

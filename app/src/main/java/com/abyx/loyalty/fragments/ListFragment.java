@@ -16,19 +16,27 @@
 
 package com.abyx.loyalty.fragments;
 
+import android.support.v4.app.Fragment;
+
+import java.util.List;
+
 /**
- * Functional interface that can be used for filtering large datasets.
- *
- * @param <T> Type of type that should be filtered.
- *
  * @author Pieter Verschaffelt
  */
-public interface Filter<T> {
+public abstract class ListFragment<T> extends Fragment {
     /**
-     * Returns true when the given item should be retained.
+     * This method should be invoked by the Activity when it receives an updated dataset and wants
+     * to bring this new data under the attention of the Fragment.
      *
-     * @param item The item that should be judged.
-     * @return True when the given item should be retained, false otherwise.
+     * @param updated Newly generated dataset.
      */
-    public boolean retain(T item);
+    public abstract void dataChanged(List<T> updated);
+
+    /**
+     * Set a Filter that is used for determining which items are shown by the Fragment and which
+     * not.
+     *
+     * @param filter A Filter that decides which items should be visible.
+     */
+    public abstract void filter(Filter<T> filter);
 }

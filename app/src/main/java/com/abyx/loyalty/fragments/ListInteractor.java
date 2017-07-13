@@ -36,26 +36,10 @@ public interface ListInteractor<T> {
     public List<T> requestData();
 
     /**
-     * This method should be invoked by the Activity when it receives an updated dataset and wants
-     * to bring this new data under the attention of the Fragment.
-     *
-     * @param updated Newly generated dataset.
-     */
-    public void dataChanged(List<T> updated);
-
-    /**
      * This method is invoked by the Fragment when the user clicks an item in the list.
      *
      * @param dataPos The position of the clicked item inside of the most recently received list.
      * @param item The item that was clicked.
      */
     public void onItemClick(int dataPos, T item);
-
-    /**
-     * Set a Filter that is used for determining which items are shown by the Fragment and which
-     * not.
-     *
-     * @param filter A Filter that decides which items should be visible.
-     */
-    public void filter(Filter<T> filter);
 }

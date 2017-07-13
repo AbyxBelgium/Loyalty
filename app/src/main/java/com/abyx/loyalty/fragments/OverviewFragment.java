@@ -41,7 +41,7 @@ import java.util.List;
  *
  * @author Pieter Verschaffelt
  */
-public class OverviewFragment extends Fragment {
+public class OverviewFragment extends ListFragment<Card> {
     private static final String DATA_ARG = "CARD_DATA";
 
     private RecyclerView mainList;
@@ -122,6 +122,16 @@ public class OverviewFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         listener = null;
+    }
+
+    @Override
+    public void dataChanged(List<Card> updated) {
+
+    }
+
+    @Override
+    public void filter(Filter<Card> filter) {
+
     }
 
     /**
