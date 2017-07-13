@@ -24,14 +24,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.ReceivedPermission;
-import com.abyx.loyalty.fragments.CardFragment;
-import com.abyx.loyalty.fragments.Filter;
 import com.abyx.loyalty.fragments.ListFragment;
 import com.abyx.loyalty.fragments.ListInteractor;
 import com.abyx.loyalty.fragments.OverviewFragment;
@@ -39,8 +36,6 @@ import com.abyx.loyalty.R;
 import com.abyx.loyalty.managers.ChangeListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends PermissionActivity implements ListInteractor<Card>, ChangeListener<List<Card>> {
