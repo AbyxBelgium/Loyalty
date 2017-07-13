@@ -38,20 +38,21 @@ import com.abyx.loyalty.fragments.ListFragment;
 import com.abyx.loyalty.fragments.ListInteractor;
 import com.abyx.loyalty.fragments.OverviewFragment;
 import com.abyx.loyalty.R;
+import com.abyx.loyalty.managers.ChangeListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class MainActivity extends PermissionActivity implements ListInteractor<Card> {
+public class MainActivity extends PermissionActivity implements ListInteractor<Card>, ChangeListener<List<Card>> {
     private static final String sortedString = "sorted_descending";
-
-    private FrameLayout cardContainer;
 
     private ArrayList<Card> data;
     private boolean sortedDescending;
     private ListFragment<Card> overviewFragment;
+
+    private Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +67,20 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
             migrator.migrate();
         }
 
-        cardContainer = (FrameLayout) findViewById(R.id.cardContainer);
-
         // The sortedDescending value from the last time the user used this app
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
         sortedDescending = sharedPref.getBoolean(sortedString, true);
+
+        overviewFragment = OverviewFragment.newInstance();
+
+        this.db = new Database(getApplicationContext());
+        this.db.subscribe(this);
     }
 
     @Override
     protected void onPause(){
         super.onPause();
+        this.db.unsubscribe(this);
     }
 
     @Override
@@ -106,7 +111,10 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sort){
-            reverse();
+            db.openDatabase();
+            db.getAllCardsSorted(sortedDescending);
+            db.closeDatabase();
+
             sortedDescending = !sortedDescending;
             // Save the sort preference of the user, so he doesn't has to choose this every time
             // the app starts
@@ -150,16 +158,18 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
         startActivity(intent);
     }
 
+    @Override
+    public void change(List<Card> resource) {
+        this.data = (ArrayList<Card>) resource;
+        overviewFragment.dataChanged(resource);
+    }
+
     private void loadData() {
         // Read all data from the internal storage
-        Database db = new Database(MainActivity.this);
         db.openDatabase();
-        data = (ArrayList<Card>) db.getAllCards();
+        db.getAllCardsSorted(sortedDescending);
         db.closeDatabase();
 
-        // Sort data according to the previous order
-        sort(sortedDescending);
-        overviewFragment = OverviewFragment.newInstance(data);
         getSupportFragmentManager().beginTransaction().replace(R.id.overviewContainer, overviewFragment).commit();
     }
 
@@ -171,46 +181,5 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
     public void addData(View view) {
         Intent intent = new Intent(MainActivity.this, AddStoreActivity.class);
         startActivity(intent);
-    }
-
-    /**
-     * This method sorts all data that's currently available. When sortedDescending is
-     * true, it's sorted from A-Z and otherwise it's sorted from Z-A.
-     *
-     * This function runs in O(n*log(n))-time
-     *
-     * @param sortedDescending Sort data ascending or descending
-     */
-    private void sort(boolean sortedDescending){
-        if (sortedDescending) {
-            Collections.sort(data, new Comparator<Card>() {
-                public int compare(Card store1, Card store2) {
-                    return store1.getName().toLowerCase().compareTo(store2.getName().toLowerCase());
-                }
-            });
-        } else {
-            Collections.sort(data, new Comparator<Card>() {
-                public int compare(Card store1, Card store2) {
-                    return store1.getName().toLowerCase().compareTo(store2.getName().toLowerCase());
-                }
-            });
-        }
-    }
-
-    /**
-     * This function reverses the order of all data that's currently available. Do not resort
-     * data just to change the sort preference (descending - ascending) as reversing is
-     * faster.
-     *
-     * This function runs in O(n)-time
-     */
-    private void reverse(){
-        //Runs in O(n) time. We can do this because all data is sorted alphabetically by default
-        Collections.reverse(data);
-        overviewFragment.refreshData(data);
-    }
-
-    public void refreshData(ArrayList<Card> data) {
-        this.data = data;
     }
 }

@@ -16,6 +16,7 @@
 
 package com.abyx.loyalty.managers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +26,7 @@ import java.util.List;
  * @author Pieter Verschaffelt
  */
 public abstract class ChangeObservable<T> {
-    private List<ChangeListener<T>> listeners;
+    private List<ChangeListener<T>> listeners = new ArrayList<>();
 
     public void subscribe(ChangeListener<T> listener) {
         this.listeners.add(listener);

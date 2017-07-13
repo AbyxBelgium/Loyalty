@@ -42,15 +42,24 @@ import java.util.List;
  * @author Pieter Verschaffelt
  */
 public class OverviewFragment extends ListFragment<Card> {
-    private static final String DATA_ARG = "CARD_DATA";
-
     private RecyclerView mainList;
     private RelativeLayout placeholder;
 
-    private List<Card> data;
-    private OverviewFragmentInteractionListener listener;
+    private List<Card> data =  new ArrayList<>();
+    private ListInteractor<Card> listener;
 
     private CardAdapter adapter;
+
+    // Whether this fragment is visible or not
+    private boolean visible = false;
+
+    // Do not filter anything by default
+    private Filter<Card> filter = new Filter<Card>() {
+        @Override
+        public boolean retain(Card item) {
+            return true;
+        }
+    };
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -59,13 +68,11 @@ public class OverviewFragment extends ListFragment<Card> {
     /**
      * Use this factory method to create a new instance of this fragment.
      *
-     * @param data A list containing all cards that are held by this application.
      * @return A new instance of fragment OverviewFragment.
      */
-    public static OverviewFragment newInstance(ArrayList<Card> data) {
+    public static OverviewFragment newInstance() {
         OverviewFragment fragment = new OverviewFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(DATA_ARG, data);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,12 +84,14 @@ public class OverviewFragment extends ListFragment<Card> {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        visible = true;
+
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         Bundle args = getArguments();
         this.placeholder = (RelativeLayout) view.findViewById(R.id.placeholder);
 
         if (args != null) {
-            data = args.getParcelableArrayList(DATA_ARG);
+            this.data = listener.requestData();
 
             changePlaceholderVisibility(data);
 
@@ -99,7 +108,7 @@ public class OverviewFragment extends ListFragment<Card> {
                 @Override
                 public void onClickItem(View v, int position) {
                     Card c = data.get(position);
-                    listener.onItemClicked(c);
+                    listener.onItemClick(position, c);
                 }
             }));
         }
@@ -110,8 +119,8 @@ public class OverviewFragment extends ListFragment<Card> {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OverviewFragmentInteractionListener) {
-            listener = (OverviewFragmentInteractionListener) context;
+        if (context instanceof ListInteractor) {
+            listener = (ListInteractor<Card>) context;
         } else {
             throw new ClassCastException(context.toString() + " must implement the " +
                     "OverviewFragmentInteractionListener interface!");
@@ -126,25 +135,39 @@ public class OverviewFragment extends ListFragment<Card> {
 
     @Override
     public void dataChanged(List<Card> updated) {
+        this.data.clear();
+        this.data.addAll(updated);
 
+        if (!visible) {
+            return;
+        }
+
+        filter();
+        changePlaceholderVisibility(data);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void filter(Filter<Card> filter) {
+        this.filter = filter;
 
-    }
+        if (!visible) {
+            return;
+        }
 
-    /**
-     * Call this method when anything (even the order of items) changes to the data-array. This
-     * function will refresh the adapter, meaning it will update it's UI according to the new
-     * list.
-     *
-     * @param data Updated list containing all cards
-     */
-    public void refreshData(List<Card> data) {
-        this.data = data;
+        filter();
         changePlaceholderVisibility(data);
         adapter.notifyDataSetChanged();
+    }
+
+    private void filter() {
+        List<Card> toRemove = new ArrayList<>();
+        for (Card card: this.data) {
+            if (!filter.retain(card)) {
+                toRemove.add(card);
+            }
+        }
+        this.data.removeAll(toRemove);
     }
 
     private void changePlaceholderVisibility(List<Card> data) {
@@ -153,14 +176,5 @@ public class OverviewFragment extends ListFragment<Card> {
         } else {
             this.placeholder.setVisibility(View.VISIBLE);
         }
-    }
-
-    public interface OverviewFragmentInteractionListener {
-        /**
-         * This function will be called when the user selects a specific card.
-         *
-         * @param card The card the user clicked on.
-         */
-        public void onItemClicked(Card card);
     }
 }

@@ -19,6 +19,7 @@ package com.abyx.loyalty.contents;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class provides logic for migrating the data saved in a file-based structure to a database-
@@ -38,7 +39,7 @@ public class StorageMigrator {
      */
     public void migrate() {
         IO io = new IO(context);
-        ArrayList<Card> cards = io.load();
+        List<Card> cards = io.load();
         Database db = new Database(context);
         db.openDatabase();
         for (Card card: cards) {
