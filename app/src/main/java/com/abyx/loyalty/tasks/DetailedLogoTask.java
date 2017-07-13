@@ -43,14 +43,6 @@ import be.abyx.aurora.ShapeFactory;
  * Retrieves the logo corresponding to this store that has been processed with a magic crop and that
  * is placed above a circular, semi-transparent, background.
  *
- * The following exceptions might occur and should be caught by the implementation of the
- * listener's onFailed()-method:
- * <p>
- *     <ul>
- *         <li>IOException</li>
- *     </ul>
- * </p>
- *
  * @author Pieter Verschaffelt
  */
 public class DetailedLogoTask extends AsyncTask<Bitmap, Void, Bitmap> {
@@ -74,8 +66,6 @@ public class DetailedLogoTask extends AsyncTask<Bitmap, Void, Bitmap> {
     @Override
     @Nullable
     protected Bitmap doInBackground(Bitmap... params) {
-        //String fileName = Constants.CACHE_DIR_LOGO_DETAIL + Integer.toString(card.getName().hashCode()) + "." + Constants.IMAGE_FORMAT;
-
         Bitmap output;
 
         Bitmap logo = params[0];

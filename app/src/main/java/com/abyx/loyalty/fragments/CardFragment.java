@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +45,7 @@ import com.abyx.loyalty.exceptions.InvalidCardException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
 import com.abyx.loyalty.graphics.BarcodeGenerator;
+import com.abyx.loyalty.tasks.BarcodeTask;
 import com.abyx.loyalty.tasks.DetailedLogoTask;
 import com.abyx.loyalty.extra.ProgressIndicator;
 import com.abyx.loyalty.R;
@@ -215,15 +218,18 @@ public class CardFragment extends Fragment {
         @Override
         public void onDone(Bitmap result) {
             // TODO a new Aurora task should also be started here!
-            // TODO a new Barcode task should also be started here!
             DetailedLogoTask task = new DetailedLogoTask(getContext(), new DetailedTaskListener(), getCard());
             task.executeOnExecutor(poolExecutor, result);
 
-            barcodeImage.setImageBitmap(encodeAsBitmap(data.getBarcode(), data.getFormat()));
+            BarcodeTask barcodeTask = new BarcodeTask(getContext(), new BarcodeTaskListener(), getCard());
+            barcodeTask.executeOnExecutor(poolExecutor);
 
             AuroraFactory factory = new ParallelAuroraFactory(getContext());
-            // TODO automatically get resolution
-            Bitmap aurora = factory.createAuroraBasedUponDrawable(result, new BlurryAurora(getContext()), 1080, 1920);
+            // Get device resolution
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            Bitmap aurora = factory.createAuroraBasedUponDrawable(result, new BlurryAurora(getContext()), size.x, size.y);
             getActivity().findViewById(R.id.rootLayout).setBackground(new BitmapDrawable(getResources(), aurora));
         }
     }
@@ -243,7 +249,28 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onDone(Bitmap result) {
-            logoView.setImageDrawable(new BitmapDrawable(getResources(), result));
+            if (isAdded()) {
+                logoView.setImageDrawable(new BitmapDrawable(getResources(), result));
+            }
+        }
+    }
+
+    private class BarcodeTaskListener implements TaskListener<Bitmap> {
+        @Override
+        public void onProgressUpdate(double progress) {
+
+        }
+
+        @Override
+        public void onFailed(Throwable exception) {
+            // TODO: Handle exceptions
+        }
+
+        @Override
+        public void onDone(Bitmap result) {
+            if (isAdded()) {
+                barcodeImage.setImageDrawable(new BitmapDrawable(getResources(), result));
+            }
         }
     }
 

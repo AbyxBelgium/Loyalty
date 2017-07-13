@@ -99,7 +99,6 @@ public class BarcodeGenerator {
 
         this.renderTextOnBitmap(bitmap, barcode);
         ShapeFactory factory = new ParallelShapeFactory();
-        // TODO the background colour should be made a constant
         return factory.createShape(new RectangleShape(this.context), bitmap, Constants.LOGO_BACKGROUND_COLOUR, padding);
     }
 
