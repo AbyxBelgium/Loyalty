@@ -17,7 +17,7 @@
 package com.abyx.loyalty.managers;
 
 /**
- * This listener can be registered by some kind of manager (such as the DataManager) and will then
+ * This listener can be registered by some kind of manager (such as the Database) and will then
  * get notified upon changes of this manager.
  *
  * @author Pieter Verschaffelt

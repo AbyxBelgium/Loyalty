@@ -23,6 +23,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.abyx.loyalty.exceptions.DatabaseNotOpenException;
 import com.abyx.loyalty.exceptions.InvalidCardException;
+import com.abyx.loyalty.managers.ChangeObservable;
 import com.google.zxing.BarcodeFormat;
 
 import java.util.ArrayList;
@@ -34,9 +35,11 @@ import java.util.List;
  *
  * @author Pieter Verschaffelt
  */
-public class Database {
+public class Database extends ChangeObservable<List<Card>> {
     private DatabaseHelper helper;
     private SQLiteDatabase database;
+
+    private List<Card> cards;
 
     public Database(Context context) {
         helper = new DatabaseHelper(context);
@@ -60,6 +63,8 @@ public class Database {
         ContentValues toAdd = generateCardContentValues(card);
         long newID = database.insert(DatabaseContract.TABLE_CARD, null, toAdd);
         card.setID(newID);
+
+        this.getAllCards();
     }
 
     /**
@@ -101,6 +106,7 @@ public class Database {
         String[] selectionArgs = {String.valueOf(card.getID())};
 
         database.update(DatabaseContract.TABLE_CARD, toUpdate, selection, selectionArgs);
+        this.getAllCards();
     }
 
     /**
@@ -124,6 +130,7 @@ public class Database {
         String[] selectionArgs = {String.valueOf(card.getID())};
 
         database.delete(DatabaseContract.TABLE_CARD, selection, selectionArgs);
+        this.getAllCards();
     }
 
     /**
@@ -168,11 +175,10 @@ public class Database {
     }
 
     /**
-     * This function returns all loyalty cards that are stored by this application.
-     *
-     * @return All loyalty cards that are stored in this application by the current user.
+     * This method receives all cards from the database and sends the queried data to all listeners.
+     * NOTE: Database must be open before invoking this function.
      */
-    public List<Card> getAllCards() {
+    public void getAllCards() {
         if (database == null) {
             throw new DatabaseNotOpenException("Database is not open!");
         }
@@ -187,7 +193,7 @@ public class Database {
 
         Cursor cursor = database.query(DatabaseContract.TABLE_CARD, projection, null, null, null, null, null);
 
-        List<Card> cards = new ArrayList<>();
+        cards = new ArrayList<>();
 
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -212,7 +218,7 @@ public class Database {
             cursor.close();
         }
 
-        return cards;
+        this.notifyListeners(cards);
     }
 
     public void closeDatabase() {

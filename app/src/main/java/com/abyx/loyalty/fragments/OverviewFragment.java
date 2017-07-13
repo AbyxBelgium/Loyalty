@@ -16,17 +16,12 @@
 
 package com.abyx.loyalty.fragments;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -38,9 +33,7 @@ import com.abyx.loyalty.extra.RecyclerItemListener;
 import com.abyx.loyalty.extra.RecyclerTouchListener;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This fragment provides an overview of all loyalty cards stored on this device. These cards are

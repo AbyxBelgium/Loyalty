@@ -38,6 +38,7 @@ import java.util.List;
 public class IO {
     private Context context;
     private String filename;
+    private List<Card> data;
 
     public IO(Context context){
         this.context = context;
@@ -89,8 +90,9 @@ public class IO {
         return start;
     }
 
-    public ArrayList<Card> load(){
-        return restore(context.getFileStreamPath(filename));
+    public List<Card> load(){
+        this.data = restore(context.getFileStreamPath(filename));
+        return this.data;
     }
 
     /**

@@ -14,27 +14,22 @@
  * limitations under the License.
  */
 
-package com.abyx.loyalty.managers;
-
-import android.content.Context;
-
-import com.abyx.loyalty.contents.Card;
-
-import java.util.List;
+package com.abyx.loyalty.fragments;
 
 /**
- * The DataManager is responsible for updating, modifying and adding new data to persistent storage.
- * Other entities can subscribe to the DataManager and be notified upon data changes.
+ * Functional interface that can be used for filtering large datasets.
+ *
+ * @param <T> Type of type that should be filtered.
  *
  * @author Pieter Verschaffelt
  */
-public class DataManager extends ChangeObservable<List<Card>> {
-    private List<Card> data;
-    private Context context;
+public interface Filter<T> {
 
-    public DataManager(Context context) {
-        this.context = context;
-    }
-
-
+    /**
+     * Returns true when the given item should be retained.
+     *
+     * @param item The item that should be judged.
+     * @return True when the given item should be retained, false otherwise.
+     */
+    public boolean retain(T item);
 }
