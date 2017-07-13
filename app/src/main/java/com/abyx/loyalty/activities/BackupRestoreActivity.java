@@ -28,10 +28,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.CurrentProgressDialog;
 import com.abyx.loyalty.extra.FileChooser;
-import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.exceptions.MakeDirException;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.extra.ReceivedPermission;
