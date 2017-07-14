@@ -303,6 +303,10 @@ public class CardFragment extends Fragment {
      * Hide the ProgressBar and make the logo visible using an animation.
      */
     private void hideProgressBar() {
+        if (!isAdded()) {
+            return;
+        }
+
         logoView.setAlpha(0.0f);
         logoView.setVisibility(View.VISIBLE);
 
