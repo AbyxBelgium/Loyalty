@@ -43,14 +43,14 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
 
     private ArrayList<Card> data;
     private boolean sortedDescending;
-    private ListFragment<Card> overviewFragment;
+    protected ListFragment<Card> overviewFragment;
 
     private Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.layout_main);
 
         // The sortedDescending value from the last time the user used this app
         SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);

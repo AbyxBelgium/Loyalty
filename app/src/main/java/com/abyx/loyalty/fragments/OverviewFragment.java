@@ -91,7 +91,7 @@ public class OverviewFragment extends ListFragment<Card> {
         this.placeholder = (RelativeLayout) view.findViewById(R.id.placeholder);
 
         if (args != null) {
-            this.data = listener.requestData();
+            this.data = new ArrayList<>(listener.requestData());
 
             changePlaceholderVisibility(data);
 
@@ -154,6 +154,9 @@ public class OverviewFragment extends ListFragment<Card> {
         if (!visible) {
             return;
         }
+
+        this.data.clear();
+        this.data.addAll(listener.requestData());
 
         filter();
         changePlaceholderVisibility(data);

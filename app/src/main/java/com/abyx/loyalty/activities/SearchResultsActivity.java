@@ -25,6 +25,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -32,63 +33,39 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.extra.RecyclerItemListener;
 import com.abyx.loyalty.extra.RecyclerTouchListener;
+import com.abyx.loyalty.fragments.Filter;
+import com.abyx.loyalty.fragments.ListInteractor;
+import com.abyx.loyalty.managers.ChangeListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class SearchResultsActivity extends AppCompatActivity implements TextWatcher {
+public class SearchResultsActivity extends MainActivity implements TextWatcher {
     private EditText searchField;
-    private RecyclerView mainList;
-
-    private ArrayList<Card> data;
-    private ArrayList<Card> originalData;
-    private CardAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_search_results);
-
-        mainList = (RecyclerView) findViewById(R.id.mainList);
+        setContentView(R.layout.layout_main);
 
         ActionBar actionBar = getSupportActionBar();
-        // add the custom view to the action bar
-        actionBar.setCustomView(R.layout.search_actionbar);
+        if (actionBar != null) {
+            // add the custom view to the action bar
+            actionBar.setCustomView(R.layout.search_actionbar);
 
-        searchField = (EditText) actionBar.getCustomView().findViewById(R.id.searchField);
-        searchField.addTextChangedListener(this);
+            searchField = (EditText) actionBar.getCustomView().findViewById(R.id.searchField);
+            searchField.addTextChangedListener(this);
 
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        originalData = getIntent().getParcelableArrayListExtra("LIST");
-
-        data = new ArrayList<>();
-        data.addAll(originalData);
-
-        adapter = new CardAdapter(data, getApplicationContext());
-        mainList.setAdapter(adapter);
-
-        LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        mainList.setLayoutManager(llm);
-
-        mainList.addOnItemTouchListener(new RecyclerItemListener(getApplicationContext(), mainList, new RecyclerTouchListener() {
-            @Override
-            public void onClickItem(View v, int position) {
-                Intent intent = new Intent(SearchResultsActivity.this, CardActivity.class);
-                intent.putExtra(Constants.INTENT_CARD_ID_ARG, data.get(position).getID());
-                startActivity(intent);
-            }
-        }));
-
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(searchField, InputMethodManager.SHOW_IMPLICIT);
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
@@ -102,20 +79,19 @@ public class SearchResultsActivity extends AppCompatActivity implements TextWatc
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         //Respond to search queries
-        String query = charSequence.toString().toLowerCase();
-        if (query.equals("")){
-            data.clear();
-            data.addAll(originalData);
-        } else {
-            data.clear();
-            for (Card test : originalData) {
-                if (test.getName().toLowerCase().contains(query)) {
-                    data.add(test);
-                }
+        final String query = charSequence.toString().toLowerCase();
+        overviewFragment.filter(new Filter<Card>() {
+            @Override
+            public boolean retain(Card item) {
+                return item.getName().toLowerCase().contains(query);
             }
-        }
-        adapter.notifyDataSetChanged();
+        });
     }
 }
