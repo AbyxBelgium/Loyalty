@@ -37,7 +37,7 @@
     <string name="title_activity_edit">Bewerken</string>
     <string name="title_activity_finish">Klaar</string>
     <string name="title_activity_scanner">Scan barcode</string>
-    <string name="unexpected_io_error">Een onverwachte leesfout is opgetreden. Probeer de data in android/app instellingen te wissen wanneer het probleem aanhoudt.</string>
+    <string name="unexpected_io_error">Een onverwachte leesfout is opgetreden.</string>
     <string name="version">Versie:</string>
     <string name="website">Website:</string>
     <string name="website_value">https://abyx.be</string>

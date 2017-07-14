@@ -26,6 +26,7 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
@@ -52,6 +54,7 @@ import com.abyx.loyalty.exceptions.InvalidCardException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
 import com.abyx.loyalty.graphics.BarcodeGenerator;
+import com.abyx.loyalty.managers.DrawableManager;
 import com.abyx.loyalty.tasks.AuroraTask;
 import com.abyx.loyalty.tasks.BarcodeTask;
 import com.abyx.loyalty.tasks.DetailedLogoTask;
@@ -198,7 +201,7 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onFailed(Throwable exception) {
-            // TODO: Handle exceptions
+            showIOErrorDialog();
         }
 
         @Override
@@ -224,7 +227,11 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onFailed(Throwable exception) {
-            // TODO: Handle exceptions
+            Utils.showToast(getString(R.string.unexpected_io_error), Toast.LENGTH_LONG, getContext());
+            DrawableManager drawableManager = new DrawableManager();
+            Drawable error = drawableManager.getDrawable(getContext(), getActivity().getTheme(), R.drawable.ic_error_outline_black_24dp);
+            logoView.setImageDrawable(error);
+            hideProgressBar();
         }
 
         @Override
@@ -243,7 +250,7 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onFailed(Throwable exception) {
-            // TODO: Handle exceptions
+            showIOErrorDialog();
         }
 
         @Override
@@ -262,7 +269,8 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onFailed(Throwable exception) {
-            // TODO: Handle exceptions
+            Utils.showToast(getString(R.string.unexpected_io_error), Toast.LENGTH_LONG, getContext());
+
         }
 
         @Override
@@ -276,13 +284,8 @@ public class CardFragment extends Fragment {
 
         private TransitionDrawable buildTransitionDrawable(final Bitmap result) {
             Drawable[] layers = new Drawable[2];
-            // The way to retrieve drawables changed since Lollipop. We also need to support older
-            // Android versions and thus need this version check.
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                layers[0] = getContext().getResources().getDrawable(R.drawable.bg, getActivity().getTheme());
-            } else {
-                layers[0] = getResources().getDrawable(R.drawable.bg);
-            }
+            DrawableManager drawableManager = new DrawableManager();
+            layers[0] = drawableManager.getDrawable(getContext(), getActivity().getTheme(), R.drawable.bg);
             layers[1] = new BitmapDrawable(getResources(), result);
 
             return new TransitionDrawable(layers);
@@ -319,5 +322,19 @@ public class CardFragment extends Fragment {
                         progress.setVisibility(View.GONE);
                     }
                 });
+    }
+
+    /**
+     * Show an error dialog that informs the user that an IO error has occurred and close the
+     * activity (go back to the main menu) when the user clicks OK.
+     */
+    private void showIOErrorDialog() {
+        Utils.showInformationDialog(getString(R.string.unexpected_error), getString(R.string.unexpected_io_error), getContext(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Go back to main menu
+                getActivity().finish();
+            }
+        });
     }
 }

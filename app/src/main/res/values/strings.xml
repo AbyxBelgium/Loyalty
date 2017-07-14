@@ -14,8 +14,8 @@
     <string name="remove_all">Remove all</string>
     <string name="scan_image">Scan image</string>
     <string name="no_barcode_found_error">No barcode found! Please try again&#8230;</string>
-    <string name="unexpected_io_error">An unexpected read/write error occurred. Try to erase
-    data in android/application settings if the problem persists.</string>
+    <string name="unexpected_error">Unexpected error</string>
+    <string name="unexpected_io_error">An unexpected read/write error occurred.</string>
     <string name="optional_field_icon_url">Add custom logo (Optional)</string>
     <string name="title_activity_scanner">Scan barcode</string>
     <string name="title_activity_finish">Finish</string>
@@ -63,6 +63,7 @@
     <string name="create_dir_error_title">Error creating directory</string>
     <string name="create_dir_error_message">Could not create necessary directories! Please check your
     file permissions and try again.</string>
+    <!-- TODO No longer use these 2 lines (replaced by new unexpected error) -->
     <string name="unexpected_io_error_title">Unexpected IO error</string>
     <string name="unexpected_io_error_message">An unexpected read/write error occurred. Please try again.</string>
     <string name="successful_backup">Backup successfully saved!</string>

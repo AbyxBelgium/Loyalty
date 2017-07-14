@@ -54,7 +54,6 @@ public class Utils {
             barWriter.encode(barcode, format, 1, 1);
             return true;
         } catch (WriterException e) {
-            //Empty on purpose
             return false;
         } catch (IllegalArgumentException e){
             return false;
