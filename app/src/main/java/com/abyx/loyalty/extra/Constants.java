@@ -46,6 +46,7 @@ public class Constants {
     // Name of the directory that contains all logo's that are already processed for display in an
     // overview component.
     public static final String CACHE_DIR_LOGO_OVERVIEW = "overview";
+    public static final String CACHE_DIR_AURORA = "aurora";
 
     // The format that's used to persistently store all logos in the application.
     public static final String IMAGE_FORMAT = "png";

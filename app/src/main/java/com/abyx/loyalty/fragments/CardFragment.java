@@ -23,6 +23,9 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -35,6 +38,8 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -45,6 +50,7 @@ import com.abyx.loyalty.exceptions.InvalidCardException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
 import com.abyx.loyalty.graphics.BarcodeGenerator;
+import com.abyx.loyalty.tasks.AuroraTask;
 import com.abyx.loyalty.tasks.BarcodeTask;
 import com.abyx.loyalty.tasks.DetailedLogoTask;
 import com.abyx.loyalty.extra.ProgressIndicator;
@@ -195,20 +201,14 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onDone(Bitmap result) {
-            // TODO a new Aurora task should also be started here!
             DetailedLogoTask task = new DetailedLogoTask(getContext(), new DetailedTaskListener(), getCard());
             task.executeOnExecutor(poolExecutor, result);
 
             BarcodeTask barcodeTask = new BarcodeTask(getContext(), new BarcodeTaskListener(), getCard());
             barcodeTask.executeOnExecutor(poolExecutor);
 
-            AuroraFactory factory = new ParallelAuroraFactory(getContext());
-            // Get device resolution
-            Display display = getActivity().getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            Bitmap aurora = factory.createAuroraBasedUponDrawable(result, new BlurryAurora(getContext()), size.x, size.y);
-            getActivity().findViewById(R.id.rootLayout).setBackground(new BitmapDrawable(getResources(), aurora));
+            AuroraTask auroraTask = new AuroraTask(getContext(), new AuroraTaskListener(), getCard());
+            auroraTask.executeOnExecutor(poolExecutor, result);
         }
     }
 
@@ -249,6 +249,41 @@ public class CardFragment extends Fragment {
             if (isAdded()) {
                 barcodeImage.setImageDrawable(new BitmapDrawable(getResources(), result));
             }
+        }
+    }
+
+    private class AuroraTaskListener implements TaskListener<Bitmap> {
+        @Override
+        public void onProgressUpdate(double progress) {
+
+        }
+
+        @Override
+        public void onFailed(Throwable exception) {
+            // TODO: Handle exceptions
+        }
+
+        @Override
+        public void onDone(final Bitmap result) {
+            if (isAdded()) {
+                TransitionDrawable transitionDrawable = buildTransitionDrawable(result);
+                getActivity().findViewById(R.id.rootLayout).setBackground(transitionDrawable);
+                transitionDrawable.startTransition(500);
+            }
+        }
+
+        private TransitionDrawable buildTransitionDrawable(final Bitmap result) {
+            Drawable[] layers = new Drawable[2];
+            // The way to retrieve drawables changed since Lollipop. We also need to support older
+            // Android versions and thus need this version check.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                layers[0] = getContext().getResources().getDrawable(R.drawable.bg, getActivity().getTheme());
+            } else {
+                layers[0] = getResources().getDrawable(R.drawable.bg);
+            }
+            layers[1] = new BitmapDrawable(getResources(), result);
+
+            return new TransitionDrawable(layers);
         }
     }
 
