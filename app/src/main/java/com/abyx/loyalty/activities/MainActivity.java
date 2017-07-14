@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,7 +54,7 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
         setContentView(R.layout.layout_main);
 
         // The sortedDescending value from the last time the user used this app
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         sortedDescending = sharedPref.getBoolean(sortedString, true);
 
         overviewFragment = OverviewFragment.newInstance();
@@ -105,7 +106,7 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
 
             // Save the sort preference of the user, so he doesn't has to choose this every time
             // the app starts
-            SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean(sortedString, sortedDescending);
             editor.apply();
