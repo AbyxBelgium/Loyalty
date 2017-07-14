@@ -16,6 +16,8 @@
 
 package com.abyx.loyalty.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -216,7 +218,7 @@ public class CardFragment extends Fragment {
         @Override
         public void onProgressUpdate(double progressValue) {
             if (progressValue == 1.0) {
-                progress.setVisibility(View.GONE);
+                hideProgressBar();
             }
         }
 
@@ -268,7 +270,7 @@ public class CardFragment extends Fragment {
             if (isAdded()) {
                 TransitionDrawable transitionDrawable = buildTransitionDrawable(result);
                 getActivity().findViewById(R.id.rootLayout).setBackground(transitionDrawable);
-                transitionDrawable.startTransition(500);
+                transitionDrawable.startTransition(350);
             }
         }
 
@@ -292,5 +294,30 @@ public class CardFragment extends Fragment {
      */
     public Card getCard() {
         return data;
+    }
+
+    /**
+     * Hide the ProgressBar and make the logo visible using an animation.
+     */
+    private void hideProgressBar() {
+        logoView.setAlpha(0.0f);
+        logoView.setVisibility(View.VISIBLE);
+
+        int shortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        logoView.animate()
+                .alpha(1f)
+                .setDuration(shortAnimationDuration)
+                .setListener(null);
+
+        progress.animate()
+                .alpha(0f)
+                .setDuration(shortAnimationDuration)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        progress.setVisibility(View.GONE);
+                    }
+                });
     }
 }
