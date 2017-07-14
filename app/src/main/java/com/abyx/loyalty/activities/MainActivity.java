@@ -57,9 +57,6 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
         sortedDescending = sharedPref.getBoolean(sortedString, true);
 
         overviewFragment = OverviewFragment.newInstance();
-
-        this.db = new Database(getApplicationContext());
-        this.db.subscribe(this);
     }
 
     @Override
@@ -71,6 +68,10 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
     @Override
     protected void onResume(){
         super.onResume();
+
+        this.db = new Database(getApplicationContext());
+        this.db.subscribe(this);
+
         if (isPermissionGranted(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
             loadData();
         } else {
@@ -96,11 +97,12 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_sort){
+            sortedDescending = !sortedDescending;
+
             db.openDatabase();
-            db.getAllCardsSorted(sortedDescending);
+            db.getAllCardsSorted(!sortedDescending);
             db.closeDatabase();
 
-            sortedDescending = !sortedDescending;
             // Save the sort preference of the user, so he doesn't has to choose this every time
             // the app starts
             SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
@@ -152,7 +154,7 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
     private void loadData() {
         // Read all data from the internal storage
         db.openDatabase();
-        db.getAllCardsSorted(sortedDescending);
+        db.getAllCardsSorted(!sortedDescending);
         db.closeDatabase();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.overviewContainer, overviewFragment).commit();
