@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.CardAdapter;
@@ -44,6 +45,7 @@ import java.util.List;
 public class OverviewFragment extends ListFragment<Card> {
     private RecyclerView mainList;
     private RelativeLayout placeholder;
+    private TextView placeholderText;
 
     private List<Card> data =  new ArrayList<>();
     private ListInteractor<Card> listener;
@@ -52,6 +54,8 @@ public class OverviewFragment extends ListFragment<Card> {
 
     // Whether this fragment is visible or not
     private boolean visible = false;
+
+    private boolean hasFiltered = false;
 
     // Do not filter anything by default
     private Filter<Card> filter = new Filter<Card>() {
@@ -71,10 +75,7 @@ public class OverviewFragment extends ListFragment<Card> {
      * @return A new instance of fragment OverviewFragment.
      */
     public static OverviewFragment newInstance() {
-        OverviewFragment fragment = new OverviewFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
+        return new OverviewFragment();
     }
 
     @Override
@@ -87,31 +88,30 @@ public class OverviewFragment extends ListFragment<Card> {
         visible = true;
 
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
-        Bundle args = getArguments();
+
         this.placeholder = (RelativeLayout) view.findViewById(R.id.placeholder);
+        this.placeholderText = (TextView) view.findViewById(R.id.placeholderText);
 
-        if (args != null) {
-            this.data = new ArrayList<>(listener.requestData());
+        this.data = new ArrayList<>(listener.requestData());
 
-            changePlaceholderVisibility(data);
+        changePlaceholderVisibility(data);
 
-            mainList = (RecyclerView) view.findViewById(R.id.mainList);
+        mainList = (RecyclerView) view.findViewById(R.id.mainList);
 
-            adapter = new CardAdapter(data, getContext());
-            mainList.setAdapter(adapter);
+        adapter = new CardAdapter(data, getContext());
+        mainList.setAdapter(adapter);
 
-            LinearLayoutManager llm = new LinearLayoutManager(getContext());
-            llm.setOrientation(LinearLayoutManager.VERTICAL);
-            mainList.setLayoutManager(llm);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        mainList.setLayoutManager(llm);
 
-            mainList.addOnItemTouchListener(new RecyclerItemListener(getContext(), mainList, new RecyclerTouchListener() {
-                @Override
-                public void onClickItem(View v, int position) {
-                    Card c = data.get(position);
-                    listener.onItemClick(position, c);
-                }
-            }));
-        }
+        mainList.addOnItemTouchListener(new RecyclerItemListener(getContext(), mainList, new RecyclerTouchListener() {
+            @Override
+            public void onClickItem(View v, int position) {
+                Card c = data.get(position);
+                listener.onItemClick(position, c);
+            }
+        }));
 
         return view;
     }
@@ -171,12 +171,20 @@ public class OverviewFragment extends ListFragment<Card> {
             }
         }
         this.data.removeAll(toRemove);
+        hasFiltered = toRemove.size() != 0;
     }
 
     private void changePlaceholderVisibility(List<Card> data) {
         if (data.size() != 0) {
             this.placeholder.setVisibility(View.GONE);
         } else {
+            // Change placeholder text and image when no results where found due to filtering or
+            // due to an empty library.
+            if (hasFiltered) {
+                this.placeholderText.setText(getString(R.string.no_cards_found));
+            } else {
+                this.placeholderText.setText(getString(R.string.no_cards_yet));
+            }
             this.placeholder.setVisibility(View.VISIBLE);
         }
     }

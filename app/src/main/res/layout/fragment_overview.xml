@@ -36,7 +36,8 @@
             android:textAlignment="center"
             android:textSize="20sp"
             android:gravity="center_horizontal"
-            android:text="@string/no_cards_yet"/>
+            android:text="@string/no_cards_yet"
+            android:id="@+id/placeholderText"/>
     </RelativeLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/addFAB"
