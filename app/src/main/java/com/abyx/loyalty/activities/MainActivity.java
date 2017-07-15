@@ -28,6 +28,7 @@ import android.view.View;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
+import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.ReceivedPermission;
 import com.abyx.loyalty.fragments.ListFragment;
@@ -53,7 +54,9 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main);
 
-        // The sortedDescending value from the last time the user used this app
+        // The sortedDescending value from the last time the user used this app. Use DefaultShared-
+        // Preferences. This allows us to get a hold on the same preferences from within different
+        // activities.
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         sortedDescending = sharedPref.getBoolean(sortedString, true);
 
@@ -125,6 +128,9 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
             temp.putParcelableArrayListExtra(Constants.INTENT_LIST_ARG, data);
             startActivity(temp);
             return true;
+        } else if (id == R.id.action_invalidate_cache) {
+            IO io = new IO(getApplicationContext());
+            io.clearCache();
         }
 
         return super.onOptionsItemSelected(item);

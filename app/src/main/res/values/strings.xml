@@ -100,6 +100,7 @@
     <string name="invalid_card_exception">An invalid card was trying to be updated&#8230;</string>
     <string name="no_cards_yet">There are no Loyalty cards in your library at the moment. Click the big plus to add a new one!</string>
     <string name="no_cards_found">No Loyalty cards satisfy the given search criteria.</string>
+    <string name="invalidate_title">Invalidate caches</string>
 
     <!-- No translation needed for these resources: -->
     <string-array name="format_array">

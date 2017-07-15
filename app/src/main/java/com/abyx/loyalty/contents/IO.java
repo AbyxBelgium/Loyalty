@@ -173,7 +173,7 @@ public class IO {
      * Clear the app's cache folder on the external storage so that we don't waste memory.
      */
     public void clearCache(){
-        DeleteRecursive(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Loyalty/Cache/"));
+        DeleteRecursive(context.getFilesDir());
     }
 
     private void DeleteRecursive(File file){

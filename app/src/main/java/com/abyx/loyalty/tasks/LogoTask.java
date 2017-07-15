@@ -19,6 +19,7 @@ package com.abyx.loyalty.tasks;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 
@@ -34,6 +35,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import be.abyx.aurora.CropUtility;
 
 /**
  * This task is used for asynchronously looking up and downloading a new logo from the Loyalty API.
@@ -125,9 +128,11 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
     private Bitmap downloadLogo(String url, String logoFileName) {
         try (InputStream in = new java.net.URL(url).openStream()) {
             Bitmap output = BitmapFactory.decodeStream(in);
+            CropUtility cropUtility = new CropUtility();
+            Bitmap cropped = cropUtility.rectangularCrop(output, Color.WHITE, Constants.MAGIC_CROP_TOLERANCE);
             FileOutputStream fos = context.openFileOutput(logoFileName, Context.MODE_PRIVATE);
-            output.setHasAlpha(true);
-            output.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
+            cropped.setHasAlpha(true);
+            cropped.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
             return output;
         } catch (Throwable e) {
             this.listener.onFailed(e);

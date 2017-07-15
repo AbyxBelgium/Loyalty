@@ -18,7 +18,11 @@
         android:title="@string/backup_title"
         app:showAsAction="never"/>
     <item
+        android:id="@+id/action_invalidate_cache"
+        android:title="@string/invalidate_title"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/action_about"
         android:title="@string/title_activity_about"
-        app:showAsAction="never" />
+        app:showAsAction="never"/>
 </menu>

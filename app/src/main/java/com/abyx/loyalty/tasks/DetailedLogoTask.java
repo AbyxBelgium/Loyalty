@@ -35,7 +35,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import be.abyx.aurora.CircleShape;
-import be.abyx.aurora.ImageUtils;
+import be.abyx.aurora.CropUtility;
 import be.abyx.aurora.ParallelShapeFactory;
 import be.abyx.aurora.ShapeFactory;
 
@@ -66,15 +66,10 @@ public class DetailedLogoTask extends AsyncTask<Bitmap, Void, Bitmap> {
     @Override
     @Nullable
     protected Bitmap doInBackground(Bitmap... params) {
-        Bitmap output;
-
-        Bitmap logo = params[0];
-        ImageUtils utils = new ImageUtils(this.context);
-        Bitmap croppedLogo = utils.magicCrop(logo, Color.WHITE, Constants.MAGIC_CROP_TOLERANCE);
         ShapeFactory shapeFactory = new ParallelShapeFactory();
-        output = shapeFactory.createShape(new CircleShape(this.context), croppedLogo, Constants.LOGO_BACKGROUND_COLOUR, 150);
-
-        return output;
+        CropUtility cropUtility = new CropUtility();
+        Bitmap cropped = cropUtility.magicCrop(params[0], Color.WHITE, Constants.MAGIC_CROP_TOLERANCE);
+        return shapeFactory.createShape(new CircleShape(this.context), cropped, Constants.LOGO_BACKGROUND_COLOUR, 150);
     }
 
     @Override
