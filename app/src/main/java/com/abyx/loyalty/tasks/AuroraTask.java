@@ -55,6 +55,7 @@ public class AuroraTask extends AsyncTask<Bitmap, Void, Bitmap> {
     private Context context;
     private TaskListener<Bitmap> listener;
     private Card card;
+    private Throwable exception;
 
 
     public AuroraTask(Context context, TaskListener<Bitmap> listener, Card card) {
@@ -85,14 +86,14 @@ public class AuroraTask extends AsyncTask<Bitmap, Void, Bitmap> {
                 output.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
                 return output;
             } catch (IOException e) {
-                this.listener.onFailed(e);
+                exception = e;
                 return null;
             }
         } else {
             try (FileInputStream in = context.openFileInput(auroraFileName)) {
                 return BitmapFactory.decodeStream(in);
             } catch (Throwable e) {
-                this.listener.onFailed(e);
+                exception = e;
                 return null;
             }
         }
@@ -110,6 +111,8 @@ public class AuroraTask extends AsyncTask<Bitmap, Void, Bitmap> {
         if (bitmap != null) {
             listener.onProgressUpdate(1.0);
             listener.onDone(bitmap);
+        } else {
+            listener.onFailed(exception);
         }
     }
 }

@@ -60,6 +60,7 @@ import be.abyx.aurora.ResizeUtility;
 public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
     private Context context;
     private TaskListener<Bitmap> listener;
+    private Throwable exception;
 
     public LogoTask(Context context, TaskListener<Bitmap> listener) {
         this.context = context;
@@ -105,7 +106,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
 
                 output = downloadLogo(card.getImageURL(), logoFileName);
             } catch (IOException | JSONException e) {
-                this.listener.onFailed(new IOException(e));
+                exception = new IOException(e);
                 return null;
             }
         }  else {
@@ -119,7 +120,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
                 try (FileInputStream in = context.openFileInput(logoFileName)) {
                     output = BitmapFactory.decodeStream(in);
                 } catch (Throwable e) {
-                    this.listener.onFailed(e);
+                    exception = e;
                     return null;
                 }
             }
@@ -149,7 +150,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             magicCropped.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
             return magicCropped;
         } catch (Throwable e) {
-            this.listener.onFailed(e);
+            exception = e;
             return null;
         }
     }
@@ -166,6 +167,8 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
         if (bitmap != null) {
             this.listener.onProgressUpdate(1.0);
             this.listener.onDone(bitmap);
+        } else {
+            this.listener.onFailed(exception);
         }
     }
 }

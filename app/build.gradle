@@ -10,6 +10,8 @@ android {
         versionCode 8
         versionName "2.0"
 
+        vectorDrawables.useSupportLibrary = true
+
         renderscriptTargetApi 24
         renderscriptSupportModeEnabled true
     }

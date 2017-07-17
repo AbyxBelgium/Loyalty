@@ -27,7 +27,6 @@ import android.widget.Spinner;
 
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
-import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
 import com.google.zxing.BarcodeFormat;

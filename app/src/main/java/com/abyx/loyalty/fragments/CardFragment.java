@@ -20,6 +20,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -28,6 +29,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableWrapper;
 import android.graphics.drawable.TransitionDrawable;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -48,6 +50,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.abyx.loyalty.activities.MainActivity;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.exceptions.InvalidCardException;
@@ -206,7 +209,15 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onFailed(Throwable exception) {
-            showIOErrorDialog();
+            showNonFatalIOError();
+
+            BarcodeTask barcodeTask = new BarcodeTask(getContext(), new BarcodeTaskListener(), getCard());
+            barcodeTask.executeOnExecutor(poolExecutor);
+
+            DrawableManager drawableManager = new DrawableManager();
+
+            AuroraTask auroraTask = new AuroraTask(getContext(), new AuroraTaskListener(), getCard());
+            auroraTask.executeOnExecutor(poolExecutor, drawableManager.getBitmapFromVectorDrawable(getContext(), R.drawable.ic_error_outline_black_24dp));
         }
 
         @Override
@@ -232,11 +243,7 @@ public class CardFragment extends Fragment {
 
         @Override
         public void onFailed(Throwable exception) {
-            Utils.showToast(getString(R.string.unexpected_io_error), Toast.LENGTH_LONG, getContext());
-            DrawableManager drawableManager = new DrawableManager();
-            Drawable error = drawableManager.getDrawable(getContext(), getActivity().getTheme(), R.drawable.ic_error_outline_black_24dp);
-            logoView.setImageDrawable(error);
-            hideProgressBar();
+            showNonFatalIOError();
         }
 
         @Override
@@ -333,6 +340,14 @@ public class CardFragment extends Fragment {
                 });
     }
 
+    private void showNonFatalIOError() {
+        Utils.showToast(getString(R.string.unexpected_io_error), Toast.LENGTH_LONG, getContext());
+        DrawableManager drawableManager = new DrawableManager();
+        Drawable error = drawableManager.getDrawable(getContext(), getActivity().getTheme(), R.drawable.ic_error_outline_black_24dp);
+        logoView.setImageDrawable(error);
+        hideProgressBar();
+    }
+
     /**
      * Show an error dialog that informs the user that an IO error has occurred and close the
      * activity (go back to the main menu) when the user clicks OK.
@@ -342,7 +357,9 @@ public class CardFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // Go back to main menu
-                getActivity().finish();
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
     }

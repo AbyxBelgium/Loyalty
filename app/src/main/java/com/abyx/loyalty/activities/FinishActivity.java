@@ -26,7 +26,6 @@ import android.view.MenuItem;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
-import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.fragments.CardFragment;
 
