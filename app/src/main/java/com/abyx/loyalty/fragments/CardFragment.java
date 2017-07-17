@@ -181,8 +181,6 @@ public class CardFragment extends Fragment {
             });
 
             progress.setVisibility(View.VISIBLE);
-            LogoTask task = new LogoTask(this.getContext(), new LogoTaskListener());
-            task.executeOnExecutor(poolExecutor, getCard());
         }
         return view;
     }
@@ -191,6 +189,13 @@ public class CardFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(data.getName());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LogoTask task = new LogoTask(this.getContext(), new LogoTaskListener());
+        task.executeOnExecutor(poolExecutor, getCard());
     }
 
     private class LogoTaskListener implements TaskListener<Bitmap> {

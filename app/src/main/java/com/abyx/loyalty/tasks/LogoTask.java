@@ -37,6 +37,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import be.abyx.aurora.CropUtility;
+import be.abyx.aurora.ParallelShapeFactory;
+import be.abyx.aurora.RectangleShape;
+import be.abyx.aurora.ResizeUtility;
 
 /**
  * This task is used for asynchronously looking up and downloading a new logo from the Loyalty API.
@@ -128,12 +131,23 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
     private Bitmap downloadLogo(String url, String logoFileName) {
         try (InputStream in = new java.net.URL(url).openStream()) {
             Bitmap output = BitmapFactory.decodeStream(in);
+
             CropUtility cropUtility = new CropUtility();
             Bitmap cropped = cropUtility.rectangularCrop(output, Color.WHITE, Constants.MAGIC_CROP_TOLERANCE);
+
+            ResizeUtility resizeUtility = new ResizeUtility();
+            Bitmap resized = resizeUtility.resizeAndSquare(cropped, 768, 0);
+
+            ParallelShapeFactory parallelShapeFactory = new ParallelShapeFactory();
+            Bitmap out = parallelShapeFactory.createShape(new RectangleShape(context), resized, Color.WHITE, 15);
+
+            Bitmap magicCropped = cropUtility.magicCrop(out, Color.WHITE, Constants.MAGIC_CROP_TOLERANCE);
+
             FileOutputStream fos = context.openFileOutput(logoFileName, Context.MODE_PRIVATE);
-            cropped.setHasAlpha(true);
-            cropped.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
-            return output;
+
+            magicCropped.setHasAlpha(true);
+            magicCropped.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
+            return magicCropped;
         } catch (Throwable e) {
             this.listener.onFailed(e);
             return null;
