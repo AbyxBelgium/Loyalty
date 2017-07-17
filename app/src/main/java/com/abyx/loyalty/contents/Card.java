@@ -70,21 +70,12 @@ public class Card implements Parcelable{
         this.barcode = barcode;
     }
 
-    // TODO Remove once migration of tasks is done!
-    public String getImageLocation() {
-        return String.valueOf(imageLocation.hashCode());
-    }
-
     public void setImageURL(String imageLocation) {
         this.imageLocation = imageLocation;
     }
 
     public String getImageURL(){
         return imageLocation;
-    }
-
-    public String getSaveRepresentation(){
-        return name + "\t" + barcode + "\t" + imageLocation + "\t" + format.toString();
     }
 
     public BarcodeFormat getFormat(){

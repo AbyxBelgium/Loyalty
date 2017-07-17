@@ -28,13 +28,13 @@ import android.view.View;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
-import com.abyx.loyalty.contents.IO;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.ReceivedPermission;
 import com.abyx.loyalty.fragments.ListFragment;
 import com.abyx.loyalty.fragments.ListInteractor;
 import com.abyx.loyalty.fragments.OverviewFragment;
 import com.abyx.loyalty.R;
+import com.abyx.loyalty.managers.CacheManager;
 import com.abyx.loyalty.managers.ChangeListener;
 
 import java.util.ArrayList;
@@ -129,8 +129,8 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
             startActivity(temp);
             return true;
         } else if (id == R.id.action_invalidate_cache) {
-            IO io = new IO(getApplicationContext());
-            io.clearCache();
+            CacheManager cacheManager = new CacheManager(getApplicationContext());
+            cacheManager.clearCache();
         }
 
         return super.onOptionsItemSelected(item);
