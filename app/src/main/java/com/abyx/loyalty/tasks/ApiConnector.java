@@ -16,9 +16,11 @@
 
 package com.abyx.loyalty.tasks;
 
+import android.content.Context;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 
+import com.abyx.loyalty.R;
 import com.abyx.loyalty.exceptions.LogoNotFoundException;
 
 import org.apache.commons.io.IOUtils;
@@ -31,6 +33,19 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+
 
 /**
  * This class connects to the Loyalty API and returns all data available for a
@@ -62,9 +77,8 @@ public class ApiConnector {
     public String getJSON(String store) throws IOException, LogoNotFoundException {
         store = URLEncoder.encode(store, "UTF-8");
         String response;
-        URL url = new URL("https://abyx.be/loyalty/public/logo/" + URLEncoder.encode(store, "utf-8"));
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
+        URL url = new URL("https://www.abyx.be/loyalty/public/logo/" + URLEncoder.encode(store, "utf-8"));
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         int statusCode = connection.getResponseCode();
         if (statusCode == 200) {
             InputStream in = new BufferedInputStream(connection.getInputStream());

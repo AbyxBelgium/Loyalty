@@ -44,14 +44,14 @@ public class DrawableManager {
         }
     }
 
-    public Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+    public Bitmap getBitmapFromVectorDrawable(Context context, int drawableId, int width, int height) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             drawable = (DrawableCompat.wrap(drawable)).mutate();
         }
 
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(bitmap);
 

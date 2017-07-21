@@ -30,11 +30,8 @@ import com.abyx.loyalty.exceptions.LogoNotFoundException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.managers.DrawableManager;
 
-import org.json.JSONException;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,7 +50,6 @@ import be.abyx.aurora.ResizeUtility;
  * <p>
  *     <ul>
  *         <li>MalformedURLException</li>
- *         <li>FileNotFoundException</li>
  *         <li>IOException</li>
  *     </ul>
  * </p>
@@ -113,7 +109,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
                 return null;
             } catch (LogoNotFoundException e) {
                 DrawableManager drawableManager = new DrawableManager();
-                return drawableManager.getBitmapFromVectorDrawable(context, R.drawable.ic_image_black_24dp);
+                return drawableManager.getBitmapFromVectorDrawable(context, R.drawable.ic_image_gray_24dp, 768, 768);
             }
         }  else {
             // Check if the logo is stored in the persistent storage of this device or not.
@@ -174,6 +170,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             this.listener.onProgressUpdate(1.0);
             this.listener.onDone(bitmap);
         } else {
+            exception.printStackTrace();
             this.listener.onFailed(exception);
         }
     }

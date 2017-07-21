@@ -23,28 +23,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableWrapper;
 import android.graphics.drawable.TransitionDrawable;
-import android.graphics.drawable.VectorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -53,32 +45,19 @@ import android.widget.Toast;
 import com.abyx.loyalty.activities.MainActivity;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
-import com.abyx.loyalty.exceptions.InvalidCardException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
-import com.abyx.loyalty.graphics.BarcodeGenerator;
 import com.abyx.loyalty.managers.DrawableManager;
 import com.abyx.loyalty.tasks.AuroraTask;
 import com.abyx.loyalty.tasks.BarcodeTask;
 import com.abyx.loyalty.tasks.DetailedLogoTask;
-import com.abyx.loyalty.extra.ProgressIndicator;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.tasks.LogoTask;
 import com.abyx.loyalty.tasks.TaskListener;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import be.abyx.aurora.AuroraFactory;
-import be.abyx.aurora.BlurryAurora;
-import be.abyx.aurora.CircleShape;
-import be.abyx.aurora.ParallelAuroraFactory;
-import be.abyx.aurora.ImageUtils;
-import be.abyx.aurora.ParallelShapeFactory;
-import be.abyx.aurora.ShapeFactory;
 
 /**
  * This fragment shows all details for one loyalty card (this includes the barcode and a small logo)
@@ -217,7 +196,7 @@ public class CardFragment extends Fragment {
             DrawableManager drawableManager = new DrawableManager();
 
             AuroraTask auroraTask = new AuroraTask(getContext(), new AuroraTaskListener(), getCard());
-            auroraTask.executeOnExecutor(poolExecutor, drawableManager.getBitmapFromVectorDrawable(getContext(), R.drawable.ic_error_outline_black_24dp));
+            auroraTask.executeOnExecutor(poolExecutor, drawableManager.getBitmapFromVectorDrawable(getContext(), R.drawable.ic_error_outline_gray_24dp, 150, 150));
         }
 
         @Override
@@ -343,8 +322,8 @@ public class CardFragment extends Fragment {
     private void showNonFatalIOError() {
         Utils.showToast(getString(R.string.unexpected_io_error), Toast.LENGTH_LONG, getContext());
         DrawableManager drawableManager = new DrawableManager();
-        Drawable error = drawableManager.getDrawable(getContext(), getActivity().getTheme(), R.drawable.ic_error_outline_black_24dp);
-        logoView.setImageDrawable(error);
+        DetailedLogoTask detailedLogoTask = new DetailedLogoTask(getContext(), new DetailedTaskListener(), getCard());
+        detailedLogoTask.execute(drawableManager.getBitmapFromVectorDrawable(getContext(), R.drawable.ic_error_outline_gray_24dp, 768, 768));
         hideProgressBar();
     }
 
