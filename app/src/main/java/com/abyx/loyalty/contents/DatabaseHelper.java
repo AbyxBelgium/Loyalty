@@ -26,7 +26,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * @author Pieter Verschaffelt
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     // The following strings are all used for creating or upgrading the database
     private static final String SQL_CREATE_ENTRIES =
@@ -35,10 +35,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             DatabaseContract.COLUMN_NAME + " TEXT," +
             DatabaseContract.COLUMN_BARCODE + " TEXT," +
             DatabaseContract.COLUMN_BARCODE_FORMAT + " TEXT," +
+            DatabaseContract.COLUMN_LAST_SEARCHED + " INTEGER DEFAULT 0," +
             DatabaseContract.COLUMN_IMAGE_URL + " TEXT)";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DatabaseContract.TABLE_CARD;
+
+    private static final String SQL_UPDATE_V1_TO_V2 =
+            "ALTER TABLE " + DatabaseContract.TABLE_CARD + " ADD COLUMN " + DatabaseContract.COLUMN_LAST_SEARCHED + " INTEGER DEFAULT 0";
 
     public DatabaseHelper(Context context) {
         super(context, "LOYALTY_DB", null, DATABASE_VERSION);
@@ -51,8 +55,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_ENTRIES);
-        onCreate(db);
+        if (oldVersion == 1 && newVersion == 2) {
+            db.execSQL(SQL_UPDATE_V1_TO_V2);
+        } else {
+            db.execSQL(SQL_DELETE_ENTRIES);
+            onCreate(db);
+        }
     }
 
     @Override

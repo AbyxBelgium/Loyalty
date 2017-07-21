@@ -83,6 +83,7 @@ public class Database extends ChangeObservable<List<Card>> {
         temp.put(DatabaseContract.COLUMN_BARCODE, card.getBarcode());
         temp.put(DatabaseContract.COLUMN_BARCODE_FORMAT, card.getFormat().toString());
         temp.put(DatabaseContract.COLUMN_IMAGE_URL, card.getImageURL());
+        temp.put(DatabaseContract.COLUMN_LAST_SEARCHED, card.getLastSearched());
         return temp;
     }
 
@@ -167,7 +168,8 @@ public class Database extends ChangeObservable<List<Card>> {
             String barcode = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE));
             String barcodeFormat = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE_FORMAT));
             String imageURL = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_IMAGE_URL));
-            Card output = new Card(name, barcode, imageURL, BarcodeFormat.valueOf(barcodeFormat));
+            int lastSearched = cursor.getInt(cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED));
+            Card output = new Card(name, barcode, imageURL, BarcodeFormat.valueOf(barcodeFormat), lastSearched);
             output.setID(cardID);
             cursor.close();
             return output;
@@ -215,10 +217,11 @@ public class Database extends ChangeObservable<List<Card>> {
                 String barcode = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE));
                 String barcodeFormat = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE_FORMAT));
                 String imageURL = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_IMAGE_URL));
+                int lastSearched = cursor.getInt(cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED));
 
                 BarcodeFormat format = BarcodeFormat.valueOf(barcodeFormat);
 
-                Card card = new Card(name, barcode, imageURL, format);
+                Card card = new Card(name, barcode, imageURL, format, lastSearched);
                 card.setID(id);
                 cards.add(card);
 

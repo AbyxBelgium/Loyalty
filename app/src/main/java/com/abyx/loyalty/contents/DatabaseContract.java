@@ -28,4 +28,6 @@ public class DatabaseContract {
     public static final String COLUMN_BARCODE = "BARCODE";
     public static final String COLUMN_BARCODE_FORMAT = "BARCODE_FORMAT";
     public static final String COLUMN_IMAGE_URL = "IMAGE_URL";
+    // This column will contain the epoch time (in seconds) when the last logo search was performed.
+    public static final String COLUMN_LAST_SEARCHED = "LAST_SEARCHED";
 }

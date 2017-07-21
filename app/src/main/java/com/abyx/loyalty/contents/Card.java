@@ -23,27 +23,32 @@ import com.google.zxing.BarcodeFormat;
 
 public class Card implements Parcelable{
     private long id;
+    // The epoch time in seconds when the last logo search operation was performed (and did not
+    // succeed).
+    private int lastSearched;
     private String name;
     private String barcode;
     private String imageLocation;
     private BarcodeFormat format;
 
-    public Card(String name, String barcode, String imageLocation, BarcodeFormat format){
+    public Card(String name, String barcode, String imageLocation, BarcodeFormat format, int lastSearched){
         // A card without specific ID has ID -1
         this.id = -1;
         this.name = name;
         this.barcode = barcode;
         this.imageLocation = imageLocation;
         this.format = format;
+        this.lastSearched = lastSearched;
     }
 
-    public Card(String name, String barcode, BarcodeFormat format){
+    public Card(String name, String barcode, BarcodeFormat format, int lastSearched){
         // A card without specific ID has ID -1
         this.id = -1;
         this.name = name;
         this.barcode = barcode;
         this.imageLocation = "";
         this.format = format;
+        this.lastSearched = lastSearched;
     }
 
     public Card(Parcel in){
@@ -52,6 +57,7 @@ public class Card implements Parcelable{
         this.barcode = in.readString();
         this.imageLocation = in.readString();
         this.format = BarcodeFormat.valueOf(in.readString());
+        this.lastSearched = in.readInt();
     }
 
     public String getName() {
@@ -98,6 +104,14 @@ public class Card implements Parcelable{
         return this.id;
     }
 
+    public int getLastSearched() {
+        return lastSearched;
+    }
+
+    public void setLastSearched(int lastSearched) {
+        this.lastSearched = lastSearched;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -110,6 +124,7 @@ public class Card implements Parcelable{
         parcel.writeString(barcode);
         parcel.writeString(imageLocation);
         parcel.writeString(format.toString());
+        parcel.writeInt(lastSearched);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
