@@ -92,7 +92,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
 
         long lastSearchedDifference = (System.currentTimeMillis() / 1000) - card.getLastSearched();
 
-        if (card.getImageURL().equals("") && lastSearchedDifference >= Constants.SEARCH_LIFETIME * 24 * 60 * 60) {
+        if (card.getImageURL().equals("") && lastSearchedDifference < Constants.SEARCH_LIFETIME * 24 * 60 * 60) {
             return logoNotFound(card, false);
         } else if (card.getImageURL().equals("")) {
             // Look for a logo for this store
