@@ -86,7 +86,7 @@ public class ApiConnector {
     public String getStoreLogo(String store) throws IOException, LogoNotFoundException {
         try {
             JSONObject json = new JSONObject(getJSON(store));
-            return json.getString("logo");
+            return json.getString("url");
         } catch (JSONException e) {
             throw new IOException(e);
         }
