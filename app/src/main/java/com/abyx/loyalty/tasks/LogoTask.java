@@ -23,9 +23,12 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 
+import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
+import com.abyx.loyalty.exceptions.LogoNotFoundException;
 import com.abyx.loyalty.extra.Constants;
+import com.abyx.loyalty.managers.DrawableManager;
 
 import org.json.JSONException;
 
@@ -105,9 +108,12 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
                 db.closeDatabase();
 
                 output = downloadLogo(card.getImageURL(), logoFileName);
-            } catch (IOException | JSONException e) {
+            } catch (IOException e) {
                 exception = new IOException(e);
                 return null;
+            } catch (LogoNotFoundException e) {
+                DrawableManager drawableManager = new DrawableManager();
+                return drawableManager.getBitmapFromVectorDrawable(context, R.drawable.ic_image_black_24dp);
             }
         }  else {
             // Check if the logo is stored in the persistent storage of this device or not.

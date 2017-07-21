@@ -19,6 +19,8 @@ package com.abyx.loyalty.tasks;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 
+import com.abyx.loyalty.exceptions.LogoNotFoundException;
+
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,19 +55,22 @@ public class ApiConnector {
      * @param store The store name for which the logo has to be found
      * @return The JSON-object as a String returned by the Loyalty-server. When something goes
      * wrong during connection to the API, null is returned.
-     * @throws IOException
+     * @throws IOException Whenever something goes wrong while connecting with the remote API.
+     * @throws LogoNotFoundException When no logo is found for the given store or brand name.
      */
     @Nullable
-    public String getJSON(String store) throws IOException {
+    public String getJSON(String store) throws IOException, LogoNotFoundException {
         store = URLEncoder.encode(store, "UTF-8");
         String response;
-        URL url = new URL("http://abyx.be/loyalty/public/api.php?store=" + store);
+        URL url = new URL("https://abyx.be/loyalty/public/logo/" + URLEncoder.encode(store, "utf-8"));
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         int statusCode = connection.getResponseCode();
         if (statusCode == 200) {
             InputStream in = new BufferedInputStream(connection.getInputStream());
             response = IOUtils.toString(in, "UTF-8");
+        } else if (statusCode == 404) {
+            throw new LogoNotFoundException();
         } else {
             throw new IOException("Unable to connect to Loyalty API!");
         }
@@ -78,8 +83,12 @@ public class ApiConnector {
      * @param store The store name for which the logo has to be found
      * @return String containing the URL to the logo
      */
-    public String getStoreLogo(String store) throws IOException, JSONException {
-        JSONObject json = new JSONObject(getJSON(store));
-        return json.getString("logo");
+    public String getStoreLogo(String store) throws IOException, LogoNotFoundException {
+        try {
+            JSONObject json = new JSONObject(getJSON(store));
+            return json.getString("logo");
+        } catch (JSONException e) {
+            throw new IOException(e);
+        }
     }
 }
