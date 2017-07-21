@@ -54,7 +54,8 @@ public class Constants {
     // Image quality settings used for storing the logos in the persistent storage.
     public static final int IMAGE_QUALITY = 100;
 
-    // The logo that's situated at this URL will be used when no logo is set for a specific card.
-    public static final String DEFAULT_LOGO_URL = "https://cdn4.iconfinder.com/data/icons/devine_icons/Black/PNG/Folder%20and%20Places/Stack.png";
+    // The amount of days that should be waited before trying to redownload a logo that was not
+    // found before.
+    public static final int SEARCH_LIFETIME = 7;
 
 }

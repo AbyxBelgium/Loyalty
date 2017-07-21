@@ -168,7 +168,14 @@ public class Database extends ChangeObservable<List<Card>> {
             String barcode = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE));
             String barcodeFormat = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE_FORMAT));
             String imageURL = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_IMAGE_URL));
-            int lastSearched = cursor.getInt(cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED));
+
+            int lastSearched;
+            if (cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED) == 0) {
+                lastSearched = cursor.getInt(cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED));
+            } else {
+                lastSearched = 0;
+            }
+
             Card output = new Card(name, barcode, imageURL, BarcodeFormat.valueOf(barcodeFormat), lastSearched);
             output.setID(cardID);
             cursor.close();
@@ -217,7 +224,13 @@ public class Database extends ChangeObservable<List<Card>> {
                 String barcode = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE));
                 String barcodeFormat = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE_FORMAT));
                 String imageURL = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_IMAGE_URL));
-                int lastSearched = cursor.getInt(cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED));
+
+                int lastSearched;
+                if (cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED) == 0) {
+                    lastSearched = cursor.getInt(cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED));
+                } else {
+                    lastSearched = 0;
+                }
 
                 BarcodeFormat format = BarcodeFormat.valueOf(barcodeFormat);
 

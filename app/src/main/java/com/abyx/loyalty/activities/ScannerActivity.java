@@ -57,7 +57,7 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
         if (rawResult != null) {
             Intent intent = new Intent(ScannerActivity.this, FinishActivity.class);
             Intent created = getIntent();
-            Card card = new Card(created.getStringExtra("STORENAME"), rawResult.getText(), BarcodeFormat.valueOf(rawResult.getBarcodeFormat().toString()));
+            Card card = new Card(created.getStringExtra("STORENAME"), rawResult.getText(), BarcodeFormat.valueOf(rawResult.getBarcodeFormat().toString()), 0);
             intent.putExtra(Constants.INTENT_CARD_ARG, card);
             startActivity(intent);
         } else {

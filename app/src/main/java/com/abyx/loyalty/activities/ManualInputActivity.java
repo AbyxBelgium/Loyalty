@@ -76,7 +76,7 @@ public class ManualInputActivity extends AppCompatActivity {
                 if (Utils.isValidBarcode(barcodeText.getText().toString(), BarcodeFormat.valueOf(formatSpinner.getSelectedItem().toString()))){
                     Intent intent = new Intent(ManualInputActivity.this, FinishActivity.class);
                     Intent created = getIntent();
-                    Card card = new Card(created.getStringExtra("STORENAME"), barcodeText.getText().toString(), BarcodeFormat.valueOf(formatSpinner.getSelectedItem().toString()));
+                    Card card = new Card(created.getStringExtra("STORENAME"), barcodeText.getText().toString(), BarcodeFormat.valueOf(formatSpinner.getSelectedItem().toString()), 0);
                     intent.putExtra(Constants.INTENT_CARD_ARG, card);
                     startActivityForResult(intent, Utils.ADD_STORE);
                 } else {

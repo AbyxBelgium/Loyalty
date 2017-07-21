@@ -90,7 +90,11 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
 
         Bitmap output;
 
-        if (card.getImageURL().equals("")) {
+        long lastSearchedDifference = (System.currentTimeMillis() / 1000) - card.getLastSearched();
+
+        if (card.getImageURL().equals("") && lastSearchedDifference >= Constants.SEARCH_LIFETIME * 24 * 60 * 60) {
+            return logoNotFound(card, false);
+        } else if (card.getImageURL().equals("")) {
             // Look for a logo for this store
             ApiConnector connector = new ApiConnector();
             try {
@@ -108,8 +112,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
                 exception = new IOException(e);
                 return null;
             } catch (LogoNotFoundException e) {
-                DrawableManager drawableManager = new DrawableManager();
-                return drawableManager.getBitmapFromVectorDrawable(context, R.drawable.ic_image_gray_24dp, 768, 768);
+                return logoNotFound(card, true);
             }
         }  else {
             // Check if the logo is stored in the persistent storage of this device or not.
@@ -129,6 +132,27 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
         }
 
         return output;
+    }
+
+    /**
+     * Returns the default logo when no logo was found. This method will also update the last
+     * searched date that was set for this Card (if the updateDate parameter is true).
+     *
+     * @param card The card for which the default logo should be returned.
+     * @param updateDate True if the given card's last searched date should be updated.
+     * @return A Bitmap representing the default logo.
+     */
+    private Bitmap logoNotFound(Card card, boolean updateDate) {
+        if (updateDate) {
+            card.setLastSearched((int) (System.currentTimeMillis() / 1000));
+            Database db = new Database(context);
+            db.openDatabase();
+            db.updateCard(card);
+            db.closeDatabase();
+        }
+
+        DrawableManager drawableManager = new DrawableManager();
+        return drawableManager.getBitmapFromVectorDrawable(context, R.drawable.ic_image_darkgray_24dp, 768, 768);
     }
 
     private Bitmap downloadLogo(String url, String logoFileName) {
