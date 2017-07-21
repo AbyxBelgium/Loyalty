@@ -32,6 +32,8 @@ public class Constants {
     public static final String INTENT_CARD_ID_ARG = "CARD_ID";
     // This constant is used for passing on a list of Card-objects
     public static final String INTENT_LIST_ARG = "LIST";
+    // This constant is used for turning animations inside of the fragment on or off
+    public static final String INTENT_ANIMATIONS = "ANIMATIONS";
 
     // The background colour for a store's logo shown in a circle.
     public static final int LOGO_BACKGROUND_COLOUR = Color.argb(143, 175, 175, 175);

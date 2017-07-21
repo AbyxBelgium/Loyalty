@@ -69,6 +69,7 @@ public class CardFragment extends Fragment {
     private ImageView logoView;
     private ProgressBar progress;
     private View rootView;
+    private boolean animations;
 
     private ThreadPoolExecutor poolExecutor;
 
@@ -78,16 +79,21 @@ public class CardFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static CardFragment newInstance(long cardID) {
+        return newInstance(cardID, true);
+    }
+
     /**
      * Use this factory method to create a new instance of this fragment using the provided
      * parameters.
      *
      * @return A new instance of fragment CardFragment.
      */
-    public static CardFragment newInstance(long cardID) {
+    public static CardFragment newInstance(long cardID, boolean animations) {
         CardFragment fragment = new CardFragment();
         Bundle args = new Bundle();
         args.putLong(Constants.INTENT_CARD_ID_ARG, cardID);
+        args.putBoolean(Constants.INTENT_ANIMATIONS, animations);
         fragment.setArguments(args);
         return fragment;
     }
@@ -114,6 +120,8 @@ public class CardFragment extends Fragment {
         logoView = (ImageView) view.findViewById(R.id.logoView);
         progress = (ProgressBar) view.findViewById(R.id.progress);
         rootView = view.findViewById(R.id.rootLayout);
+
+        animations = getArguments().getBoolean(Constants.INTENT_ANIMATIONS);
 
         long id = getArguments().getLong(Constants.INTENT_CARD_ID_ARG);
         Database db = new Database(getActivity());
@@ -267,9 +275,13 @@ public class CardFragment extends Fragment {
         @Override
         public void onDone(final Bitmap result) {
             if (isAdded()) {
-                TransitionDrawable transitionDrawable = buildTransitionDrawable(result);
-                getActivity().findViewById(R.id.rootLayout).setBackground(transitionDrawable);
-                transitionDrawable.startTransition(350);
+                if (animations) {
+                    TransitionDrawable transitionDrawable = buildTransitionDrawable(result);
+                    getActivity().findViewById(R.id.rootLayout).setBackground(transitionDrawable);
+                    transitionDrawable.startTransition(350);
+                } else {
+                    getActivity().findViewById(R.id.rootLayout).setBackground(new BitmapDrawable(getResources(), result));
+                }
             }
         }
 
@@ -298,25 +310,30 @@ public class CardFragment extends Fragment {
             return;
         }
 
-        logoView.setAlpha(0.0f);
-        logoView.setVisibility(View.VISIBLE);
+        if (animations) {
+            logoView.setAlpha(0.0f);
+            logoView.setVisibility(View.VISIBLE);
 
-        int shortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+            int shortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-        logoView.animate()
-                .alpha(1f)
-                .setDuration(shortAnimationDuration)
-                .setListener(null);
+            logoView.animate()
+                    .alpha(1f)
+                    .setDuration(shortAnimationDuration)
+                    .setListener(null);
 
-        progress.animate()
-                .alpha(0f)
-                .setDuration(shortAnimationDuration)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        progress.setVisibility(View.GONE);
-                    }
-                });
+            progress.animate()
+                    .alpha(0f)
+                    .setDuration(shortAnimationDuration)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            progress.setVisibility(View.GONE);
+                        }
+                    });
+        } else {
+            progress.setVisibility(View.GONE);
+            logoView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void showNonFatalIOError() {

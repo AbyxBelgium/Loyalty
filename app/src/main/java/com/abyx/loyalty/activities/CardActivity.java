@@ -81,7 +81,7 @@ public class CardActivity extends AppCompatActivity implements EditFragment.Edit
 
     @Override
     public void doneEditing() {
-        CardFragment fragment = CardFragment.newInstance(cardID);
+        CardFragment fragment = CardFragment.newInstance(cardID, false);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         transaction.replace(R.id.cardContainer, fragment).commit();
