@@ -18,13 +18,18 @@ package com.abyx.loyalty.tasks;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.CardAdapter;
+import com.abyx.loyalty.managers.ColorManager;
+import com.abyx.loyalty.managers.DrawableManager;
+import com.amulyakhare.textdrawable.TextDrawable;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -70,7 +75,9 @@ public class OverviewLogoManager {
 
         @Override
         public void onFailed(Throwable exception) {
-            // TODO: handle exceptions
+            ColorManager colorManager = new ColorManager();
+            TextDrawable textDrawable = TextDrawable.builder().buildRound(card.getName().substring(0, 1).toUpperCase(), colorManager.getColor(R.color.error_gray, context));
+            view.setImageDrawable(textDrawable);
         }
 
         @Override
@@ -89,7 +96,7 @@ public class OverviewLogoManager {
 
         @Override
         public void onFailed(Throwable exception) {
-            // TODO: handle exceptions
+            // No exceptions to handle here!
         }
 
         @Override
