@@ -36,7 +36,7 @@
             android:id="@+id/scanButton"
             android:onClick="scanBarcode"
             android:layout_margin="5dp"
-            android:src="@drawable/ic_barcode_scan_gray_24dp"
+            app:srcCompat="@drawable/ic_barcode_scan_gray_24dp"
             style="?android:attr/borderlessButtonStyle"/>
         <android.support.design.widget.FloatingActionButton
             android:layout_width="75dp"
@@ -45,7 +45,7 @@
             android:gravity="start|center_vertical"
             android:id="@+id/enterButton"
             android:layout_margin="5dp"
-            android:src="@drawable/ic_keyboard_gray_24dp"
+            app:srcCompat="@drawable/ic_keyboard_gray_24dp"
             android:onClick="enterBarcode"
             style="?android:attr/borderlessButtonStyle"/>
     </LinearLayout>

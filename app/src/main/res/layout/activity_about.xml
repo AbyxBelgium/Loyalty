@@ -10,58 +10,39 @@
     android:background="@color/bg_home"
     android:orientation="vertical"
     tools:context="com.abyx.loyalty.activities.AboutActivity">
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
-        <TextView
-            android:layout_width="match_parent"
-            android:textSize="32sp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:fontFamily="monospace"
-            android:gravity="center"
-            android:id="@+id/versionField"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:textSize="24sp"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="@string/developer_value"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:textSize="24sp"
-            android:gravity="center"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:autoLink="web"
-            android:text="@string/website_value"/>
-    </LinearLayout>
     <TextView
         android:layout_width="match_parent"
-        android:textSize="35sp"
+        android:textSize="32sp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:fontFamily="monospace"
+        android:gravity="center"
+        android:id="@+id/versionField"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="24sp"
         android:gravity="center"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:text="Powered by:"/>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:paddingTop="25dp"
-        android:src="@drawable/google_api_logo"/>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:paddingTop="10dp"
-        android:src="@drawable/bing_api_logo"/>
+        android:text="@string/developer_value"/>
     <TextView
         android:layout_width="match_parent"
-        android:textSize="40sp"
+        android:textSize="24sp"
         android:gravity="center"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:text="Loyalty API"
-        android:fontFamily="monospace"/>
+        android:autoLink="web"
+        android:text="@string/website_value"/>
+
+    <ScrollView
+        android:paddingTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/licenseTextView"
+            android:textColor="@color/white"/>
+    </ScrollView>
+
 </LinearLayout>
