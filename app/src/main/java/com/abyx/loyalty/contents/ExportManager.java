@@ -16,9 +16,61 @@
 
 package com.abyx.loyalty.contents;
 
+import com.abyx.loyalty.exceptions.InvalidImportFile;
+import com.google.zxing.BarcodeFormat;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
+ * Manages the export and import of cards to / from an external file.
+ *
  * @author Pieter Verschaffelt
  */
 public class ExportManager {
+    /**
+     * Parse the given file and return a list of all cards that are contained in that file.
+     *
+     * @param fileUrl URL that points to the location of the file that should be read.
+     * @return A list of cards that were found in the given file.
+     * @throws IOException Whenever something goes wrong while reading the file.
+     * @throws InvalidImportFile When the given fileUrl does not point to a valid Loyalty file.
+     * @throws FileNotFoundException Whenever the given file cannot be found or does not exist.
+     */
+    public List<Card> getContents(String fileUrl) throws IOException, InvalidImportFile, FileNotFoundException {
+        List<Card> output = new ArrayList<>();
 
+        File file = new File(fileUrl);
+
+        if (file.exists()) {
+            try (BufferedReader buffered = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+                String line = buffered.readLine();
+                while (line != null) {
+                    String[] rawData = line.split("\t");
+
+                    if (rawData.length != 4) {
+                        throw new InvalidImportFile();
+                    }
+
+                    // Keep compatibility with the previous version of Loyalty and thus keep 4 items
+                    // for every card (that's why index 3 is still used).
+                    Card temp = new Card(rawData[0], rawData[1], BarcodeFormat.valueOf(rawData[3]), 0);
+                    output.add(temp);
+                    line = buffered.readLine();
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Something went wrong while reading the file", e);
+            }
+        } else {
+            throw new FileNotFoundException();
+        }
+
+        return output;
+    }
 }
