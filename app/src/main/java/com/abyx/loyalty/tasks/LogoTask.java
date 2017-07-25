@@ -36,10 +36,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import be.abyx.aurora.CropUtility;
-import be.abyx.aurora.ParallelShapeFactory;
-import be.abyx.aurora.RectangleShape;
-import be.abyx.aurora.ResizeUtility;
+import be.abyx.aurora.shapes.ParallelShapeFactory;
+import be.abyx.aurora.shapes.RectangleShape;
+import be.abyx.aurora.utilities.CropUtility;
+import be.abyx.aurora.utilities.ResizeUtility;
 
 /**
  * This task is used for asynchronously looking up and downloading a new logo from the Loyalty API.

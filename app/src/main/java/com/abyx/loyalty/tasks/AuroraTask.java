@@ -33,9 +33,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import be.abyx.aurora.AuroraFactory;
-import be.abyx.aurora.BlurryAurora;
-import be.abyx.aurora.ParallelAuroraFactory;
+import be.abyx.aurora.aurora.AuroraFactory;
+import be.abyx.aurora.aurora.BlurryAurora;
+import be.abyx.aurora.aurora.ParallelAuroraFactory;
 
 /**
  * This task is responsible for rendering Aurora's that can be used as background for an Activity.

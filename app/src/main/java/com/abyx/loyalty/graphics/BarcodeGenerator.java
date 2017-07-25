@@ -31,9 +31,9 @@ import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
-import be.abyx.aurora.ParallelShapeFactory;
-import be.abyx.aurora.RectangleShape;
-import be.abyx.aurora.ShapeFactory;
+import be.abyx.aurora.shapes.ParallelShapeFactory;
+import be.abyx.aurora.shapes.RectangleShape;
+import be.abyx.aurora.shapes.ShapeFactory;
 
 /**
  * This class contains some methods that are used for generating Bitmaps that represent barcode's of

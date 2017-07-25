@@ -26,8 +26,8 @@ import android.support.v7.graphics.Palette;
 import com.abyx.loyalty.contents.Card;
 import com.amulyakhare.textdrawable.TextDrawable;
 
-import be.abyx.aurora.ColourPalette;
-import be.abyx.aurora.ColourPaletteFactory;
+import be.abyx.aurora.colour.ColourPalette;
+import be.abyx.aurora.colour.ColourPaletteFactory;
 
 /**
  * This Task generates all small thumbnails for store logos that are shown in an overview or summary

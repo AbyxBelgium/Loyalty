@@ -26,10 +26,9 @@ import android.support.annotation.Nullable;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.Constants;
 
-import be.abyx.aurora.CircleShape;
-import be.abyx.aurora.CropUtility;
-import be.abyx.aurora.ParallelShapeFactory;
-import be.abyx.aurora.ShapeFactory;
+import be.abyx.aurora.shapes.CircleShape;
+import be.abyx.aurora.shapes.ParallelShapeFactory;
+import be.abyx.aurora.shapes.ShapeFactory;
 
 /**
  * Retrieves the logo corresponding to this store that has been processed with a magic crop and that
