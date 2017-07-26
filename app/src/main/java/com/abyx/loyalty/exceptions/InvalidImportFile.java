@@ -39,8 +39,4 @@ public class InvalidImportFile extends Exception {
     public InvalidImportFile(Throwable cause) {
         super(cause);
     }
-
-    protected InvalidImportFile(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

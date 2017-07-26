@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +62,9 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
         sortedDescending = sharedPref.getBoolean(sortedString, true);
 
         overviewFragment = OverviewFragment.newInstance();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -150,6 +154,11 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
         Intent intent = new Intent(MainActivity.this, CardActivity.class);
         intent.putExtra(Constants.INTENT_CARD_ID_ARG, item.getID());
         startActivity(intent);
+    }
+
+    @Override
+    public Toolbar getToolbar() {
+        return (Toolbar) findViewById(R.id.toolbar);
     }
 
     @Override

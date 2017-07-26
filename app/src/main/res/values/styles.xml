@@ -1,10 +1,10 @@
 <resources>
-    <style name="HomeTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="HomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryDark">@color/bg_home</item>
         <item name="colorPrimary">@color/primary_home</item>
     </style>
 
-    <style name="DetailedTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="DetailedTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="windowActionBar">true</item>
         <item name="colorPrimaryDark">@android:color/transparent</item>
@@ -13,6 +13,10 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
 </resources>

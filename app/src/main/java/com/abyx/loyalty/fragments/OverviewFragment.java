@@ -17,11 +17,14 @@
 package com.abyx.loyalty.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -32,6 +35,9 @@ import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.extra.RecyclerItemListener;
 import com.abyx.loyalty.extra.RecyclerTouchListener;
+import com.abyx.loyalty.extra.recycler.BaseAdapter;
+import com.abyx.loyalty.extra.recycler.MultiMode;
+import com.abyx.loyalty.managers.DrawableManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +104,20 @@ public class OverviewFragment extends ListFragment<Card> {
 
         mainList = (RecyclerView) view.findViewById(R.id.mainList);
 
-        adapter = new CardAdapter(data, getContext());
+        DrawableManager drawableManager = new DrawableManager();
+
+        MultiMode mode = new MultiMode.Builder(listener.getToolbar(), getActivity())
+                .setMenu(R.menu.menu_contextual, new MultiMode.Callback() {
+                    @Override
+                    public boolean onMenuItemClick(BaseAdapter adapter, MenuItem item) {
+                        // you can use any function of the adapter in order to work with selected items
+                        return false;
+                    }
+                })
+                .setNavigationIcon(drawableManager.getDrawable(getContext(), null, R.drawable.ic_arrow_back_white_24dp))
+                .build();
+
+        adapter = new CardAdapter(data, getContext(), mode, false);
         mainList.setAdapter(adapter);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());

@@ -17,15 +17,22 @@
 package com.abyx.loyalty.extra;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.extra.recycler.BaseAdapter;
+import com.abyx.loyalty.extra.recycler.MultiMode;
+import com.abyx.loyalty.managers.DrawableManager;
 import com.abyx.loyalty.tasks.OverviewLogoManager;
 
 import java.util.List;
@@ -36,25 +43,55 @@ import java.util.concurrent.TimeUnit;
 /**
  * Implementation of the RecyclerView.Adapter-interface that's used for displaying information about
  * individual Loyalty cards as a summary.
+ *
+ * @author Pieter Verschaffelt
  */
-public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder> {
+public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
     private List<Card> cards;
     private Context context;
 
     private ThreadPoolExecutor executor;
 
-    public class CardViewHolder extends RecyclerView.ViewHolder {
+    public class CardViewHolder extends BaseAdapter.BaseViewHolder {
         public TextView textView;
         public ImageView imageView;
+        private LinearLayout rootLayout;
+
+        private Drawable whiteBackground;
+        private Drawable blackBackground;
 
         public CardViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.textView);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            rootLayout = (LinearLayout) itemView.findViewById(R.id.rootLayout);
+
+            DrawableManager drawableManager = new DrawableManager();
+            whiteBackground = drawableManager.getDrawable(context, null, R.color.white);
+            blackBackground = drawableManager.getDrawable(context, null, R.color.bg_home);
+        }
+
+        @Override
+        public void updateBackground() {
+            if (isChecked(getAdapterPosition())) {
+                // Set an appropriate background for the selected item
+                textView.setTextColor(Color.BLACK);
+                rootLayout.setBackground(whiteBackground);
+            } else {
+                // Set default background for the selected item
+                textView.setTextColor(Color.WHITE);
+                rootLayout.setBackground(blackBackground);
+            }
+        }
+
+        @Override
+        public void onBindData() {
+            determineState();
         }
     }
 
-    public CardAdapter(List<Card> cards, Context context) {
+    public CardAdapter(List<Card> cards, Context context, MultiMode multiMode, boolean animate) {
+        super(multiMode, animate);
         this.cards = cards;
         this.context = context;
         this.executor = new ThreadPoolExecutor(4, 8, 10000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(100));
@@ -69,6 +106,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
         // Start task to set correct image in ImageView
         OverviewLogoManager manager = new OverviewLogoManager(context, holder.imageView, c, executor);
         manager.start();
+        holder.onBindData();
+    }
+
+    @Override
+    public void removeAt(int index) {
+        // TODO investigate and implement
     }
 
     @Override
@@ -81,6 +124,4 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
     public int getItemCount() {
         return this.cards.size();
     }
-
-
 }

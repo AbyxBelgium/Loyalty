@@ -16,6 +16,8 @@
 
 package com.abyx.loyalty.fragments;
 
+import android.support.v7.widget.Toolbar;
+
 import java.util.List;
 
 /**
@@ -42,4 +44,6 @@ public interface ListInteractor<T> {
      * @param item The item that was clicked.
      */
     public void onItemClick(int dataPos, T item);
+
+    public Toolbar getToolbar();
 }
