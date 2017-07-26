@@ -31,13 +31,19 @@ import com.abyx.loyalty.R;
  */
 public class ToolbarActivity extends AppCompatActivity {
     protected boolean setDisplayHomeAsUp = true;
+    private boolean resumed = false;
 
     @Override
     protected void onResume() {
         super.onResume();
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        //noinspection ConstantConditions
-        getSupportActionBar().setDisplayHomeAsUpEnabled(setDisplayHomeAsUp);
-        getSupportActionBar().setDisplayShowHomeEnabled(setDisplayHomeAsUp);
+
+        if (!resumed) {
+            setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+            //noinspection ConstantConditions
+            getSupportActionBar().setDisplayHomeAsUpEnabled(setDisplayHomeAsUp);
+            getSupportActionBar().setDisplayShowHomeEnabled(setDisplayHomeAsUp);
+
+            resumed = true;
+        }
     }
 }

@@ -23,6 +23,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -47,15 +48,25 @@ import java.util.List;
 
 public class SearchResultsActivity extends MainActivity implements TextWatcher {
     private EditText searchField;
+    private boolean resumed = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
+        this.setDisplayHomeAsUp = true;
+
         setContentView(R.layout.layout_main);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
+
+        if (actionBar != null && !resumed) {
+
             // add the custom view to the action bar
             actionBar.setCustomView(R.layout.search_actionbar);
 
@@ -64,6 +75,8 @@ public class SearchResultsActivity extends MainActivity implements TextWatcher {
 
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME);
             actionBar.setDisplayHomeAsUpEnabled(true);
+
+            resumed = true;
         }
     }
 

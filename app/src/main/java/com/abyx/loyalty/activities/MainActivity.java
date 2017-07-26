@@ -31,6 +31,8 @@ import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.ReceivedPermission;
+import com.abyx.loyalty.extra.recycler.BaseAdapter;
+import com.abyx.loyalty.extra.recycler.MultiMode;
 import com.abyx.loyalty.fragments.ListFragment;
 import com.abyx.loyalty.fragments.ListInteractor;
 import com.abyx.loyalty.fragments.OverviewFragment;
@@ -163,6 +165,16 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
     @Override
     public Toolbar getToolbar() {
         return (Toolbar) findViewById(R.id.toolbar);
+    }
+
+    @Override
+    public MultiMode.Callback getOptionsMenuCallback() {
+        return new MultiMode.Callback() {
+            @Override
+            public boolean onMenuItemClick(BaseAdapter adapter, MenuItem item) {
+                return onOptionsItemSelected(item);
+            }
+        };
     }
 
     @Override

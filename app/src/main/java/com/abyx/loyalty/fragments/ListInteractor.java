@@ -18,6 +18,8 @@ package com.abyx.loyalty.fragments;
 
 import android.support.v7.widget.Toolbar;
 
+import com.abyx.loyalty.extra.recycler.MultiMode;
+
 import java.util.List;
 
 /**
@@ -46,4 +48,6 @@ public interface ListInteractor<T> {
     public void onItemClick(int dataPos, T item);
 
     public Toolbar getToolbar();
+
+    public MultiMode.Callback getOptionsMenuCallback();
 }

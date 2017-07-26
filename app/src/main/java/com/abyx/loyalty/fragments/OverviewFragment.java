@@ -113,6 +113,7 @@ public class OverviewFragment extends ListFragment<Card> {
                         return false;
                     }
                 })
+                .setOriginalMenu(R.menu.menu_main, listener.getOptionsMenuCallback())
                 .setNavigationIcon(drawableManager.getDrawable(getContext(), null, R.drawable.ic_arrow_back_white_24dp))
                 .build();
 
