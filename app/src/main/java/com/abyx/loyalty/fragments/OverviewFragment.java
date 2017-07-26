@@ -33,7 +33,6 @@ import android.widget.TextView;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.R;
-import com.abyx.loyalty.extra.RecyclerItemListener;
 import com.abyx.loyalty.extra.RecyclerTouchListener;
 import com.abyx.loyalty.extra.recycler.BaseAdapter;
 import com.abyx.loyalty.extra.recycler.MultiMode;
@@ -118,19 +117,21 @@ public class OverviewFragment extends ListFragment<Card> {
                 .build();
 
         adapter = new CardAdapter(data, getContext(), mode, false);
+
+        adapter.setClickListener(new RecyclerTouchListener() {
+            @Override
+            public void onClickItem(View v, int position) {
+                Card c = data.get(position);
+                listener.onItemClick(position, c);
+            }
+        });
+
         mainList.setAdapter(adapter);
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mainList.setLayoutManager(llm);
 
-        mainList.addOnItemTouchListener(new RecyclerItemListener(getContext(), mainList, new RecyclerTouchListener() {
-            @Override
-            public void onClickItem(View v, int position) {
-                Card c = data.get(position);
-                listener.onItemClick(position, c);
-            }
-        }));
 
         return view;
     }

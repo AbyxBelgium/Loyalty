@@ -37,7 +37,6 @@ import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.R;
-import com.abyx.loyalty.extra.RecyclerItemListener;
 import com.abyx.loyalty.extra.RecyclerTouchListener;
 import com.abyx.loyalty.fragments.Filter;
 import com.abyx.loyalty.fragments.ListInteractor;

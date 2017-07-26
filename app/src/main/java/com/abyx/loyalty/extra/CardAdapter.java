@@ -51,6 +51,7 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
     private Context context;
 
     private ThreadPoolExecutor executor;
+    private RecyclerTouchListener clickListener;
 
     public class CardViewHolder extends BaseAdapter.BaseViewHolder {
         public TextView textView;
@@ -61,7 +62,7 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
         private Drawable blackBackground;
 
         public CardViewHolder(View itemView) {
-            super(itemView);
+            super(itemView, clickListener);
             textView = (TextView) itemView.findViewById(R.id.textView);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             rootLayout = (LinearLayout) itemView.findViewById(R.id.rootLayout);
@@ -95,6 +96,10 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
         this.cards = cards;
         this.context = context;
         this.executor = new ThreadPoolExecutor(4, 8, 10000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(100));
+    }
+
+    public void setClickListener(RecyclerTouchListener clickListener) {
+        this.clickListener = clickListener;
     }
 
     @Override

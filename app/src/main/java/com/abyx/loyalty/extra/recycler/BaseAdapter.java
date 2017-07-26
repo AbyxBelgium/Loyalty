@@ -22,10 +22,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.abyx.loyalty.extra.RecyclerTouchListener;
+
 /**
  * See https://github.com/vpaliyX/MultiChoiceMode-RecyclerView/blob/master/multiplechoice/src/main/java/com/vpaliy/multiplechoice/BaseAdapter.java
  *
  * @author Vasyl Paliy
+ * @author Pieter Verschaffelt
  */
 public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends RecyclerView.Adapter<T> {
     private static final String TAG = BaseAdapter.class.getSimpleName();
@@ -153,14 +156,14 @@ public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends 
         tracker.saveState(KEY,outState);
     }
 
-    public abstract class BaseViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener, View.OnLongClickListener{
+    public abstract class BaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        private RecyclerTouchListener listener;
 
-        public BaseViewHolder(View itemView) {
+        public BaseViewHolder(View itemView, RecyclerTouchListener listener) {
             super(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
-
+            this.listener = listener;
         }
 
         public final void determineState() {
@@ -220,6 +223,10 @@ public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends 
                     mode.turnOff();
                 }
                 determineState();
+            } else {
+                if (this.listener != null) {
+                    this.listener.onClickItem(view, getAdapterPosition());
+                }
             }
         }
 
