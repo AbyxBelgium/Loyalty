@@ -178,6 +178,17 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
     }
 
     @Override
+    public void removeCards(List<Card> cards) {
+        db.openDatabase();
+        for (Card current: cards) {
+            db.deleteCard(current);
+            this.data.remove(current);
+        }
+        db.closeDatabase();
+        this.overviewFragment.dataChanged(this.data);
+    }
+
+    @Override
     public void change(List<Card> resource) {
         this.data = (ArrayList<Card>) resource;
         overviewFragment.dataChanged(resource);

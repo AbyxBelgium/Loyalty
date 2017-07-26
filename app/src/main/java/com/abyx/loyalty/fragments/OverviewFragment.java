@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.extra.RecyclerTouchListener;
@@ -109,7 +110,19 @@ public class OverviewFragment extends ListFragment<Card> {
                 .setMenu(R.menu.menu_contextual, new MultiMode.Callback() {
                     @Override
                     public boolean onMenuItemClick(BaseAdapter adapter, MenuItem item) {
-                        // you can use any function of the adapter in order to work with selected items
+                        int itemId = item.getItemId();
+
+                        //noinspection SimplifiableIfStatement
+                        if (itemId == R.id.action_removeSelected) {
+                            int[] checked = adapter.getAllChecked(false);
+                            List<Card> toRemove = new ArrayList<Card>();
+                            for (Integer check: checked) {
+                                toRemove.add(data.get(check));
+                            }
+                            listener.removeCards(toRemove);
+                            return true;
+                        }
+
                         return false;
                     }
                 })
@@ -117,7 +130,7 @@ public class OverviewFragment extends ListFragment<Card> {
                 .setNavigationIcon(drawableManager.getDrawable(getContext(), null, R.drawable.ic_arrow_back_white_24dp))
                 .build();
 
-        adapter = new CardAdapter(data, getContext(), mode, false);
+        adapter = new CardAdapter(data, getContext(), mode, false, listener);
 
         adapter.setClickListener(new RecyclerTouchListener() {
             @Override

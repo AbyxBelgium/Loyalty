@@ -46,6 +46,7 @@ import java.util.Set;
 /**
  * See https://github.com/vpaliyX/MultiChoiceMode-RecyclerView/blob/master/multiplechoice/src/main/java/com/vpaliy/multiplechoice/MultiMode.java
  *
+ * TODO: update vibrator with new API 26 system (effect)
  * @author Vasyl Paliy
  */
 public class MultiMode {
@@ -172,7 +173,20 @@ public class MultiMode {
                     savePrevMenuState();
                     actionBar.getMenu().clear();
                     actionBar.inflateMenu(currentState.menuId);
-                    actionBar.setOnMenuItemClickListener(callback);
+                    actionBar.setNavigationOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            turnOff();
+                        }
+                    });
+                    actionBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            callback.onMenuItemClick(item);
+                            turnOff();
+                            return true;
+                        }
+                    });
                 }
             });
         }
@@ -210,6 +224,8 @@ public class MultiMode {
     }
 
     void turnOff() {
+        adapterInstance.unCheckSafe(false);
+
         isActivated = false;
         isColored = false;
 

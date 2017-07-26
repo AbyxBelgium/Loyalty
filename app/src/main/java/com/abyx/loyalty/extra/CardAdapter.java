@@ -19,6 +19,7 @@ package com.abyx.loyalty.extra;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.provider.ContactsContract;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,8 +31,10 @@ import android.widget.TextView;
 
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.recycler.BaseAdapter;
 import com.abyx.loyalty.extra.recycler.MultiMode;
+import com.abyx.loyalty.fragments.ListInteractor;
 import com.abyx.loyalty.managers.DrawableManager;
 import com.abyx.loyalty.tasks.OverviewLogoManager;
 
@@ -52,6 +55,8 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
 
     private ThreadPoolExecutor executor;
     private RecyclerTouchListener clickListener;
+
+    private ListInteractor<Card> removeListener;
 
     public class CardViewHolder extends BaseAdapter.BaseViewHolder {
         public TextView textView;
@@ -91,10 +96,11 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
         }
     }
 
-    public CardAdapter(List<Card> cards, Context context, MultiMode multiMode, boolean animate) {
+    public CardAdapter(List<Card> cards, Context context, MultiMode multiMode, boolean animate, ListInteractor<Card> removeListener) {
         super(multiMode, animate);
         this.cards = cards;
         this.context = context;
+        this.removeListener = removeListener;
         this.executor = new ThreadPoolExecutor(4, 8, 10000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(100));
     }
 
@@ -116,7 +122,7 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
 
     @Override
     public void removeAt(int index) {
-        // TODO investigate and implement
+
     }
 
     @Override

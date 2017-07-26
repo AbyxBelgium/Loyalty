@@ -18,6 +18,7 @@ package com.abyx.loyalty.fragments;
 
 import android.support.v7.widget.Toolbar;
 
+import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.recycler.MultiMode;
 
 import java.util.List;
@@ -50,4 +51,6 @@ public interface ListInteractor<T> {
     public Toolbar getToolbar();
 
     public MultiMode.Callback getOptionsMenuCallback();
+
+    public void removeCards(List<Card> card);
 }

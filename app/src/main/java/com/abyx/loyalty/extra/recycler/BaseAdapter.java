@@ -35,35 +35,35 @@ public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends 
     private static final String KEY = "baseAdapter:stateTracker";
     private final StateTracker tracker;
     private MultiMode mode;
-    private boolean isOnResume=true;
-    private boolean isScreenRotation=false;
-    private boolean isAnimationEnabled=false;
+    private boolean isOnResume = true;
+    private boolean isScreenRotation = false;
+    private boolean isAnimationEnabled = false;
 
 
     public BaseAdapter(@NonNull MultiMode mode, boolean isAnimationEnabled) {
-        this.mode=mode;
+        this.mode = mode;
         mode.setAdapter(this);
-        this.isAnimationEnabled=isAnimationEnabled;
-        this.tracker=new StateTracker();
+        this.isAnimationEnabled = isAnimationEnabled;
+        this.tracker = new StateTracker();
 
     }
 
     //This constructor has to be called only to restore the previous state
     public BaseAdapter(@NonNull MultiMode mode, boolean isAnimationEnabled, @NonNull Bundle savedInstanceState) {
-        this.mode=mode;
+        this.mode = mode;
         mode.setAdapter(this);
-        this.isAnimationEnabled=isAnimationEnabled;
-        tracker=savedInstanceState.getParcelable(KEY);
-        if(tracker==null) {
+        this.isAnimationEnabled = isAnimationEnabled;
+        tracker = savedInstanceState.getParcelable(KEY);
+        if (tracker == null) {
             throw new IllegalArgumentException("You didn't save the state of adapter");
         }
 
-        isScreenRotation=true;
-        isOnResume=false;
+        isScreenRotation = true;
+        isOnResume = false;
 
-        if(tracker.getCheckedItemCount()>0) {
+        if (tracker.getCheckedItemCount() > 0) {
             mode.turnOn();
-        }else {
+        } else {
             isScreenRotation = false;
         }
 
@@ -71,13 +71,13 @@ public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends 
     }
 
     public void onResume() {
-        if(isOnResume) {
+        if (isOnResume) {
             if (tracker.getCheckedItemCount() > 0) {
                 mode.turnOn();
                 mode.update(tracker.getCheckedItemCount());
             }
         }
-        isOnResume=true;
+        isOnResume = true;
     }
 
     public boolean isMultiModeActivated() {
@@ -85,60 +85,69 @@ public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends 
     }
 
     public boolean isChecked(int position) {
-        int state=tracker.getStateFor(position);
-        return state==StateTracker.ENTER || state==StateTracker.ANIMATED;
+        int state = tracker.getStateFor(position);
+        return state == StateTracker.ENTER || state == StateTracker.ANIMATED;
     }
 
     public void checkAll(boolean animate) {
-        if(!mode.isActivated()) {
+        if (!mode.isActivated()) {
             mode.turnOn();
         }
-        for(int index=0;index<getItemCount();index++) {
-            tracker.setStateFor(index,animate?StateTracker.ENTER:StateTracker.ANIMATED);
+        for (int index = 0; index < getItemCount(); index++) {
+            tracker.setStateFor(index, animate ? StateTracker.ENTER : StateTracker.ANIMATED);
             notifyItemChanged(index);
         }
         mode.update(tracker.getCheckedItemCount());
     }
 
     public void unCheckAll(boolean animate) {
-        for(int index=0;index<getItemCount();index++) {
-            if(isChecked(index)) {
+        for (int index = 0; index < getItemCount(); index++) {
+            if (isChecked(index)) {
                 tracker.setStateFor(index, animate ? StateTracker.EXIT : StateTracker.DEFAULT);
                 notifyItemChanged(index);
             }
         }
 
-        if(mode.isActivated()) {
+        if (mode.isActivated()) {
             mode.turnOff();
         }
     }
 
+    public void unCheckSafe(boolean animate) {
+        for (int index = 0; index < getItemCount(); index++) {
+            if (isChecked(index)) {
+                tracker.setStateFor(index, animate ? StateTracker.EXIT : StateTracker.DEFAULT);
+                notifyItemChanged(index);
+            }
+        }
+    }
+
     private void update(int[] updateIndices) {
-        for(int index:updateIndices) {
+        for (int index : updateIndices) {
             notifyItemChanged(index);
         }
     }
 
     public int[] getAllCheckedForDeletion() {
-        int[] result=tracker.getSelectedItemArray(true);
+        int[] result = tracker.getSelectedItemArray(true);
         update(result);
-        if(mode.isActivated()) {
+        if (mode.isActivated()) {
             mode.turnOff();
         }
         //shift the items
-        int itemShift=0;
-        int jIndex=result.length;
-        int[] resultArray=new int[jIndex];
+        int itemShift = 0;
+        int jIndex = result.length;
+        int[] resultArray = new int[jIndex];
 
-        for(int index=0;index<jIndex;index++,itemShift++)
-            resultArray[index]=result[index]-itemShift;
+        for (int index = 0; index < jIndex; index++, itemShift++)
+            resultArray[index] = result[index] - itemShift;
 
         return resultArray;
     }
 
     public int[] getAllChecked(boolean cancel) {
-        int[] result=tracker.getSelectedItemArray(cancel);
-        if(cancel) {
+        int[] result = tracker.getSelectedItemArray(cancel);
+        if (cancel) {
             update(result);
             if (mode.isActivated()) {
                 mode.turnOff();
@@ -150,10 +159,10 @@ public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends 
     public abstract void removeAt(int index);
 
     public void saveState(@NonNull Bundle outState) {
-        if(mode.isActivated()) {
+        if (mode.isActivated()) {
             mode.turnOff();
         }
-        tracker.saveState(KEY,outState);
+        tracker.saveState(KEY, outState);
     }
 
     public abstract class BaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -167,14 +176,14 @@ public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends 
         }
 
         public final void determineState() {
-            if(isScreenRotation) {
-                isScreenRotation=false;
-                if(mode.isActivated()) {
+            if (isScreenRotation) {
+                isScreenRotation = false;
+                if (mode.isActivated()) {
                     mode.update(tracker.getCheckedItemCount());
                 }
             }
 
-            if(isAnimationEnabled) {
+            if (isAnimationEnabled) {
                 switch (tracker.getStateFor(getAdapterPosition())) {
                     case StateTracker.ENTER:
                         enterState();
@@ -196,7 +205,7 @@ public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends 
 
         @CallSuper
         public void enterState() {
-            tracker.setStateFor(getAdapterPosition(),StateTracker.ANIMATED);
+            tracker.setStateFor(getAdapterPosition(), StateTracker.ANIMATED);
         }
 
 
@@ -206,7 +215,7 @@ public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends 
 
         @CallSuper
         public void exitState() {
-            tracker.setStateFor(getAdapterPosition(),StateTracker.DEFAULT);
+            tracker.setStateFor(getAdapterPosition(), StateTracker.DEFAULT);
         }
 
         public void defaultState() {
@@ -216,7 +225,7 @@ public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends 
         @Override
         @CallSuper
         public void onClick(View view) {
-            if(mode.isActivated()) {
+            if (mode.isActivated()) {
                 tracker.check(getAdapterPosition());
                 mode.update(tracker.getCheckedItemCount());
                 if (tracker.getCheckedItemCount() == 0) {
@@ -234,11 +243,12 @@ public abstract class BaseAdapter<T extends BaseAdapter.BaseViewHolder> extends 
 
         @Override
         @CallSuper
-        public  boolean onLongClick(View view) {
-            if(!mode.isActivated()) {
+        public boolean onLongClick(View view) {
+            if (!mode.isActivated()) {
                 mode.turnOn();
+                onClick(view);
             }
-            return false;
+            return true;
         }
     }
 

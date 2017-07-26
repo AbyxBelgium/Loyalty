@@ -28,6 +28,7 @@ import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.fragments.CardFragment;
+import com.abyx.loyalty.managers.DrawableManager;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ import java.util.List;
  * @author Pieter Verschaffelt
  */
 
-public class FinishActivity extends AppCompatActivity {
+public class FinishActivity extends ToolbarActivity {
     private Card card;
     private Database db;
 
@@ -70,6 +71,13 @@ public class FinishActivity extends AppCompatActivity {
         Intent intent = new Intent(FinishActivity.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DrawableManager drawableManager = new DrawableManager();
+        getSupportActionBar().setBackgroundDrawable(drawableManager.getDrawable(getApplicationContext(), null, android.R.color.transparent));
     }
 
     @Override
