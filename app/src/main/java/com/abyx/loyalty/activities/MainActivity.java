@@ -53,6 +53,10 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // This is the main Activity. We do not want to show the up-arrow in the Toolbar
+        setDisplayHomeAsUp = false;
+
         setContentView(R.layout.layout_main);
 
         // The sortedDescending value from the last time the user used this app. Use DefaultShared-

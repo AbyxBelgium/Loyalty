@@ -17,6 +17,7 @@
 package com.abyx.loyalty.activities;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.support.annotation.Nullable;
@@ -30,6 +31,7 @@ import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.fragments.CardFragment;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.fragments.EditFragment;
+import com.abyx.loyalty.managers.DrawableManager;
 
 /**
  * This Activity represents one card and shows the barcode and a small logo corresponding with this
@@ -37,7 +39,7 @@ import com.abyx.loyalty.fragments.EditFragment;
  *
  * @author Pieter Verschaffelt
  */
-public class CardActivity extends AppCompatActivity implements EditFragment.EditListener {
+public class CardActivity extends ToolbarActivity implements EditFragment.EditListener {
     private boolean isEditing;
 
     private long cardID;
@@ -52,6 +54,15 @@ public class CardActivity extends AppCompatActivity implements EditFragment.Edit
             CardFragment fragment = CardFragment.newInstance(cardID);
             getSupportFragmentManager().beginTransaction().add(R.id.cardContainer, fragment).commit();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DrawableManager drawableManager = new DrawableManager();
+        Drawable bg = drawableManager.getDrawable(getApplicationContext(), null, android.R.color.transparent);
+        //noinspection ConstantConditions
+        getSupportActionBar().setBackgroundDrawable(bg);
     }
 
     @Override

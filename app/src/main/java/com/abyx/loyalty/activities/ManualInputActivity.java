@@ -33,7 +33,7 @@ import com.google.zxing.BarcodeFormat;
 
 import java.util.List;
 
-public class ManualInputActivity extends AppCompatActivity {
+public class ManualInputActivity extends ToolbarActivity {
     private EditText barcodeText;
     private Spinner formatSpinner;
 

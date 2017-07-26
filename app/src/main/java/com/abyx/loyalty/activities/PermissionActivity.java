@@ -35,7 +35,7 @@ import com.abyx.loyalty.extra.Utils;
  *
  * @author Pieter Verschaffelt
  */
-public abstract class PermissionActivity extends AppCompatActivity {
+public abstract class PermissionActivity extends ToolbarActivity {
     protected final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     protected final int REQUEST_READ_EXTERNAL_STORAGE = 2;
     protected final int REQUEST_CAMERA_ACCESS = 3;

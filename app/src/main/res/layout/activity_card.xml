@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     android:id="@+id/rootLayout"
     android:background="@drawable/bg">
+    <include layout="@layout/layout_toolbar"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/cardContainer">
     </FrameLayout>
-
 </LinearLayout>
