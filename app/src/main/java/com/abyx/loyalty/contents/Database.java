@@ -42,7 +42,7 @@ public class Database extends ChangeObservable<List<Card>> {
     private List<Card> cards;
 
     // Default sort order is ascending...
-    private String orderBy = DatabaseContract.COLUMN_NAME + " ASC";
+    private String orderBy = DatabaseContract.COLUMN_NAME + " COLLATE NOCASE ASC";
 
     public Database(Context context) {
         helper = new DatabaseHelper(context);
@@ -188,9 +188,9 @@ public class Database extends ChangeObservable<List<Card>> {
 
     public void getAllCardsSorted(boolean ascending) {
         if (ascending) {
-            this.orderBy = DatabaseContract.COLUMN_NAME + " ASC";
+            this.orderBy = DatabaseContract.COLUMN_NAME + " COLLATE NOCASE ASC";
         } else {
-            this.orderBy = DatabaseContract.COLUMN_NAME + " DESC";
+            this.orderBy = DatabaseContract.COLUMN_NAME + " COLLATE NOCASE DESC";
         }
         this.getAllCards();
     }
