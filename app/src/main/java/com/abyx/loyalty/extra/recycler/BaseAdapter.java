@@ -25,8 +25,7 @@ import android.view.View;
 import com.abyx.loyalty.extra.RecyclerTouchListener;
 
 /**
- * See https://github.com/vpaliyX/MultiChoiceMode-RecyclerView/blob/master/multiplechoice/src/main/java/com/vpaliy/multiplechoice/BaseAdapter.java
- *
+ * @see <a href="https://github.com/vpaliyX/MultiChoiceMode-RecyclerView/blob/master/multiplechoice/src/main/java/com/vpaliy/multiplechoice/BaseAdapter.java">BaseAdapter</a>
  * @author Vasyl Paliy
  * @author Pieter Verschaffelt
  */

@@ -16,33 +16,19 @@
 
 package com.abyx.loyalty.activities;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.Constants;
-import com.abyx.loyalty.extra.CurrentProgressDialog;
-import com.abyx.loyalty.extra.FileChooser;
-import com.abyx.loyalty.exceptions.MakeDirException;
 import com.abyx.loyalty.R;
-import com.abyx.loyalty.extra.ReceivedPermission;
-import com.abyx.loyalty.extra.Utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BackupRestoreActivity extends PermissionActivity {
     private Intent intent;
@@ -73,8 +59,13 @@ public class BackupRestoreActivity extends PermissionActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    public void backup(View view){
-//        final Context context = BackupRestoreActivity.this;
+    public void backup(View view){
+        final Context context = BackupRestoreActivity.this;
+        AlertDialog.Builder builder = new AlertDialog.Builder(BackupRestoreActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.dialog_check_list, null));
+        AlertDialog dialog = builder.create();
+        dialog.show();
 //        requestWritePermissions(BackupRestoreActivity.this, new ReceivedPermission() {
 //            @Override
 //            public void onPermissionGranted() {
@@ -95,7 +86,7 @@ public class BackupRestoreActivity extends PermissionActivity {
 //                }
 //            }
 //        });
-//    }
+    }
 //
 //    public void restore(final View view) {
 //        requestReadPermissions(BackupRestoreActivity.this, new ReceivedPermission() {

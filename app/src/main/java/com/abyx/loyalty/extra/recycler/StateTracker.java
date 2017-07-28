@@ -25,8 +25,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 /**
- * See https://github.com/vpaliyX/MultiChoiceMode-RecyclerView/blob/master/multiplechoice/src/main/java/com/vpaliy/multiplechoice/StateTracker.java
- *
+ * @see <a href="https://github.com/vpaliyX/MultiChoiceMode-RecyclerView/blob/master/multiplechoice/src/main/java/com/vpaliy/multiplechoice/StateTracker.java">StateTracker</a>
  * @author Vasyl Paliy
  */
 class StateTracker implements Parcelable {

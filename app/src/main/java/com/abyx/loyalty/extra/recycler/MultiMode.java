@@ -44,9 +44,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * See https://github.com/vpaliyX/MultiChoiceMode-RecyclerView/blob/master/multiplechoice/src/main/java/com/vpaliy/multiplechoice/MultiMode.java
- *
  * TODO: update vibrator with new API 26 system (effect)
+ *
+ * @see <a href="https://github.com/vpaliyX/MultiChoiceMode-RecyclerView/blob/master/multiplechoice/src/main/java/com/vpaliy/multiplechoice/MultiMode.java">MultiMode</a>
  * @author Vasyl Paliy
  */
 public class MultiMode {
