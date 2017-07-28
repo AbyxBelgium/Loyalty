@@ -18,6 +18,7 @@ package com.abyx.loyalty.extra.checklist;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import com.abyx.loyalty.R;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * The CheckListAdapter is used for controlling the CheckList.
@@ -35,6 +37,7 @@ import java.util.List;
 public class CheckListAdapter<T> extends RecyclerView.Adapter<CheckListAdapter.CheckListViewHolder> {
     private Context context;
     private List<T> data;
+    private Set<T> selectedItems;
     private CheckableContentProvider<T> dataProvider;
 
     public class CheckListViewHolder extends RecyclerView.ViewHolder {
@@ -56,16 +59,23 @@ public class CheckListAdapter<T> extends RecyclerView.Adapter<CheckListAdapter.C
 
     @Override
     public CheckListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_checklist, parent, false);
+        return new CheckListViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(CheckListViewHolder holder, int position) {
-
+        T currentObject = data.get(position);
+        holder.nameTextView.setText(dataProvider.getCheckableContent(currentObject));
+        if (selectedItems.contains(currentObject)) {
+            holder.checkBox.setSelected(true);
+        } else {
+            holder.checkBox.setSelected(false);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return this.data.size();
     }
 }

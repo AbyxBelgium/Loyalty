@@ -20,9 +20,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.StyleRes;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.abyx.loyalty.R;
+
+import java.util.List;
 
 /**
  * Dialog that contains a list with checkable items. The items that were chosen by the user to be
@@ -30,26 +33,39 @@ import com.abyx.loyalty.R;
  *
  * @author Pieter Verschaffelt
  */
-public class CheckListDialog extends AlertDialog {
+public class CheckListDialog<T> extends AlertDialog {
     private RecyclerView checkList;
+    private CheckListAdapter<T> checkListAdapter;
+    private List<T> data;
+    private CheckableContentProvider<T> provider;
+    private CheckListAdapter<T> adapter;
 
-    protected CheckListDialog(Context context) {
+    protected CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context) {
         super(context);
+        this.data = data;
+        this.provider = provider;
     }
 
-    protected CheckListDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    protected CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
+        this.data = data;
+        this.provider = provider;
     }
 
-    protected CheckListDialog(Context context, @StyleRes int themeResId) {
+    protected CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context, @StyleRes int themeResId) {
         super(context, themeResId);
+        this.data = data;
+        this.provider = provider;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_check_list);
-        this.checkList = (RecyclerView) findViewById(R.id.checkList);
+        checkList = (RecyclerView) findViewById(R.id.checkList);
 
+        adapter = new CheckListAdapter<>(data, provider, getContext());
+        checkList.setAdapter(adapter);
+        checkList.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 }
