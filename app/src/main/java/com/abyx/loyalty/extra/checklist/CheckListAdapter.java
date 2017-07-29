@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.abyx.loyalty.R;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,7 +35,7 @@ import java.util.Set;
  *
  * @author Pieter Verschaffelt
  */
-public class CheckListAdapter<T> extends RecyclerView.Adapter<CheckListAdapter.CheckListViewHolder> {
+public class CheckListAdapter<T> extends RecyclerView.Adapter<CheckListAdapter<T>.CheckListViewHolder> {
     private Context context;
     private List<T> data;
     private Set<T> selectedItems;
@@ -55,6 +56,7 @@ public class CheckListAdapter<T> extends RecyclerView.Adapter<CheckListAdapter.C
         this.context = context;
         this.data = data;
         this.dataProvider = dataProvider;
+        this.selectedItems = new HashSet<>();
     }
 
     @Override
@@ -64,7 +66,7 @@ public class CheckListAdapter<T> extends RecyclerView.Adapter<CheckListAdapter.C
     }
 
     @Override
-    public void onBindViewHolder(CheckListViewHolder holder, int position) {
+    public void onBindViewHolder(CheckListAdapter<T>.CheckListViewHolder holder, int position) {
         T currentObject = data.get(position);
         holder.nameTextView.setText(dataProvider.getCheckableContent(currentObject));
         if (selectedItems.contains(currentObject)) {

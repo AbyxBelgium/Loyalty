@@ -40,19 +40,19 @@ public class CheckListDialog<T> extends AlertDialog {
     private CheckableContentProvider<T> provider;
     private CheckListAdapter<T> adapter;
 
-    protected CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context) {
+    public CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context) {
         super(context);
         this.data = data;
         this.provider = provider;
     }
 
-    protected CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context, boolean cancelable, OnCancelListener cancelListener) {
+    public CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
         this.data = data;
         this.provider = provider;
     }
 
-    protected CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context, @StyleRes int themeResId) {
+    public CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context, @StyleRes int themeResId) {
         super(context, themeResId);
         this.data = data;
         this.provider = provider;

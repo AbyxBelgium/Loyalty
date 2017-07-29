@@ -16,15 +16,21 @@
 
 package com.abyx.loyalty.contents;
 
+import android.os.Environment;
+
 import com.abyx.loyalty.exceptions.InvalidImportFile;
+import com.abyx.loyalty.exceptions.MakeDirException;
 import com.google.zxing.BarcodeFormat;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,42 +41,62 @@ import java.util.List;
  */
 public class ExportManager {
     /**
-     * Parse the given file and return a list of all cards that are contained in that file.
+     * Parse the data contained in the given stream and return a list of cards that was read from
+     * that stream.
      *
-     * @param fileUrl URL that points to the location of the file that should be read.
+     * @param stream A stream that gives access to the contents of the file to be read.
      * @return A list of cards that were found in the given file.
      * @throws IOException Whenever something goes wrong while reading the file.
      * @throws InvalidImportFile When the given fileUrl does not point to a valid Loyalty file.
-     * @throws FileNotFoundException Whenever the given file cannot be found or does not exist.
      */
-    public List<Card> getContents(String fileUrl) throws IOException, InvalidImportFile, FileNotFoundException {
+    public List<Card> getContents(InputStream stream) throws IOException, InvalidImportFile, FileNotFoundException {
         List<Card> output = new ArrayList<>();
 
-        File file = new File(fileUrl);
+        try (BufferedReader buffered = new BufferedReader(new InputStreamReader(stream))) {
+            String line = buffered.readLine();
+            while (line != null) {
+                String[] rawData = line.split("\t");
 
-        if (file.exists()) {
-            try (BufferedReader buffered = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
-                String line = buffered.readLine();
-                while (line != null) {
-                    String[] rawData = line.split("\t");
-
-                    if (rawData.length != 4) {
-                        throw new InvalidImportFile();
-                    }
-
-                    // Keep compatibility with the previous version of Loyalty and thus keep 4 items
-                    // for every card (that's why index 3 is still used).
-                    Card temp = new Card(rawData[0], rawData[1], BarcodeFormat.valueOf(rawData[3]), 0);
-                    output.add(temp);
-                    line = buffered.readLine();
+                if (rawData.length != 4) {
+                    throw new InvalidImportFile();
                 }
-            } catch (IOException e) {
-                throw new RuntimeException("Something went wrong while reading the file", e);
+
+                // Keep compatibility with the previous version of Loyalty and thus keep 4 items
+                // for every card (that's why index 3 is still used).
+                Card temp = new Card(rawData[0], rawData[1], BarcodeFormat.valueOf(rawData[3]), 0);
+                output.add(temp);
+                line = buffered.readLine();
             }
-        } else {
-            throw new FileNotFoundException();
+        } catch (IOException e) {
+            throw new RuntimeException("Something went wrong while reading the file", e);
         }
 
         return output;
+    }
+
+    public void exportContents(List<Card> data) throws IOException {
+        //backup the app's data to the SD-card so that it can be restored later (by another device)
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Loyalty/");
+        if (!file.exists()){
+            if (!file.mkdirs()){
+                throw new MakeDirException("Could not create directory to save backup files!");
+            }
+        }
+
+        file = new File(file.getAbsolutePath() + "/" + "backup.ly");
+        file.createNewFile();
+
+        OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file));
+        writer.write(getDataToWrite(data));
+        writer.close();
+    }
+
+    private String getDataToWrite(List<Card> data){
+        String start = "";
+        for (Card content: data){
+            start += content.getName() + "\t" + content.getBarcode() + "\t" + content.getImageURL() + "\t" + content.getFormat().toString() ;
+            start += "\n";
+        }
+        return start;
     }
 }
