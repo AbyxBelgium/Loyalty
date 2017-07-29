@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.support.annotation.StyleRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 
 import com.abyx.loyalty.R;
 
@@ -39,23 +41,27 @@ public class CheckListDialog<T> extends AlertDialog {
     private List<T> data;
     private CheckableContentProvider<T> provider;
     private CheckListAdapter<T> adapter;
+    private CheckListListener<T> listener;
 
-    public CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context) {
+    public CheckListDialog(List<T> data, CheckableContentProvider<T> provider, CheckListListener<T> listener, Context context) {
         super(context);
         this.data = data;
         this.provider = provider;
+        this.listener = listener;
     }
 
-    public CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context, boolean cancelable, OnCancelListener cancelListener) {
+    public CheckListDialog(List<T> data, CheckableContentProvider<T> provider, CheckListListener<T> listener, Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
         this.data = data;
         this.provider = provider;
+        this.listener = listener;
     }
 
-    public CheckListDialog(List<T> data, CheckableContentProvider<T> provider, Context context, @StyleRes int themeResId) {
+    public CheckListDialog(List<T> data, CheckableContentProvider<T> provider, CheckListListener<T> listener, Context context, @StyleRes int themeResId) {
         super(context, themeResId);
         this.data = data;
         this.provider = provider;
+        this.listener = listener;
     }
 
     @Override
@@ -67,5 +73,25 @@ public class CheckListDialog<T> extends AlertDialog {
         adapter = new CheckListAdapter<>(data, provider, getContext());
         checkList.setAdapter(adapter);
         checkList.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        Button cancelButton = (Button) findViewById(R.id.cancelButton);
+        // Close the CheckListDialog when cancel button is pressed.
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+
+
+        Button okButton = (Button) findViewById(R.id.okButton);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.selected(adapter.getSelectedItems());
+            }
+        });
     }
+
+
 }

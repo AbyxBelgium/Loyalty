@@ -155,6 +155,8 @@ public class BackupRestoreActivity extends PermissionActivity {
                             return input.getName();
                         }
                     }, BackupRestoreActivity.this);
+                    checkListDialog.setCanceledOnTouchOutside(false);
+                    checkListDialog.setCancelable(false);
                     checkListDialog.show();
                 } catch (FileNotFoundException e){
                     e.printStackTrace();

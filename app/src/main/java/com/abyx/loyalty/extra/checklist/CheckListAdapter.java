@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.abyx.loyalty.R;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -79,5 +80,9 @@ public class CheckListAdapter<T> extends RecyclerView.Adapter<CheckListAdapter<T
     @Override
     public int getItemCount() {
         return this.data.size();
+    }
+
+    public Collection<T> getSelectedItems() {
+        return this.selectedItems;
     }
 }
