@@ -17,6 +17,7 @@
 package com.abyx.loyalty.extra.checklist;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +75,12 @@ public class CheckListAdapter<T> extends RecyclerView.Adapter<CheckListAdapter<T
             holder.checkBox.setSelected(true);
         } else {
             holder.checkBox.setSelected(false);
+        }
+
+        if (dataProvider.isActivated(currentObject)) {
+            holder.nameTextView.setTextColor(Color.RED);
+        } else {
+            holder.nameTextView.setTextColor(Color.BLACK);
         }
     }
 

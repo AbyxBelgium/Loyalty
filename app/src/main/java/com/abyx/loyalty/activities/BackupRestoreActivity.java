@@ -38,12 +38,14 @@ import com.abyx.loyalty.R;
 import com.abyx.loyalty.extra.ReceivedPermission;
 import com.abyx.loyalty.extra.Utils;
 import com.abyx.loyalty.extra.checklist.CheckListDialog;
+import com.abyx.loyalty.extra.checklist.CheckListListener;
 import com.abyx.loyalty.extra.checklist.CheckableContentProvider;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class BackupRestoreActivity extends PermissionActivity {
@@ -103,30 +105,20 @@ public class BackupRestoreActivity extends PermissionActivity {
         requestReadPermissions(BackupRestoreActivity.this, new ReceivedPermission() {
             @Override
             public void onPermissionGranted() {
-                restorePost19(view);
+                // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
+                // browser.
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+
+                // Filter to only show results that can be "opened", such as a
+                // file (as opposed to a list of contacts or timezones)
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+                // Filter to show all documents
+                intent.setType("*/*");
+
+                startActivityForResult(intent, READ_REQUEST_CODE);
             }
         });
-    }
-
-    /**
-     * Function that opens the official Android File Browser API. Only available on API 19 or
-     * higher.
-     */
-    @TargetApi(19)
-    public void restorePost19(View view) {
-
-        // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
-        // browser.
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-
-        // Filter to only show results that can be "opened", such as a
-        // file (as opposed to a list of contacts or timezones)
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        // Filter to show all documents
-        intent.setType("*/*");
-
-        startActivityForResult(intent, READ_REQUEST_CODE);
     }
 
     @Override
@@ -149,10 +141,29 @@ public class BackupRestoreActivity extends PermissionActivity {
                     InputStream input = getContentResolver().openInputStream(uri);
                     ExportManager exportManager = new ExportManager();
                     List<Card> data = exportManager.getContents(input);
+
+                    final List<Card> allCards = data;
+
                     CheckListDialog<Card> checkListDialog = new CheckListDialog<Card>(data, new CheckableContentProvider<Card>() {
                         @Override
                         public String getCheckableContent(Card input) {
                             return input.getName();
+                        }
+
+                        @Override
+                        public boolean isActivated(Card input) {
+                            // Check if the given card is already present in the system.
+                            for (Card card: allCards) {
+                                if (card.getName().toLowerCase().equals(input.getName().toLowerCase())) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        }
+                    }, new CheckListListener<Card>() {
+                        @Override
+                        public void selected(Collection<Card> selectedItems) {
+                            importCards(selectedItems);
                         }
                     }, BackupRestoreActivity.this);
                     checkListDialog.setCanceledOnTouchOutside(false);
@@ -167,5 +178,9 @@ public class BackupRestoreActivity extends PermissionActivity {
                 }
             }
         }
+    }
+
+    public void importCards(Collection<Card> cards) {
+
     }
 }

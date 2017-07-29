@@ -103,7 +103,7 @@
     <string name="invalidate_title">Invalidate caches</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
-    <string name="restore_explanation">Select all stores you\'d like to add to your library.</string>
+    <string name="restore_explanation">Select all cards you\'d like to add to your library.</string>
 
     <!-- No translation needed for these resources: -->
     <string-array name="format_array">

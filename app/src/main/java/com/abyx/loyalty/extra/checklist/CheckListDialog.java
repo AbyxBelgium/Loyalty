@@ -89,6 +89,7 @@ public class CheckListDialog<T> extends AlertDialog {
             @Override
             public void onClick(View v) {
                 listener.selected(adapter.getSelectedItems());
+                dismiss();
             }
         });
     }

@@ -26,4 +26,12 @@ public interface CheckableContentProvider<T> {
      * @return A String representing the input's unique name or title.
      */
     public String getCheckableContent(T input);
+
+    /**
+     * Returns whether the given object should be marked as active or inactive.
+     *
+     * @param input Object that should be judged.
+     * @return True when given object should be marked as being active in the list.
+     */
+    public boolean isActivated(T input);
 }

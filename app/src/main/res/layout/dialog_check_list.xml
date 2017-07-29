@@ -25,11 +25,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:textColor="@color/black"
         android:text="@string/restore"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
+        android:textColor="@color/black"
         android:text="@string/restore_explanation"/>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
