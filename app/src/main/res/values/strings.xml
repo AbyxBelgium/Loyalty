@@ -104,6 +104,7 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="restore_explanation">Select all cards you\'d like to add to your library.</string>
+    <string name="restore_already_in_library">Cards indicated in red are already contained in your library.</string>
 
     <!-- No translation needed for these resources: -->
     <string-array name="format_array">

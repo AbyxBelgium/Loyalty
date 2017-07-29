@@ -78,9 +78,9 @@ public class CheckListAdapter<T> extends RecyclerView.Adapter<CheckListAdapter<T
         }
 
         if (dataProvider.isActivated(currentObject)) {
-            holder.nameTextView.setTextColor(Color.RED);
-        } else {
             holder.nameTextView.setTextColor(Color.BLACK);
+        } else {
+            holder.nameTextView.setTextColor(Color.RED);
         }
     }
 
