@@ -59,6 +59,13 @@ public class CheckListAdapter<T> extends RecyclerView.Adapter<CheckListAdapter<T
         this.data = data;
         this.dataProvider = dataProvider;
         this.selectedItems = new HashSet<>();
+
+        // Add all elements that are activated by default!
+        for (T el: data) {
+            if (dataProvider.isActivated(el)) {
+                selectedItems.add(el);
+            }
+        }
     }
 
     @Override
@@ -72,9 +79,9 @@ public class CheckListAdapter<T> extends RecyclerView.Adapter<CheckListAdapter<T
         T currentObject = data.get(position);
         holder.nameTextView.setText(dataProvider.getCheckableContent(currentObject));
         if (selectedItems.contains(currentObject)) {
-            holder.checkBox.setSelected(true);
+            holder.checkBox.setChecked(true);
         } else {
-            holder.checkBox.setSelected(false);
+            holder.checkBox.setChecked(false);
         }
 
         if (dataProvider.isActivated(currentObject)) {

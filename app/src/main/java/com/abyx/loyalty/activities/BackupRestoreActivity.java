@@ -18,6 +18,7 @@ package com.abyx.loyalty.activities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -30,16 +31,21 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.contents.ExportManager;
 import com.abyx.loyalty.exceptions.InvalidImportFile;
 import com.abyx.loyalty.exceptions.MakeDirException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.R;
+import com.abyx.loyalty.extra.CurrentProgressDialog;
 import com.abyx.loyalty.extra.ReceivedPermission;
 import com.abyx.loyalty.extra.Utils;
 import com.abyx.loyalty.extra.checklist.CheckListDialog;
 import com.abyx.loyalty.extra.checklist.CheckListListener;
 import com.abyx.loyalty.extra.checklist.CheckableContentProvider;
+import com.abyx.loyalty.managers.ChangeListener;
+import com.abyx.loyalty.tasks.ImportManager;
+import com.abyx.loyalty.tasks.TaskListener;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,7 +56,7 @@ import java.util.List;
 
 public class BackupRestoreActivity extends PermissionActivity {
     private Intent intent;
-    private ArrayList<Card> data;
+    private List<Card> data;
     private static final int READ_REQUEST_CODE = 42;
 
 
@@ -58,8 +64,16 @@ public class BackupRestoreActivity extends PermissionActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_backup_restore);
-        intent = getIntent();
-        data = intent.getParcelableArrayListExtra(Constants.INTENT_LIST_ARG);
+        Database db = new Database(getApplicationContext());
+        db.openDatabase();
+        db.subscribe(new ChangeListener<List<Card>>() {
+            @Override
+            public void change(List<Card> resource) {
+                data = resource;
+            }
+        });
+        db.getAllCardsSorted(true);
+        db.closeDatabase();
     }
 
     @Override
@@ -142,7 +156,7 @@ public class BackupRestoreActivity extends PermissionActivity {
                     ExportManager exportManager = new ExportManager();
                     List<Card> data = exportManager.getContents(input);
 
-                    final List<Card> allCards = data;
+                    final List<Card> allCards = this.data;
 
                     CheckListDialog<Card> checkListDialog = new CheckListDialog<Card>(data, new CheckableContentProvider<Card>() {
                         @Override
@@ -181,6 +195,28 @@ public class BackupRestoreActivity extends PermissionActivity {
     }
 
     public void importCards(Collection<Card> cards) {
+        final CurrentProgressDialog progressDialog = new CurrentProgressDialog(BackupRestoreActivity.this);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+        progressDialog.setMax(100);
+        progressDialog.setProgress(0);
+        ImportManager importManager = new ImportManager(new TaskListener<Void>() {
+            @Override
+            public void onProgressUpdate(double progress) {
+                progressDialog.setProgress((int) (100 * progress));
+            }
 
+            @Override
+            public void onFailed(Throwable exception) {
+                // TODO handle exceptions
+            }
+
+            @Override
+            public void onDone(Void result) {
+                progressDialog.dismiss();
+            }
+        }, getApplicationContext());
+        importManager.run(cards);
     }
 }

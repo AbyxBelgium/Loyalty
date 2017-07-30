@@ -39,6 +39,12 @@
         android:id="@+id/checkList"
         android:paddingBottom="10dp">
     </android.support.v7.widget.RecyclerView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:paddingBottom="10dp"
+        android:text="@string/restore_already_in_library"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,9 +62,4 @@
             android:text="@string/ok"
             android:id="@+id/okButton"/>
     </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/red"
-        android:text="@string/restore_already_in_library"/>
 </LinearLayout>
