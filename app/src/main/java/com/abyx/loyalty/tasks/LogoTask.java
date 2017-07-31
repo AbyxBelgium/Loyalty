@@ -16,6 +16,7 @@
 
 package com.abyx.loyalty.tasks;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,9 +30,12 @@ import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.exceptions.LogoNotFoundException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.managers.DrawableManager;
+import com.abyx.loyalty.managers.MemoryManager;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,6 +55,7 @@ import be.abyx.aurora.utilities.ResizeUtility;
  *     <ul>
  *         <li>MalformedURLException</li>
  *         <li>IOException</li>
+ *         <li>OutOfMemoryException</li>
  *     </ul>
  * </p>
  *
@@ -107,7 +112,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
                 db.updateCard(card);
                 db.closeDatabase();
 
-                output = downloadLogo(card.getImageURL(), logoFileName);
+                output = downloadLogo(card.getImageURL(), logoFileName, 1);
             } catch (IOException e) {
                 exception = new IOException(e);
                 return null;
@@ -119,7 +124,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             File file = context.getFileStreamPath(logoFileName);
             if (file == null || !file.exists()) {
                 // We have to redownload the logo
-                output = downloadLogo(card.getImageURL(), logoFileName);
+                output = downloadLogo(card.getImageURL(), logoFileName, 1);
             } else {
                 // File exists, we should reload it.
                 try (FileInputStream in = context.openFileInput(logoFileName)) {
@@ -155,18 +160,46 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
         return drawableManager.getBitmapFromVectorDrawable(context, R.drawable.ic_image_darkgray_24dp, 768, 768);
     }
 
-    private Bitmap downloadLogo(String url, String logoFileName) {
+    private Bitmap downloadLogo(String url, String logoFileName, int scaleFactor) {
+        // First we check if there's enough memory available to continue. If that's not the case,
+        // we pause execution here and try again later.
+        try {
+            MemoryManager memoryManager = new MemoryManager();
+            while (memoryManager.getFreeMemory() < memoryManager.getMemoryTreshold()) {
+                System.out.println("Free is: " + memoryManager.getFreeMemory() + "MiB");
+                System.out.println("Threshold was: " + memoryManager.getMemoryTreshold() + "MiB");
+                System.out.println("Waiting for memory to become available!");
+                Thread.sleep(500);
+            }
+        } catch (InterruptedException e) {
+            // Do nothing!
+        }
+
         try (InputStream in = new java.net.URL(url).openStream()) {
-            Bitmap output = BitmapFactory.decodeStream(in);
+            Bitmap output;
+
+            // Crop Bitmap with built-in Android method to allow for processing on this device.
+            // This is a precaution to allow devices with a smaller amount of memory to also use
+            // this app.
+            if (scaleFactor > 1) {
+                BitmapFactory.Options opts = new BitmapFactory.Options();
+                opts.inSampleSize = scaleFactor;
+                output = BitmapFactory.decodeStream(in, null, opts);
+            } else {
+                output = BitmapFactory.decodeStream(in);
+            }
 
             CropUtility cropUtility = new CropUtility();
             Bitmap cropped = cropUtility.rectangularCrop(output, Color.WHITE, Constants.MAGIC_CROP_TOLERANCE);
+            output.recycle();
 
             ResizeUtility resizeUtility = new ResizeUtility();
             Bitmap resized = resizeUtility.resizeAndSquare(cropped, 768, 0);
+            cropped.recycle();
 
             ParallelShapeFactory parallelShapeFactory = new ParallelShapeFactory();
             Bitmap out = parallelShapeFactory.createShape(new RectangleShape(context), resized, Color.WHITE, 15);
+            resized.recycle();
 
             Bitmap magicCropped = cropUtility.magicCrop(out, Color.WHITE, Constants.MAGIC_CROP_TOLERANCE);
 
@@ -175,7 +208,15 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             magicCropped.setHasAlpha(true);
             magicCropped.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
             return magicCropped;
-        } catch (Throwable e) {
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            if (scaleFactor <= 16) {
+                // Scale down image and try to reprocess it.
+                return downloadLogo(url, logoFileName, scaleFactor * 2);
+            } else {
+                throw e;
+            }
+        }  catch (Throwable e) {
             exception = e;
             return null;
         }

@@ -337,11 +337,13 @@ public class CardFragment extends Fragment {
     }
 
     private void showNonFatalIOError() {
-        Utils.showToast(getString(R.string.unexpected_io_error), Toast.LENGTH_LONG, getContext());
-        DrawableManager drawableManager = new DrawableManager();
-        DetailedLogoTask detailedLogoTask = new DetailedLogoTask(getContext(), new DetailedTaskListener(), getCard());
-        detailedLogoTask.execute(drawableManager.getBitmapFromVectorDrawable(getContext(), R.drawable.ic_error_outline_darkgray_24dp, 768, 768));
-        hideProgressBar();
+        if (isAdded()) {
+            Utils.showToast(getString(R.string.unexpected_io_error), Toast.LENGTH_LONG, getContext());
+            DrawableManager drawableManager = new DrawableManager();
+            DetailedLogoTask detailedLogoTask = new DetailedLogoTask(getContext(), new DetailedTaskListener(), getCard());
+            detailedLogoTask.execute(drawableManager.getBitmapFromVectorDrawable(getContext(), R.drawable.ic_error_outline_darkgray_24dp, 768, 768));
+            hideProgressBar();
+        }
     }
 
     /**
