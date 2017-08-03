@@ -18,6 +18,9 @@ package com.abyx.loyalty.managers;
 
 import android.content.Context;
 
+import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.extra.Constants;
+
 import java.io.File;
 
 /**
@@ -34,6 +37,12 @@ public class CacheManager {
 
     public void clearCache() {
         deleteRecursive(context.getFilesDir());
+    }
+
+    public boolean inCache(Card card) {
+        String logoFileName = Constants.CACHE_DIR_LOGO_RAW + Integer.toString(card.getName().hashCode()) + "." + Constants.IMAGE_FORMAT;
+        File file = context.getFileStreamPath(logoFileName);
+        return file != null && file.exists();
     }
 
     private void deleteRecursive(File file){
