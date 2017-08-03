@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.abyx.loyalty.managers;
+package com.abyx.loyalty.managers.memory;
 
 /**
  * Provides methods for figuring out how much memory is available and how much memory can be used.
@@ -22,6 +22,8 @@ package com.abyx.loyalty.managers;
  * @author Pieter Verschaffelt
  */
 public class MemoryManager {
+    private int simultaneousTasks;
+
     /**
      * @return The amount of memory that's available to our app in MiB (floored to nearest integer).
      */

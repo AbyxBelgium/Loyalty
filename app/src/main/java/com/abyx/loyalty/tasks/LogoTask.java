@@ -16,7 +16,6 @@
 
 package com.abyx.loyalty.tasks;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,12 +29,10 @@ import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.exceptions.LogoNotFoundException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.managers.DrawableManager;
-import com.abyx.loyalty.managers.MemoryManager;
+import com.abyx.loyalty.managers.memory.MemoryManager;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
