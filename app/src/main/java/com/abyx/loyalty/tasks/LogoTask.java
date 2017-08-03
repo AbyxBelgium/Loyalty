@@ -36,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 
 import be.abyx.aurora.shapes.ParallelShapeFactory;
 import be.abyx.aurora.shapes.RectangleShape;
@@ -110,6 +111,13 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
                 db.closeDatabase();
 
                 output = downloadLogo(card.getImageURL(), logoFileName, 1);
+            }  catch (UnknownHostException e) {
+                // This exception is only thrown when the device is not connected to the
+                // internet or when the Loyalty API services are currently down. This means
+                // that we only need to set the current logo as the empty string and set the
+                // time of last search to 0, as this will trigger a new check for a logo the
+                // next time this device is connected to the internet.
+                return logoNotFound(card, false);
             } catch (IOException e) {
                 exception = new IOException(e);
                 return null;
@@ -157,21 +165,19 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
         return drawableManager.getBitmapFromVectorDrawable(context, R.drawable.ic_image_darkgray_24dp, 768, 768);
     }
 
+    /**
+     * This function will download the logo from the given URL and reprocess the resulting Bitmap.
+     * The downloaded logo will be downscaled to a smaller resolution when not enough memory is
+     * present to handle the manipulation of the Bitmap. A logo will be downscaled to a
+     * maximum of 16 times smaller before it is considered unreadable.
+     *
+     * @param url The URL at which the logo to be downloaded is situated.
+     * @param logoFileName The filename (and location) where the downloaded logo must be stored.
+     * @param scaleFactor The factor by which the downloaded logo is downscaled (must be a power
+     *                    of 2).
+     * @return A new Bitmap that represents the downloaded logo.
+     */
     private Bitmap downloadLogo(String url, String logoFileName, int scaleFactor) {
-        // First we check if there's enough memory available to continue. If that's not the case,
-        // we pause execution here and try again later.
-        try {
-            MemoryManager memoryManager = new MemoryManager();
-            while (memoryManager.getFreeMemory() < memoryManager.getMemoryTreshold()) {
-                System.out.println("Free is: " + memoryManager.getFreeMemory() + "MiB");
-                System.out.println("Threshold was: " + memoryManager.getMemoryTreshold() + "MiB");
-                System.out.println("Waiting for memory to become available!");
-                Thread.sleep(500);
-            }
-        } catch (InterruptedException e) {
-            // Do nothing!
-        }
-
         try (InputStream in = new java.net.URL(url).openStream()) {
             Bitmap output;
 
@@ -206,7 +212,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             magicCropped.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
             return magicCropped;
         } catch (OutOfMemoryError e) {
-            e.printStackTrace();
+            System.out.println("NOTE: Not enough memory available for processing image. Downscaling image to lower resolution. Factor is " + scaleFactor + ".");
             if (scaleFactor <= 16) {
                 // Scale down image and try to reprocess it.
                 return downloadLogo(url, logoFileName, scaleFactor * 2);

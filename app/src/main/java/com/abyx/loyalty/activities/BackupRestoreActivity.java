@@ -50,6 +50,7 @@ import com.abyx.loyalty.tasks.TaskListener;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -183,7 +184,7 @@ public class BackupRestoreActivity extends PermissionActivity {
                     checkListDialog.setCanceledOnTouchOutside(false);
                     checkListDialog.setCancelable(true);
                     checkListDialog.show();
-                } catch (FileNotFoundException e){
+                } catch (FileNotFoundException e) {
                     e.printStackTrace();
                     Utils.showToast(getString(R.string.unexpected_io_error), Toast.LENGTH_LONG, getApplicationContext());
                 } catch (IOException | InvalidImportFile e) {
