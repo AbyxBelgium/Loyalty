@@ -31,8 +31,12 @@ import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.recycler.BaseAdapter;
 import com.abyx.loyalty.extra.recycler.MultiMode;
 import com.abyx.loyalty.fragments.ListInteractor;
+import com.abyx.loyalty.managers.DebugManager;
 import com.abyx.loyalty.managers.DrawableManager;
 import com.abyx.loyalty.managers.OverviewLogoManager;
+import com.abyx.loyalty.managers.memory.HighMemoryGovernor;
+import com.abyx.loyalty.managers.memory.LowMemoryGovernor;
+import com.abyx.loyalty.managers.memory.MemoryGovernor;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -97,7 +101,11 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
         this.cards = cards;
         this.context = context;
         this.removeListener = removeListener;
-        this.executor = new ThreadPoolExecutor(4, 8, 10000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(100));
+
+        MemoryGovernor memoryGovernor = getMemoryGovernor();
+        DebugManager.debugPrint("Rendering up to " + memoryGovernor.concurrentTasks() + " cards at the same time.", context);
+
+        this.executor = new ThreadPoolExecutor(Math.min(memoryGovernor.concurrentTasks(), 4), memoryGovernor.concurrentTasks(), 10000, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(100));
     }
 
     public void setClickListener(RecyclerTouchListener clickListener) {
@@ -130,5 +138,15 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
     @Override
     public int getItemCount() {
         return this.cards.size();
+    }
+
+    private MemoryGovernor getMemoryGovernor() {
+        // This check will determine if the logo for a card has been found before. If that's the case
+        // we can return a less memory hungry MemoryGovernor.
+        if (this.cards != null && this.cards.size() >= 1 && this.cards.get(0).getImageURL().equals("")) {
+            return new HighMemoryGovernor();
+        } else {
+            return new LowMemoryGovernor();
+        }
     }
 }

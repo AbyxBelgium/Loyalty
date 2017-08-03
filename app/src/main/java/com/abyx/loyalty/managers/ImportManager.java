@@ -48,8 +48,8 @@ public class ImportManager {
     public ImportManager(TaskListener<Void> listener, Context context) {
         this.listener = listener;
         HighMemoryGovernor governor = new HighMemoryGovernor();
-        System.out.println("NOTE: Restoring up to " + governor.concurrentTasks() + " entities at the same time.");
-        this.poolExecutor = new ThreadPoolExecutor(governor.concurrentTasks(), 16, 100, TimeUnit.DAYS, new ArrayBlockingQueue<Runnable>(256));
+        DebugManager.debugPrint("Restoring up to " + governor.concurrentTasks() + " entities at the same time.", context);
+        this.poolExecutor = new ThreadPoolExecutor(governor.concurrentTasks(), governor.concurrentTasks(), 100, TimeUnit.DAYS, new ArrayBlockingQueue<Runnable>(256));
         this.context = context;
     }
 
