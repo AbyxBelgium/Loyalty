@@ -27,5 +27,10 @@ package com.abyx.loyalty.managers.memory;
  * @author Pieter Verschaffelt
  */
 public interface MemoryGovernor {
-    public boolean vote(Runnable task);
+    /**
+     * @return The amount of concurrent tasks that should be able to be run on this device using
+     * this MemoryGovernor. This is not a hard limit! It's possible that in reality less or more
+     * tasks can be run in parallel before the device suffers from insufficient memory problems.
+     */
+    public int concurrentTasks();
 }

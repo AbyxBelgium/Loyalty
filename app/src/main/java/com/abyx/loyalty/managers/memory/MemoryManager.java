@@ -22,12 +22,14 @@ package com.abyx.loyalty.managers.memory;
  * @author Pieter Verschaffelt
  */
 public class MemoryManager {
-    private int simultaneousTasks;
+    private static int simultaneousTasks;
+
+    private MemoryManager() {}
 
     /**
      * @return The amount of memory that's available to our app in MiB (floored to nearest integer).
      */
-    public int getFreeMemory() {
+    public static int getFreeMemory() {
         Runtime runtime = Runtime.getRuntime();
         long maxMemory = runtime.maxMemory();
 
@@ -38,7 +40,17 @@ public class MemoryManager {
         return (int) (availableMemory / (1024 * 1024));
     }
 
-    public int getTotalMemory() {
+    /**
+     * @return The maximum amount of memory that's available for the heap to be used (in MiB). The
+     * result is floored to the nearest integer.
+     */
+    public static int maxHeapSize() {
+        Runtime rt = Runtime.getRuntime();
+        long maxMemory = rt.maxMemory();
+        return (int) (maxMemory / (1024 * 1024));
+    }
+
+    public static int getTotalMemory() {
         Runtime runtime = Runtime.getRuntime();
         long maxMemory = runtime.maxMemory();
 
@@ -46,7 +58,7 @@ public class MemoryManager {
         return (int) (maxMemory / (1024 * 1024));
     }
 
-    public int getMemoryTreshold() {
+    public static int getMemoryTreshold() {
         int totalMemory = getTotalMemory();
         if (totalMemory >= 190) {
             return 100;

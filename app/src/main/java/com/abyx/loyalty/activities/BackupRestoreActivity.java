@@ -16,16 +16,11 @@
 
 package com.abyx.loyalty.activities;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -35,7 +30,6 @@ import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.contents.ExportManager;
 import com.abyx.loyalty.exceptions.InvalidImportFile;
 import com.abyx.loyalty.exceptions.MakeDirException;
-import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.extra.CurrentProgressDialog;
 import com.abyx.loyalty.extra.ReceivedPermission;
@@ -44,14 +38,12 @@ import com.abyx.loyalty.extra.checklist.CheckListDialog;
 import com.abyx.loyalty.extra.checklist.CheckListListener;
 import com.abyx.loyalty.extra.checklist.CheckableContentProvider;
 import com.abyx.loyalty.managers.ChangeListener;
-import com.abyx.loyalty.tasks.ImportManager;
+import com.abyx.loyalty.managers.ImportManager;
 import com.abyx.loyalty.tasks.TaskListener;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 

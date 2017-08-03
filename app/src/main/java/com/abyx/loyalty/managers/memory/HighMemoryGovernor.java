@@ -19,13 +19,19 @@ package com.abyx.loyalty.managers.memory;
 /**
  * This MemoryGovernor will allow a given task only to be run when there's a high amount of
  * memory available. This governor is meant to be used for tasks that typically require a lot of
- * memory (like processing Bitmap's).
+ * memory (like processing Bitmap's). This Governor considers a task that uses 60 MiB or less of
+ * memory as a High Memory task.
  *
  * @author Pieter Verschaffelt
  */
 public class HighMemoryGovernor implements MemoryGovernor {
     @Override
-    public boolean vote(Runnable task) {
-        return false;
+    public int concurrentTasks() {
+        int result = Math.round(MemoryManager.maxHeapSize() / 60);
+        if (result <= 1) {
+            return 1;
+        } else {
+            return result;
+        }
     }
 }

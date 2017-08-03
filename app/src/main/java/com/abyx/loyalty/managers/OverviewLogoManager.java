@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.abyx.loyalty.tasks;
+package com.abyx.loyalty.managers;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -29,6 +29,9 @@ import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.managers.ColorManager;
 import com.abyx.loyalty.managers.DrawableManager;
+import com.abyx.loyalty.tasks.LogoTask;
+import com.abyx.loyalty.tasks.OverviewLogoTask;
+import com.abyx.loyalty.tasks.TaskListener;
 import com.amulyakhare.textdrawable.TextDrawable;
 
 import java.util.concurrent.Executors;

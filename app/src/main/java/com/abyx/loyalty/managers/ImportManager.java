@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.abyx.loyalty.tasks;
+package com.abyx.loyalty.managers;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -22,6 +22,9 @@ import android.os.AsyncTask;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
+import com.abyx.loyalty.managers.memory.HighMemoryGovernor;
+import com.abyx.loyalty.tasks.LogoTask;
+import com.abyx.loyalty.tasks.TaskListener;
 
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +33,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * This Task can be used for importing a list of Card-objects into the persistent storage and
+ * This Manager can be used for importing a list of Card-objects into the persistent storage and
  * download there respective logo's.
  *
  * @author Pieter Verschaffelt
@@ -44,7 +47,9 @@ public class ImportManager {
 
     public ImportManager(TaskListener<Void> listener, Context context) {
         this.listener = listener;
-        this.poolExecutor = new ThreadPoolExecutor(16, 64, 100, TimeUnit.DAYS, new ArrayBlockingQueue<Runnable>(100));
+        HighMemoryGovernor governor = new HighMemoryGovernor();
+        System.out.println("NOTE: Restoring up to " + governor.concurrentTasks() + " entities at the same time.");
+        this.poolExecutor = new ThreadPoolExecutor(governor.concurrentTasks(), 16, 100, TimeUnit.DAYS, new ArrayBlockingQueue<Runnable>(256));
         this.context = context;
     }
 

@@ -19,9 +19,6 @@ package com.abyx.loyalty.extra;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.provider.ContactsContract;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +28,11 @@ import android.widget.TextView;
 
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
-import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.recycler.BaseAdapter;
 import com.abyx.loyalty.extra.recycler.MultiMode;
 import com.abyx.loyalty.fragments.ListInteractor;
 import com.abyx.loyalty.managers.DrawableManager;
-import com.abyx.loyalty.tasks.OverviewLogoManager;
+import com.abyx.loyalty.managers.OverviewLogoManager;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
