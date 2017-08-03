@@ -151,9 +151,13 @@ public class CardFragment extends Fragment {
                             } else {
                                 data.setImageURL(editText.getText().toString());
                             }
-                            // TODO FIX THIS
-                            //new DownloadImageTask(logoView, getActivity(), data.getImageLocation(), data).execute(data.getImageURL());
                             dialog.dismiss();
+                            Database db = new Database(getContext());
+                            db.openDatabase();
+                            db.updateCard(data);
+                            db.closeDatabase();
+                            LogoTask task = new LogoTask(getContext(), new LogoTaskListener());
+                            task.execute(data);
                         }
                     });
 
