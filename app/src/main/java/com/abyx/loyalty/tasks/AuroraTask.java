@@ -27,6 +27,9 @@ import android.view.WindowManager;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.Constants;
+import com.abyx.loyalty.managers.cache.AuroraCache;
+import com.abyx.loyalty.managers.cache.Cache;
+import com.abyx.loyalty.managers.cache.CacheManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,6 +73,9 @@ public class AuroraTask extends AsyncTask<Bitmap, Void, Bitmap> {
 
         Bitmap output;
 
+        CacheManager cacheManager = new CacheManager(context);
+        Cache cache = new AuroraCache();
+
         File file = context.getFileStreamPath(auroraFileName);
         if (file == null || !file.exists()) {
             AuroraFactory factory = new ParallelAuroraFactory(context);
@@ -82,16 +88,15 @@ public class AuroraTask extends AsyncTask<Bitmap, Void, Bitmap> {
 
             // Write Bitmap to internal storage for caching purposes
             try {
-                FileOutputStream fos = context.openFileOutput(auroraFileName, Context.MODE_PRIVATE);
-                output.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
+                cacheManager.addToCache(output, card, cache);
                 return output;
             } catch (IOException e) {
                 exception = e;
                 return null;
             }
         } else {
-            try (FileInputStream in = context.openFileInput(auroraFileName)) {
-                return BitmapFactory.decodeStream(in);
+            try {
+                return cacheManager.restoreFromCache(card, cache);
             } catch (Throwable e) {
                 exception = e;
                 return null;

@@ -17,11 +17,17 @@
 package com.abyx.loyalty.managers.cache;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.Constants;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Manages the cache and all it's related actions.
@@ -40,9 +46,23 @@ public class CacheManager {
     }
 
     public boolean inCache(Card card, Cache cache) {
-        String logoFileName = cache.getCacheLocation(Integer.toString(card.getName().hashCode()) + "." + Constants.IMAGE_FORMAT);
+        String logoFileName = cache.getCacheLocation(getFileName(card));
         File file = context.getFileStreamPath(logoFileName);
         return file != null && file.exists();
+    }
+
+    public void addToCache(Bitmap bitmap, Card card, Cache cache) throws FileNotFoundException {
+        String fileName = cache.getCacheLocation(getFileName(card));
+        FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+        bitmap.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
+    }
+
+    public Bitmap restoreFromCache(Card card, Cache cache) throws IOException {
+        String fileName = cache.getCacheLocation(getFileName(card));
+        FileInputStream in = context.openFileInput(fileName);
+        Bitmap out = BitmapFactory.decodeStream(in);
+        in.close();
+        return out;
     }
 
     private void deleteRecursive(File file){
@@ -52,5 +72,9 @@ public class CacheManager {
             }
         }
         file.delete();
+    }
+
+    private String getFileName(Card card) {
+        return Integer.toString(card.getName().hashCode()) + "." + Constants.IMAGE_FORMAT;
     }
 }

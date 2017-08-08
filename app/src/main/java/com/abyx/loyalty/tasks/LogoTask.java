@@ -29,6 +29,9 @@ import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.exceptions.LogoNotFoundException;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.managers.DrawableManager;
+import com.abyx.loyalty.managers.cache.Cache;
+import com.abyx.loyalty.managers.cache.CacheManager;
+import com.abyx.loyalty.managers.cache.RawCache;
 import com.abyx.loyalty.managers.memory.MemoryManager;
 
 import java.io.File;
@@ -110,7 +113,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
                 db.updateCard(card);
                 db.closeDatabase();
 
-                output = downloadLogo(card.getImageURL(), logoFileName, 1);
+                output = downloadLogo(card.getImageURL(), logoFileName, 1, card);
             }  catch (UnknownHostException e) {
                 // This exception is only thrown when the device is not connected to the
                 // internet or when the Loyalty API services are currently down. This means
@@ -129,7 +132,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             File file = context.getFileStreamPath(logoFileName);
             if (file == null || !file.exists()) {
                 // We have to redownload the logo
-                output = downloadLogo(card.getImageURL(), logoFileName, 1);
+                output = downloadLogo(card.getImageURL(), logoFileName, 1, card);
             } else {
                 // File exists, we should reload it.
                 try (FileInputStream in = context.openFileInput(logoFileName)) {
@@ -175,9 +178,10 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
      * @param logoFileName The filename (and location) where the downloaded logo must be stored.
      * @param scaleFactor The factor by which the downloaded logo is downscaled (must be a power
      *                    of 2).
+     * @param card The card for which the logo should be downloaded.
      * @return A new Bitmap that represents the downloaded logo.
      */
-    private Bitmap downloadLogo(String url, String logoFileName, int scaleFactor) {
+    private Bitmap downloadLogo(String url, String logoFileName, int scaleFactor, Card card) {
         try (InputStream in = new java.net.URL(url).openStream()) {
             Bitmap output;
 
@@ -206,16 +210,18 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
 
             Bitmap magicCropped = cropUtility.magicCrop(out, Color.WHITE, Constants.MAGIC_CROP_TOLERANCE);
 
-            FileOutputStream fos = context.openFileOutput(logoFileName, Context.MODE_PRIVATE);
-
             magicCropped.setHasAlpha(true);
-            magicCropped.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
+
+            CacheManager cacheManager = new CacheManager(context);
+            Cache cache = new RawCache();
+            cacheManager.addToCache(magicCropped, card, cache);
+
             return magicCropped;
         } catch (OutOfMemoryError e) {
             System.out.println("NOTE: Not enough memory available for processing image. Downscaling image to lower resolution. Factor is " + scaleFactor + ".");
             if (scaleFactor <= 16) {
                 // Scale down image and try to reprocess it.
-                return downloadLogo(url, logoFileName, scaleFactor * 2);
+                return downloadLogo(url, logoFileName, scaleFactor * 2, card);
             } else {
                 throw e;
             }
