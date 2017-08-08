@@ -31,7 +31,7 @@ import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.recycler.BaseAdapter;
 import com.abyx.loyalty.extra.recycler.MultiMode;
 import com.abyx.loyalty.fragments.ListInteractor;
-import com.abyx.loyalty.managers.CacheManager;
+import com.abyx.loyalty.managers.cache.CacheManager;
 import com.abyx.loyalty.managers.DebugManager;
 import com.abyx.loyalty.managers.DrawableManager;
 import com.abyx.loyalty.managers.OverviewLogoManager;

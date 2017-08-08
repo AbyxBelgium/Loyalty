@@ -17,7 +17,6 @@
 package com.abyx.loyalty.activities;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -37,7 +36,7 @@ import com.abyx.loyalty.fragments.ListFragment;
 import com.abyx.loyalty.fragments.ListInteractor;
 import com.abyx.loyalty.fragments.OverviewFragment;
 import com.abyx.loyalty.R;
-import com.abyx.loyalty.managers.CacheManager;
+import com.abyx.loyalty.managers.cache.CacheManager;
 import com.abyx.loyalty.managers.ChangeListener;
 
 import java.util.ArrayList;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.abyx.loyalty.managers;
+package com.abyx.loyalty.managers.cache;
 
 import android.content.Context;
 
@@ -39,8 +39,8 @@ public class CacheManager {
         deleteRecursive(context.getFilesDir());
     }
 
-    public boolean inCache(Card card) {
-        String logoFileName = Constants.CACHE_DIR_LOGO_RAW + Integer.toString(card.getName().hashCode()) + "." + Constants.IMAGE_FORMAT;
+    public boolean inCache(Card card, Cache cache) {
+        String logoFileName = cache.getCacheLocation(Integer.toString(card.getName().hashCode()) + "." + Constants.IMAGE_FORMAT);
         File file = context.getFileStreamPath(logoFileName);
         return file != null && file.exists();
     }
