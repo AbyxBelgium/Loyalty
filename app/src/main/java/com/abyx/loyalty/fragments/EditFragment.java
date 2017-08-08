@@ -35,6 +35,8 @@ import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.extra.Utils;
+import com.abyx.loyalty.managers.cache.CacheManager;
+import com.abyx.loyalty.managers.cache.RawCache;
 import com.google.zxing.BarcodeFormat;
 
 /**
@@ -140,6 +142,10 @@ public class EditFragment extends Fragment implements AdapterView.OnItemSelected
                 data.setName(storeName.getText().toString());
                 data.setImageURL(logoURL.getText().toString());
                 data.setBarcode(barcode.getText().toString());
+
+                CacheManager manager = new CacheManager(getContext());
+                manager.removeFromCache(data);
+
                 // Save changes to database
                 db.openDatabase();
                 db.updateCard(data);

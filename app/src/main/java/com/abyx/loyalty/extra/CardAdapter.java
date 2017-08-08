@@ -35,6 +35,8 @@ import com.abyx.loyalty.managers.cache.CacheManager;
 import com.abyx.loyalty.managers.DebugManager;
 import com.abyx.loyalty.managers.DrawableManager;
 import com.abyx.loyalty.managers.OverviewLogoManager;
+import com.abyx.loyalty.managers.cache.OverviewCache;
+import com.abyx.loyalty.managers.cache.RawCache;
 import com.abyx.loyalty.managers.memory.HighMemoryGovernor;
 import com.abyx.loyalty.managers.memory.LowMemoryGovernor;
 import com.abyx.loyalty.managers.memory.MemoryGovernor;
@@ -147,7 +149,7 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
         // This check will determine if the logo for a card has been found before. If that's the case
         // we can return a less memory hungry MemoryGovernor. We only check if the first card is
         // present for efficiency purposes.
-        if (this.cards != null && this.cards.size() >= 1 && !cacheManager.inCache(this.cards.get(0))) {
+        if (this.cards != null && this.cards.size() >= 1 && !cacheManager.inCache(this.cards.get(0), new RawCache())) {
             return new HighMemoryGovernor();
         } else {
             return new LowMemoryGovernor();

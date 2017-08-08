@@ -64,7 +64,7 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
         // Preferences. This allows us to get a hold on the same preferences from within different
         // activities.
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        sortedDescending = sharedPref.getBoolean(sortedString, true);
+        sortedDescending = sharedPref.getBoolean(sortedString, false);
 
         overviewFragment = OverviewFragment.newInstance();
 

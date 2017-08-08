@@ -28,6 +28,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manages the cache and all it's related actions.
@@ -55,6 +57,28 @@ public class CacheManager {
         String fileName = cache.getCacheLocation(getFileName(card));
         FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
         bitmap.compress(Constants.IMAGE_COMPRESS_FORMAT, Constants.IMAGE_QUALITY, fos);
+    }
+
+    /**
+     * Remove the entry of the given card from the given cache.
+     *
+     * @param card Card whose entries in the given cache should be removed.
+     * @param cache Cache in which the entries of the given card should be removed.
+     */
+    public void removeFromCache(Card card, Cache cache) {
+        context.deleteFile(cache.getCacheLocation(getFileName(card)));
+    }
+
+    /**
+     * Remove all cache entries from the given card.
+     *
+     * @param card The card whose entries should be removed from all caches.
+     */
+    public void removeFromCache(Card card) {
+        Cache[] caches = {new RawCache(), new DetailedCache(), new OverviewCache(), new AuroraCache()};
+        for (Cache cache: caches) {
+            removeFromCache(card, cache);
+        }
     }
 
     public Bitmap restoreFromCache(Card card, Cache cache) throws IOException {
