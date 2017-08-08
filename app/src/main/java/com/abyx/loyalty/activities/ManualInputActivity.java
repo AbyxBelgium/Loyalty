@@ -43,10 +43,9 @@ public class ManualInputActivity extends ToolbarActivity {
         setContentView(R.layout.activity_manual_input);
         barcodeText = (EditText) findViewById(R.id.barcodeText);
         formatSpinner = (Spinner) findViewById(R.id.formatSpinner);
-        System.out.println("Formatspinner: " + formatSpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.format_array, android.R.layout.simple_spinner_item);
+                R.array.format_array, R.layout.spinner_format);
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner

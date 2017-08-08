@@ -94,6 +94,7 @@
         <activity
             android:name=".activities.ManualInputActivity"
             android:label="@string/title_activity_manual_input"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".activities.AddStoreActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
