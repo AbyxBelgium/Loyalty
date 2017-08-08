@@ -88,4 +88,12 @@
     <string name="read_permission_denied_title">Lees-permissies geweigerd</string>
     <string name="write_permission_denied_message">Schrijf-permissies geweigerd. Loyalty kan zonder deze permissies werken, maar er zullen geen nieuwe klantenkaarten opgeslagen kunnen worden!</string>
     <string name="write_permission_denied_title">Schrijf-permissies geweigers</string>
+    <string name="cancel">Annuleren</string>
+    <string name="invalidate_title">Cache leegmaken</string>
+    <string name="no_cards_found">Geen enkele kaart voldoet aan de gegeven criteria.</string>
+    <string name="no_cards_yet">Je bibliotheek is leeg. Klik op de grote plus om een nieuwe kaart toe te voegen.</string>
+    <string name="ok">OK</string>
+    <string name="restore_already_in_library">Kaarten aangegeven in het rood zitten reeds in je bibliotheek.</string>
+    <string name="restore_explanation">Selecteer alle kaarten die je aan je bibliotheek wil toevoegen.</string>
+    <string name="unexpected_error">Onverwachte fout</string>
 </resources>
