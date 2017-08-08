@@ -355,14 +355,16 @@ public class CardFragment extends Fragment {
      * activity (go back to the main menu) when the user clicks OK.
      */
     private void showIOErrorDialog() {
-        Utils.showInformationDialog(getString(R.string.unexpected_error), getString(R.string.unexpected_io_error), getContext(), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Go back to main menu
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            }
-        });
+        if (isAdded()) {
+            Utils.showInformationDialog(getString(R.string.unexpected_error), getString(R.string.unexpected_io_error), getContext(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Go back to main menu
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 }
