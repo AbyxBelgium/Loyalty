@@ -87,7 +87,7 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
             whiteBackground = drawableManager.getDrawable(context, null, R.color.white);
             blackBackground = drawableManager.getDrawable(context, null, R.color.bg_home);
 
-            imageView2.setImageDrawable(TextDrawable.builder().buildRound("OK", Color.GRAY));
+            imageView2.setImageDrawable(TextDrawable.builder().buildRound("✓", Color.GRAY));
 
             viewFlipper.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_in));
             viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_out));

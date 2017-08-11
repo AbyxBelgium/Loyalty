@@ -116,6 +116,7 @@
         <item>EAN_8</item>
         <item>ITF</item>
         <item>PDF_417</item>
+        <item>QR_CODE</item>
         <item>UPC_A</item>
         <item>UPC_E</item>
     </string-array>
