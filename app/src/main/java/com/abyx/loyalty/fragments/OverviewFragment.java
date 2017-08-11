@@ -130,7 +130,7 @@ public class OverviewFragment extends ListFragment<Card> {
                 .setNavigationIcon(drawableManager.getDrawable(getContext(), null, R.drawable.ic_arrow_back_white_24dp))
                 .build();
 
-        adapter = new CardAdapter(data, getContext(), mode, false, listener);
+        adapter = new CardAdapter(data, getContext(), mode, true, listener);
 
         adapter.setClickListener(new RecyclerTouchListener() {
             @Override

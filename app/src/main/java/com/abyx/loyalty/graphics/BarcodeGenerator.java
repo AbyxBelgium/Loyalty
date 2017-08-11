@@ -34,6 +34,7 @@ import com.google.zxing.common.BitMatrix;
 import be.abyx.aurora.shapes.ParallelShapeFactory;
 import be.abyx.aurora.shapes.RectangleShape;
 import be.abyx.aurora.shapes.ShapeFactory;
+import be.abyx.aurora.utilities.CropUtility;
 
 /**
  * This class contains some methods that are used for generating Bitmaps that represent barcode's of
@@ -51,7 +52,9 @@ public class BarcodeGenerator {
     }
 
     /**
-     * This function will render a barcode (including the digits).
+     * This function will render a barcode (including the digits). When the type of the BarcodeFormat
+     * is QR_CODE, no digits will be rendered underneath the code and only width will be used as
+     * a dimension (thus returning a square Bitmap).
      *
      * @param barcode String representing the data contained by the barcode.
      * @param format The format of the given barcode.
@@ -62,6 +65,14 @@ public class BarcodeGenerator {
      * the digits included underneath it.
      */
     public Bitmap renderBarcode(String barcode, BarcodeFormat format, int width, int height) throws WriterException {
+        if (format == BarcodeFormat.QR_CODE) {
+            return renderQRCode(barcode, format, width);
+        } else {
+            return renderOrdinaryBarcode(barcode, format, width, height);
+        }
+    }
+
+    private Bitmap renderOrdinaryBarcode(String barcode, BarcodeFormat format, int width, int height) throws WriterException {
         float scale = this.context.getResources().getDisplayMetrics().density;
 
         // 100 additional pixels are used for rendering text underneath the barcode.
@@ -100,6 +111,31 @@ public class BarcodeGenerator {
         this.renderTextOnBitmap(bitmap, barcode);
         ShapeFactory factory = new ParallelShapeFactory();
         return factory.createShape(new RectangleShape(this.context), bitmap, Constants.LOGO_BACKGROUND_COLOUR, padding);
+    }
+
+    private Bitmap renderQRCode(String barcode, BarcodeFormat format, int width) throws WriterException {
+        float scale = this.context.getResources().getDisplayMetrics().density;
+
+        width *= scale * 0.6;
+
+        Writer barWriter = new MultiFormatWriter();
+        Bitmap bitmap = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
+        BitMatrix bm = barWriter.encode(barcode, format, width, width);
+
+        for (int j = 0; j < width; j++) {
+            int[] row = new int[width];
+            for (int i = 0; i < width; i++) {
+                row[i] = bm.get(i, j) ? Color.BLACK : Color.TRANSPARENT;
+            }
+            bitmap.setPixels(row, 0, width, 0, j, width, 1);
+        }
+
+        CropUtility cropUtility = new CropUtility();
+        Bitmap cropped = cropUtility.rectangularCrop(bitmap, Color.TRANSPARENT, 0);
+
+
+        ShapeFactory shapeFactory = new ParallelShapeFactory();
+        return shapeFactory.createShape(new RectangleShape(this.context), cropped, Constants.LOGO_BACKGROUND_COLOUR, padding);
     }
 
     /**

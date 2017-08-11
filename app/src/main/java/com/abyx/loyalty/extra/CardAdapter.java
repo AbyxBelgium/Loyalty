@@ -22,9 +22,12 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
@@ -40,6 +43,7 @@ import com.abyx.loyalty.managers.cache.RawCache;
 import com.abyx.loyalty.managers.memory.HighMemoryGovernor;
 import com.abyx.loyalty.managers.memory.LowMemoryGovernor;
 import com.abyx.loyalty.managers.memory.MemoryGovernor;
+import com.amulyakhare.textdrawable.TextDrawable;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -64,7 +68,9 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
     public class CardViewHolder extends BaseAdapter.BaseViewHolder {
         public TextView textView;
         public ImageView imageView;
+        private ImageView imageView2;
         private LinearLayout rootLayout;
+        private ViewFlipper viewFlipper;
 
         private Drawable whiteBackground;
         private Drawable blackBackground;
@@ -73,11 +79,18 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
             super(itemView, clickListener);
             textView = (TextView) itemView.findViewById(R.id.textView);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            imageView2 = (ImageView) itemView.findViewById(R.id.imageView2);
             rootLayout = (LinearLayout) itemView.findViewById(R.id.rootLayout);
+            viewFlipper = (ViewFlipper) itemView.findViewById(R.id.viewFlipper);
 
             DrawableManager drawableManager = new DrawableManager();
             whiteBackground = drawableManager.getDrawable(context, null, R.color.white);
             blackBackground = drawableManager.getDrawable(context, null, R.color.bg_home);
+
+            imageView2.setImageDrawable(TextDrawable.builder().buildRound("OK", Color.GRAY));
+
+            viewFlipper.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_in));
+            viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_out));
         }
 
         @Override
@@ -96,6 +109,19 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
         @Override
         public void onBindData() {
             determineState();
+        }
+
+        @Override
+        public void enterState() {
+            // Start the animation for this view
+            super.enterState();
+            viewFlipper.showNext();
+        }
+
+        @Override
+        public void exitState() {
+            super.exitState();
+            viewFlipper.showPrevious();
         }
     }
 
