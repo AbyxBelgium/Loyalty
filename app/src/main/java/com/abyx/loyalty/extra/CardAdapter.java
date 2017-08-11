@@ -70,7 +70,7 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
         public ImageView imageView;
         private ImageView imageView2;
         private LinearLayout rootLayout;
-        private ViewFlipper viewFlipper;
+        public ViewFlipper viewFlipper;
 
         private Drawable whiteBackground;
         private Drawable blackBackground;
@@ -145,6 +145,19 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
     public void onBindViewHolder(CardViewHolder holder, int position) {
         Card c = this.cards.get(position);
         holder.textView.setText(c.getName());
+        if (isChecked(position)) {
+            holder.viewFlipper.setInAnimation(null);
+            holder.viewFlipper.setOutAnimation(null);
+            holder.viewFlipper.setDisplayedChild(1);
+            holder.viewFlipper.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_in));
+            holder.viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_out));
+        } else {
+            holder.viewFlipper.setInAnimation(null);
+            holder.viewFlipper.setOutAnimation(null);
+            holder.viewFlipper.setDisplayedChild(0);
+            holder.viewFlipper.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_in));
+            holder.viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_out));
+        }
         holder.imageView.setImageDrawable(null);
 
         // Start task to set correct image in ImageView
