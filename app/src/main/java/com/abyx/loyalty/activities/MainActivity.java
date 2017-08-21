@@ -199,7 +199,7 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
         db.getAllCardsSorted(!sortedDescending);
         db.closeDatabase();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.overviewContainer, overviewFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.overviewContainer, overviewFragment).commitAllowingStateLoss();
     }
 
     /**
