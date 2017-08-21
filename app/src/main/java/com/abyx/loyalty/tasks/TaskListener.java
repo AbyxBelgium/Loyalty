@@ -16,6 +16,8 @@
 
 package com.abyx.loyalty.tasks;
 
+import android.support.annotation.Nullable;
+
 /**
  * This interface must be implemented by every class that want's to react to state changes of a
  * certain running task.
@@ -40,7 +42,7 @@ public interface TaskListener<T> {
      *
      * @param exception The Throwable that caused the task to fail.
      */
-    void onFailed(Throwable exception);
+    void onFailed(@Nullable Throwable exception);
 
     /**
      * This method is called whenever the task is completely done executing. This method returns the

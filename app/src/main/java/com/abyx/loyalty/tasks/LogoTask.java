@@ -244,7 +244,9 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             this.listener.onProgressUpdate(1.0);
             this.listener.onDone(bitmap);
         } else {
-            exception.printStackTrace();
+            if (exception != null) {
+                exception.printStackTrace();
+            }
             this.listener.onFailed(exception);
         }
     }
