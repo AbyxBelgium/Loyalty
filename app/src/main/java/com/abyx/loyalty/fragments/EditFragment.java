@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.abyx.loyalty.R;
@@ -86,6 +87,19 @@ public class EditFragment extends Fragment implements AdapterView.OnItemSelected
 
         storeName = (EditText) view.findViewById(R.id.storeName);
         storeName.setText(data.getName());
+
+        logoURL = (EditText) view.findViewById(R.id.logoURL);
+        logoURL.setText(data.getImageURL());
+
+        barcode = (EditText) view.findViewById(R.id.barcode);
+        barcode.setText(data.getBarcode());
+
+        formatSpinner = (Spinner) view.findViewById(R.id.formatSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.format_array, android.R.layout.simple_spinner_item);
+        formatSpinner.setOnItemSelectedListener(this);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        formatSpinner.setAdapter(adapter);
+        formatSpinner.setSelection(adapter.getPosition(data.getFormat().toString()));
 
         return view;
     }
