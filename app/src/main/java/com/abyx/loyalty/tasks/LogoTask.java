@@ -41,8 +41,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.UnknownHostException;
 
+import be.abyx.aurora.FactoryManager;
 import be.abyx.aurora.shapes.ParallelShapeFactory;
 import be.abyx.aurora.shapes.RectangleShape;
+import be.abyx.aurora.shapes.ShapeFactory;
 import be.abyx.aurora.utilities.CropUtility;
 import be.abyx.aurora.utilities.ResizeUtility;
 
@@ -182,7 +184,8 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
      * @return A new Bitmap that represents the downloaded logo.
      */
     private Bitmap downloadLogo(String url, String logoFileName, int scaleFactor, Card card) {
-        try (InputStream in = new java.net.URL(url).openStream()) {
+        try {
+            InputStream in = new java.net.URL(url).openStream();
             Bitmap output;
 
             // Crop Bitmap with built-in Android method to allow for processing on this device.
@@ -204,7 +207,8 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             Bitmap resized = resizeUtility.resizeAndSquare(cropped, 768, 0);
             cropped.recycle();
 
-            ParallelShapeFactory parallelShapeFactory = new ParallelShapeFactory();
+            FactoryManager manager = new FactoryManager();
+            ShapeFactory parallelShapeFactory = manager.getRecommendedShapeFactory();
             Bitmap out = parallelShapeFactory.createShape(new RectangleShape(context), resized, Color.WHITE, 15);
             resized.recycle();
 
@@ -216,6 +220,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             Cache cache = new RawCache();
             cacheManager.addToCache(magicCropped, card, cache);
 
+            in.close();
             return magicCropped;
         } catch (OutOfMemoryError e) {
             System.out.println("NOTE: Not enough memory available for processing image. Downscaling image to lower resolution. Factor is " + scaleFactor + ".");

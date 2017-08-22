@@ -31,6 +31,7 @@ import com.google.zxing.Writer;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
+import be.abyx.aurora.FactoryManager;
 import be.abyx.aurora.shapes.ParallelShapeFactory;
 import be.abyx.aurora.shapes.RectangleShape;
 import be.abyx.aurora.shapes.ShapeFactory;
@@ -109,7 +110,8 @@ public class BarcodeGenerator {
         }
 
         this.renderTextOnBitmap(bitmap, barcode);
-        ShapeFactory factory = new ParallelShapeFactory();
+        FactoryManager manager = new FactoryManager();
+        ShapeFactory factory = manager.getRecommendedShapeFactory();
         return factory.createShape(new RectangleShape(this.context), bitmap, Constants.LOGO_BACKGROUND_COLOUR, padding);
     }
 
@@ -133,8 +135,8 @@ public class BarcodeGenerator {
         CropUtility cropUtility = new CropUtility();
         Bitmap cropped = cropUtility.rectangularCrop(bitmap, Color.TRANSPARENT, 0);
 
-
-        ShapeFactory shapeFactory = new ParallelShapeFactory();
+        FactoryManager manager = new FactoryManager();
+        ShapeFactory shapeFactory = manager.getRecommendedShapeFactory();
         return shapeFactory.createShape(new RectangleShape(this.context), cropped, Constants.LOGO_BACKGROUND_COLOUR, padding);
     }
 

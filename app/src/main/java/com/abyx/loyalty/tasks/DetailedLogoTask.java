@@ -26,6 +26,7 @@ import android.support.annotation.Nullable;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.Constants;
 
+import be.abyx.aurora.FactoryManager;
 import be.abyx.aurora.shapes.CircleShape;
 import be.abyx.aurora.shapes.ParallelShapeFactory;
 import be.abyx.aurora.shapes.ShapeFactory;
@@ -57,7 +58,8 @@ public class DetailedLogoTask extends AsyncTask<Bitmap, Void, Bitmap> {
     @Override
     @Nullable
     protected Bitmap doInBackground(Bitmap... params) {
-        ShapeFactory shapeFactory = new ParallelShapeFactory();
+        FactoryManager factoryManager = new FactoryManager();
+        ShapeFactory shapeFactory = factoryManager.getRecommendedShapeFactory();
         return shapeFactory.createShape(new CircleShape(this.context), params[0], Constants.LOGO_BACKGROUND_COLOUR, 150);
     }
 

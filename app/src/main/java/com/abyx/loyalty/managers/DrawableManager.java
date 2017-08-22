@@ -22,8 +22,10 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.abyx.loyalty.R;
 
@@ -34,17 +36,18 @@ import com.abyx.loyalty.R;
  * @author Pieter Verschaffelt
  */
 public class DrawableManager {
-    public Drawable getDrawable(Context context, Resources.Theme theme, int drawable) {
+    public Drawable getDrawable(Context context, Resources.Theme theme, @DrawableRes int drawable) {
         // The way to retrieve drawables changed since Lollipop. We also need to support older
         // Android versions and thus need this version check.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             return context.getResources().getDrawable(drawable, theme);
         } else {
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
             return context.getResources().getDrawable(drawable);
         }
     }
 
-    public Bitmap getBitmapFromVectorDrawable(Context context, int drawableId, int width, int height) {
+    public Bitmap getBitmapFromVectorDrawable(Context context, @DrawableRes int drawableId, int width, int height) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {

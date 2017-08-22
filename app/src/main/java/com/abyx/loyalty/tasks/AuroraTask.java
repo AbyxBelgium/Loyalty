@@ -36,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import be.abyx.aurora.FactoryManager;
 import be.abyx.aurora.aurora.AuroraFactory;
 import be.abyx.aurora.aurora.BlurryAurora;
 import be.abyx.aurora.aurora.ParallelAuroraFactory;
@@ -78,7 +79,8 @@ public class AuroraTask extends AsyncTask<Bitmap, Void, Bitmap> {
 
         File file = context.getFileStreamPath(auroraFileName);
         if (file == null || !file.exists()) {
-            AuroraFactory factory = new ParallelAuroraFactory(context);
+            FactoryManager manager = new FactoryManager();
+            AuroraFactory factory = manager.getRecommendedAuroraFactory(context);
             // Get device resolution
             WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
             Display display = wm.getDefaultDisplay();
