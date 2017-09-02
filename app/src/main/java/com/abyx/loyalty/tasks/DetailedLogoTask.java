@@ -27,6 +27,7 @@ import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.Constants;
 
 import be.abyx.aurora.FactoryManager;
+import be.abyx.aurora.shapes.CPUShapeFactory;
 import be.abyx.aurora.shapes.CircleShape;
 import be.abyx.aurora.shapes.ParallelShapeFactory;
 import be.abyx.aurora.shapes.ShapeFactory;

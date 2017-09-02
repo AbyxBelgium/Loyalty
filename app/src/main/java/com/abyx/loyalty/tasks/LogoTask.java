@@ -42,6 +42,7 @@ import java.io.InputStream;
 import java.net.UnknownHostException;
 
 import be.abyx.aurora.FactoryManager;
+import be.abyx.aurora.shapes.CPUShapeFactory;
 import be.abyx.aurora.shapes.ParallelShapeFactory;
 import be.abyx.aurora.shapes.RectangleShape;
 import be.abyx.aurora.shapes.ShapeFactory;
@@ -137,8 +138,10 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
                 output = downloadLogo(card.getImageURL(), logoFileName, 1, card);
             } else {
                 // File exists, we should reload it.
-                try (FileInputStream in = context.openFileInput(logoFileName)) {
+                try {
+                    FileInputStream in = context.openFileInput(logoFileName);
                     output = BitmapFactory.decodeStream(in);
+                    in.close();
                 } catch (Throwable e) {
                     exception = e;
                     return null;
@@ -208,8 +211,8 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             cropped.recycle();
 
             FactoryManager manager = new FactoryManager();
-            ShapeFactory parallelShapeFactory = manager.getRecommendedShapeFactory();
-            Bitmap out = parallelShapeFactory.createShape(new RectangleShape(context), resized, Color.WHITE, 15);
+            ShapeFactory shapeFactory = manager.getRecommendedShapeFactory();
+            Bitmap out = shapeFactory.createShape(new RectangleShape(context), resized, Color.WHITE, 15);
             resized.recycle();
 
             Bitmap magicCropped = cropUtility.magicCrop(out, Color.WHITE, Constants.MAGIC_CROP_TOLERANCE);

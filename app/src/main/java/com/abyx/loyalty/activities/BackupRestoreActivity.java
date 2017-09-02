@@ -16,10 +16,12 @@
 
 package com.abyx.loyalty.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +34,7 @@ import com.abyx.loyalty.exceptions.InvalidImportFile;
 import com.abyx.loyalty.exceptions.MakeDirException;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.extra.CurrentProgressDialog;
+import com.abyx.loyalty.extra.FileChooser;
 import com.abyx.loyalty.extra.ReceivedPermission;
 import com.abyx.loyalty.extra.Utils;
 import com.abyx.loyalty.extra.checklist.CheckListDialog;
@@ -41,6 +44,7 @@ import com.abyx.loyalty.managers.ChangeListener;
 import com.abyx.loyalty.managers.ImportManager;
 import com.abyx.loyalty.tasks.TaskListener;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,23 +113,37 @@ public class BackupRestoreActivity extends PermissionActivity {
     }
 
     public void restore(final View view) {
-        requestReadPermissions(BackupRestoreActivity.this, new ReceivedPermission() {
-            @Override
-            public void onPermissionGranted() {
-                // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
-                // browser.
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        // A file browser is not included on API 18 or lower and we need to use our own
+        // implementation.
+        if (Build.VERSION.SDK_INT < 19) {
+            final Context context = getApplicationContext();
+            new FileChooser(this).setFileListener(new FileChooser.FileSelectedListener() {
+                @Override
+                public void fileSelected(final File file) {
+                    importCardsFromURI(Uri.fromFile(file));
+                }
+            }).showDialog();
+        } else {
+            requestReadPermissions(BackupRestoreActivity.this, new ReceivedPermission() {
+                @Override
+                public void onPermissionGranted() {
+                    // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
+                    // browser.
+                    @SuppressLint("InlinedApi") // Check for API 19 is performed above!
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
 
-                // Filter to only show results that can be "opened", such as a
-                // file (as opposed to a list of contacts or timezones)
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                    // Filter to only show results that can be "opened", such as a
+                    // file (as opposed to a list of contacts or timezones)
+                    intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-                // Filter to show all documents
-                intent.setType("*/*");
+                    // Filter to show all documents
+                    intent.setType("*/*");
 
-                startActivityForResult(intent, READ_REQUEST_CODE);
-            }
-        });
+                    startActivityForResult(intent, READ_REQUEST_CODE);
+                }
+            });
+        }
+
     }
 
     @Override
@@ -144,46 +162,50 @@ public class BackupRestoreActivity extends PermissionActivity {
             Uri uri;
             if (resultData != null) {
                 uri = resultData.getData();
-                try {
-                    InputStream input = getContentResolver().openInputStream(uri);
-                    ExportManager exportManager = new ExportManager();
-                    List<Card> data = exportManager.getContents(input);
-
-                    final List<Card> allCards = this.data;
-
-                    CheckListDialog<Card> checkListDialog = new CheckListDialog<Card>(data, new CheckableContentProvider<Card>() {
-                        @Override
-                        public String getCheckableContent(Card input) {
-                            return input.getName();
-                        }
-
-                        @Override
-                        public boolean isActivated(Card input) {
-                            // Check if the given card is already present in the system.
-                            for (Card card: allCards) {
-                                if (card.getName().toLowerCase().equals(input.getName().toLowerCase())) {
-                                    return false;
-                                }
-                            }
-                            return true;
-                        }
-                    }, new CheckListListener<Card>() {
-                        @Override
-                        public void selected(Collection<Card> selectedItems) {
-                            importCards(selectedItems);
-                        }
-                    }, BackupRestoreActivity.this);
-                    checkListDialog.setCanceledOnTouchOutside(false);
-                    checkListDialog.setCancelable(true);
-                    checkListDialog.show();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    Utils.showToast(getString(R.string.unexpected_io_error), Toast.LENGTH_LONG, getApplicationContext());
-                } catch (IOException | InvalidImportFile e) {
-                    // TODO properly handle these exceptions
-                    e.printStackTrace();
-                }
+                importCardsFromURI(uri);
             }
+        }
+    }
+
+    protected void importCardsFromURI(Uri uri) {
+        try {
+            InputStream input = getContentResolver().openInputStream(uri);
+            ExportManager exportManager = new ExportManager();
+            List<Card> data = exportManager.getContents(input);
+
+            final List<Card> allCards = this.data;
+
+            CheckListDialog<Card> checkListDialog = new CheckListDialog<Card>(data, new CheckableContentProvider<Card>() {
+                @Override
+                public String getCheckableContent(Card input) {
+                    return input.getName();
+                }
+
+                @Override
+                public boolean isActivated(Card input) {
+                    // Check if the given card is already present in the system.
+                    for (Card card: allCards) {
+                        if (card.getName().toLowerCase().equals(input.getName().toLowerCase())) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }, new CheckListListener<Card>() {
+                @Override
+                public void selected(Collection<Card> selectedItems) {
+                    importCards(selectedItems);
+                }
+            }, BackupRestoreActivity.this);
+            checkListDialog.setCanceledOnTouchOutside(false);
+            checkListDialog.setCancelable(true);
+            checkListDialog.show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Utils.showToast(getString(R.string.unexpected_io_error), Toast.LENGTH_LONG, getApplicationContext());
+        } catch (IOException | InvalidImportFile e) {
+            // TODO properly handle these exceptions
+            e.printStackTrace();
         }
     }
 

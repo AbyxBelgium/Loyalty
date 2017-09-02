@@ -49,10 +49,11 @@ public class ExportManager {
      * @throws IOException Whenever something goes wrong while reading the file.
      * @throws InvalidImportFile When the given fileUrl does not point to a valid Loyalty file.
      */
-    public List<Card> getContents(InputStream stream) throws IOException, InvalidImportFile, FileNotFoundException {
+    public List<Card> getContents(InputStream stream) throws IOException, InvalidImportFile {
         List<Card> output = new ArrayList<>();
 
-        try (BufferedReader buffered = new BufferedReader(new InputStreamReader(stream))) {
+        try {
+            BufferedReader buffered = new BufferedReader(new InputStreamReader(stream));
             String line = buffered.readLine();
             while (line != null) {
                 String[] rawData = line.split("\t");
@@ -67,6 +68,7 @@ public class ExportManager {
                 output.add(temp);
                 line = buffered.readLine();
             }
+            buffered.close();
         } catch (IOException e) {
             throw new RuntimeException("Something went wrong while reading the file", e);
         }
@@ -77,6 +79,7 @@ public class ExportManager {
     public void exportContents(List<Card> data) throws IOException {
         //backup the app's data to the SD-card so that it can be restored later (by another device)
         File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Loyalty/");
+        System.out.println(file.getAbsolutePath());
         if (!file.exists()){
             if (!file.mkdirs()){
                 throw new MakeDirException("Could not create directory to save backup files!");
