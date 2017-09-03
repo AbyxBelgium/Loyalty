@@ -77,16 +77,16 @@ public class ExportManager {
     }
 
     public void exportContents(List<Card> data) throws IOException {
-        //backup the app's data to the SD-card so that it can be restored later (by another device)
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Loyalty/");
+        // Backup the app's data to the SD-card so that it can be restored later (by another device)
+        File file = new File(Environment.getExternalStorageDirectory(), "Loyalty");
         System.out.println(file.getAbsolutePath());
-        if (!file.exists()){
-            if (!file.mkdirs()){
-                throw new MakeDirException("Could not create directory to save backup files!");
-            }
+
+        // Make directory if it doesn't exist yet
+        if (!file.exists() && !file.mkdirs()){
+            throw new MakeDirException("Could not create directory to save backup files!");
         }
 
-        file = new File(file.getAbsolutePath() + "/" + "backup.ly");
+        file = new File(file, "backup.ly");
         file.createNewFile();
 
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file));
