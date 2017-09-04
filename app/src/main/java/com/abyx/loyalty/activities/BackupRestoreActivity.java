@@ -93,7 +93,7 @@ public class BackupRestoreActivity extends PermissionActivity {
         requestWritePermissions(BackupRestoreActivity.this, new ReceivedPermission() {
             @Override
             public void onPermissionGranted() {
-                ExportManager temp = new ExportManager();
+                ExportManager temp = new ExportManager(getApplicationContext());
                 try {
                     temp.exportContents(data);
                     Utils.showToast(getString(R.string.successful_backup), Toast.LENGTH_SHORT, context);
@@ -170,7 +170,7 @@ public class BackupRestoreActivity extends PermissionActivity {
     protected void importCardsFromURI(Uri uri) {
         try {
             InputStream input = getContentResolver().openInputStream(uri);
-            ExportManager exportManager = new ExportManager();
+            ExportManager exportManager = new ExportManager(getApplicationContext());
             List<Card> data = exportManager.getContents(input);
 
             final List<Card> allCards = this.data;

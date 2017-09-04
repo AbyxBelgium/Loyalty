@@ -16,10 +16,13 @@
 
 package com.abyx.loyalty.contents;
 
+import android.content.Context;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 
 import com.abyx.loyalty.exceptions.InvalidImportFile;
 import com.abyx.loyalty.exceptions.MakeDirException;
+import com.abyx.loyalty.managers.FileManager;
 import com.google.zxing.BarcodeFormat;
 
 import java.io.BufferedReader;
@@ -40,6 +43,12 @@ import java.util.List;
  * @author Pieter Verschaffelt
  */
 public class ExportManager {
+    private Context context;
+
+    public ExportManager(Context context) {
+        this.context = context;
+    }
+
     /**
      * Parse the data contained in the given stream and return a list of cards that was read from
      * that stream.
@@ -77,9 +86,9 @@ public class ExportManager {
     }
 
     public void exportContents(List<Card> data) throws IOException {
-        // Backup the app's data to the SD-card so that it can be restored later (by another device)
-        File file = new File(Environment.getExternalStorageDirectory(), "Loyalty");
-        System.out.println(file.getAbsolutePath());
+        FileManager manager = new FileManager(context);
+
+        File file = new File(manager.getExternalFilesDir(), "Loyalty");
 
         // Make directory if it doesn't exist yet
         if (!file.exists() && !file.mkdirs()){

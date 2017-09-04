@@ -18,6 +18,7 @@ package com.abyx.loyalty.extra;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +27,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.abyx.loyalty.R;
+import com.abyx.loyalty.managers.FileManager;
+
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -36,6 +42,7 @@ import java.util.Arrays;
  *
  * @see <a href="http://www.ninthavenue.com.au/simple-android-file-chooser">http://www.ninthavenue.com.au/simple-android-file-chooser</a>
  * @author Roger Keays
+ * @author Pieter Verschaffelt
  */
 public class FileChooser {
     private static final String PARENT_DIR = "..";
@@ -44,6 +51,8 @@ public class FileChooser {
     private ListView list;
     private Dialog dialog;
     private File currentPath;
+
+    private boolean dismissed = false;
 
     // filter on file extension
     private String extension = null;
@@ -86,11 +95,21 @@ public class FileChooser {
         });
         dialog.setContentView(list);
         dialog.getWindow().setLayout(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-        refresh(Environment.getExternalStorageDirectory());
+        FileManager manager = new FileManager(activity);
+
+        try {
+            refresh(manager.getExternalFilesDir());
+        } catch (IOException e) {
+            dialog.dismiss();
+            dismissed = true;
+            Utils.showInformationDialog(activity.getString(R.string.external_storage_exception_title), activity.getString(R.string.external_stroage_exception_message), activity, Utils.createDismissListener());
+        }
     }
 
     public void showDialog() {
-        dialog.show();
+        if (!dismissed) {
+            dialog.show();
+        }
     }
 
 
