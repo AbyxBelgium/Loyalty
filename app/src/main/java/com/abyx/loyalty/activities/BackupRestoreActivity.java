@@ -69,7 +69,7 @@ public class BackupRestoreActivity extends PermissionActivity {
                 data = resource;
             }
         });
-        db.getAllCardsSorted(true);
+        db.getAllCardsSortedByName(true);
         db.closeDatabase();
     }
 

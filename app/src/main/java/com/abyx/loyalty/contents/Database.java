@@ -172,11 +172,20 @@ public class Database extends ChangeObservable<List<Card>> {
         }
     }
 
-    public void getAllCardsSorted(boolean ascending) {
+    public void getAllCardsSortedByName(boolean ascending) {
         if (ascending) {
             this.orderBy = DatabaseContract.COLUMN_NAME + " COLLATE NOCASE ASC";
         } else {
             this.orderBy = DatabaseContract.COLUMN_NAME + " COLLATE NOCASE DESC";
+        }
+        this.getAllCards();
+    }
+
+    public void getAllCardsSortedByHitCount(boolean ascending) {
+        if (ascending) {
+            this.orderBy = DatabaseContract.COLUMN_HIT_COUNT + " COLLATE NOCASE ASC";
+        } else {
+            this.orderBy = DatabaseContract.COLUMN_HIT_COUNT + " COLLATE NOCASE DESC";
         }
         this.getAllCards();
     }

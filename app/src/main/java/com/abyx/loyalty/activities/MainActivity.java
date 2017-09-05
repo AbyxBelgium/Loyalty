@@ -36,6 +36,7 @@ import com.abyx.loyalty.fragments.ListFragment;
 import com.abyx.loyalty.fragments.ListInteractor;
 import com.abyx.loyalty.fragments.OverviewFragment;
 import com.abyx.loyalty.R;
+import com.abyx.loyalty.managers.ShortcutHandler;
 import com.abyx.loyalty.managers.cache.CacheManager;
 import com.abyx.loyalty.managers.ChangeListener;
 
@@ -70,6 +71,9 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ShortcutHandler shortcutHandler = new ShortcutHandler(MainActivity.this);
+        shortcutHandler.updatePopularDynamicShortcuts();
     }
 
     @Override
@@ -113,7 +117,7 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
             sortedDescending = !sortedDescending;
 
             db.openDatabase();
-            db.getAllCardsSorted(!sortedDescending);
+            db.getAllCardsSortedByName(!sortedDescending);
             db.closeDatabase();
 
             // Save the sort preference of the user, so he doesn't has to choose this every time
@@ -196,7 +200,7 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
     private void loadData() {
         // Read all data from the internal storage
         db.openDatabase();
-        db.getAllCardsSorted(!sortedDescending);
+        db.getAllCardsSortedByName(!sortedDescending);
         db.closeDatabase();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.overviewContainer, overviewFragment).commitAllowingStateLoss();
