@@ -18,8 +18,6 @@ package com.abyx.loyalty.extra;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager.LayoutParams;
@@ -102,7 +100,7 @@ public class FileChooser {
         } catch (IOException e) {
             dialog.dismiss();
             dismissed = true;
-            Utils.showInformationDialog(activity.getString(R.string.external_storage_exception_title), activity.getString(R.string.external_stroage_exception_message), activity, Utils.createDismissListener());
+            Utils.showInformationDialog(activity.getString(R.string.external_storage_exception_title), activity.getString(R.string.external_storage_exception_message), activity, Utils.createDismissListener());
         }
     }
 

@@ -97,4 +97,6 @@
     <string name="restore_already_in_library">Kaarten aangegeven in het rood zitten reeds in je bibliotheek.</string>
     <string name="restore_explanation">Selecteer alle kaarten die je aan je bibliotheek wil toevoegen.</string>
     <string name="unexpected_error">Onverwachte fout</string>
+    <string name="external_storage_exception_message">Externe opslag kon niet geïnitialiseerd worden! Controleer je SD-kaart of interne opslagruimte.</string>
+    <string name="external_storage_exception_title">Fout externe opslag</string>
 </resources>
