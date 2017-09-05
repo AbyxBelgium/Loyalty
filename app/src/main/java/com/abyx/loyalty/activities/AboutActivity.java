@@ -17,7 +17,6 @@
 package com.abyx.loyalty.activities;
 
 import android.content.pm.PackageManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -61,7 +60,8 @@ public class AboutActivity extends ToolbarActivity {
 
     private String getLicenseText() {
         InputStream inputStream = getResources().openRawResource(R.raw.license);
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder builder = new StringBuilder();
             String line = reader.readLine();
             while (line != null) {
@@ -69,6 +69,7 @@ public class AboutActivity extends ToolbarActivity {
                 builder.append("\n");
                 line = reader.readLine();
             }
+            reader.close();
             return builder.toString();
         } catch (IOException e) {
             e.printStackTrace();

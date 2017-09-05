@@ -163,21 +163,7 @@ public class Database extends ChangeObservable<List<Card>> {
 
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
-            long cardID = cursor.getLong(cursor.getColumnIndex(DatabaseContract.COLUMN_ID));
-            String name = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_NAME));
-            String barcode = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE));
-            String barcodeFormat = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE_FORMAT));
-            String imageURL = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_IMAGE_URL));
-
-            int lastSearched;
-            if (cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED) == 0) {
-                lastSearched = cursor.getInt(cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED));
-            } else {
-                lastSearched = 0;
-            }
-
-            Card output = new Card(name, barcode, imageURL, BarcodeFormat.valueOf(barcodeFormat), lastSearched);
-            output.setID(cardID);
+            Card output = buildCardFromCursor(cursor);
             cursor.close();
             return output;
         } else {
@@ -219,25 +205,7 @@ public class Database extends ChangeObservable<List<Card>> {
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                long id = cursor.getLong(cursor.getColumnIndex(DatabaseContract.COLUMN_ID));
-                String name = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_NAME));
-                String barcode = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE));
-                String barcodeFormat = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE_FORMAT));
-                String imageURL = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_IMAGE_URL));
-
-                int lastSearched;
-                if (cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED) == 0) {
-                    lastSearched = cursor.getInt(cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED));
-                } else {
-                    lastSearched = 0;
-                }
-
-                BarcodeFormat format = BarcodeFormat.valueOf(barcodeFormat);
-
-                Card card = new Card(name, barcode, imageURL, format, lastSearched);
-                card.setID(id);
-                cards.add(card);
-
+                cards.add(buildCardFromCursor(cursor));
                 cursor.moveToNext();
             }
         }
@@ -249,9 +217,46 @@ public class Database extends ChangeObservable<List<Card>> {
         this.notifyListeners(cards);
     }
 
+    /**
+     * Close the database. The database must always be opened again when using it after calling this
+     * method!
+     */
     public void closeDatabase() {
         database.close();
         helper.close();
         database = null;
+    }
+
+    /**
+     * Uses all data at the current position in the given Cursor to build a Card object.
+     *
+     * @param cursor The Cursor from which all data is read and used to create the new Card.
+     * @return A Card based upon the given Cursor's data.
+     */
+    private Card buildCardFromCursor(Cursor cursor) {
+        long cardID = cursor.getLong(cursor.getColumnIndex(DatabaseContract.COLUMN_ID));
+        String name = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_NAME));
+        String barcode = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE));
+        String barcodeFormat = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_BARCODE_FORMAT));
+        String imageURL = cursor.getString(cursor.getColumnIndex(DatabaseContract.COLUMN_IMAGE_URL));
+
+        int lastSearched;
+        if (cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED) != -1) {
+            lastSearched = cursor.getInt(cursor.getColumnIndex(DatabaseContract.COLUMN_LAST_SEARCHED));
+        } else {
+            lastSearched = 0;
+        }
+
+        int hitCount;
+        if (cursor.getColumnIndex(DatabaseContract.COLUMN_HIT_COUNT) != -1) {
+            hitCount = cursor.getInt(cursor.getColumnIndex(DatabaseContract.COLUMN_HIT_COUNT));
+        } else {
+            hitCount = 0;
+        }
+
+        Card output = new Card(name, barcode, imageURL, BarcodeFormat.valueOf(barcodeFormat), lastSearched, hitCount);
+        output.setID(cardID);
+
+        return output;
     }
 }

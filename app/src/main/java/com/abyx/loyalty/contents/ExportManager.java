@@ -73,7 +73,7 @@ public class ExportManager {
 
                 // Keep compatibility with the previous version of Loyalty and thus keep 4 items
                 // for every card (that's why index 3 is still used).
-                Card temp = new Card(rawData[0], rawData[1], BarcodeFormat.valueOf(rawData[3]), 0);
+                Card temp = new Card(rawData[0], rawData[1], BarcodeFormat.valueOf(rawData[3]), 0, 0);
                 output.add(temp);
                 line = buffered.readLine();
             }

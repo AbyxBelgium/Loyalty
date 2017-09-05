@@ -17,5 +17,8 @@ allprojects {
         maven {
             url 'https://dl.bintray.com/pverscha/AbyxBelgium'
         }
+        maven {
+            url 'https://maven.google.com'
+        }
     }
 }

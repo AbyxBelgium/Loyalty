@@ -26,12 +26,14 @@ public class Card implements Parcelable{
     // The epoch time in seconds when the last logo search operation was performed (and did not
     // succeed).
     private int lastSearched;
+    // How many times this card has been used by the user.
+    private int hitCount;
     private String name;
     private String barcode;
     private String imageLocation;
     private BarcodeFormat format;
 
-    public Card(String name, String barcode, String imageLocation, BarcodeFormat format, int lastSearched){
+    public Card(String name, String barcode, String imageLocation, BarcodeFormat format, int lastSearched, int hitCount){
         // A card without specific ID has ID -1
         this.id = -1;
         this.name = name;
@@ -39,9 +41,10 @@ public class Card implements Parcelable{
         this.imageLocation = imageLocation;
         this.format = format;
         this.lastSearched = lastSearched;
+        this.hitCount = hitCount;
     }
 
-    public Card(String name, String barcode, BarcodeFormat format, int lastSearched){
+    public Card(String name, String barcode, BarcodeFormat format, int lastSearched, int hitCount){
         // A card without specific ID has ID -1
         this.id = -1;
         this.name = name;
@@ -49,6 +52,7 @@ public class Card implements Parcelable{
         this.imageLocation = "";
         this.format = format;
         this.lastSearched = lastSearched;
+        this.hitCount = hitCount;
     }
 
     public Card(Parcel in){
@@ -58,6 +62,7 @@ public class Card implements Parcelable{
         this.imageLocation = in.readString();
         this.format = BarcodeFormat.valueOf(in.readString());
         this.lastSearched = in.readInt();
+        this.hitCount = in.readInt();
     }
 
     public String getName() {
@@ -112,6 +117,14 @@ public class Card implements Parcelable{
         this.lastSearched = lastSearched;
     }
 
+    public int getHitCount() {
+        return hitCount;
+    }
+
+    public void setHitCount(int hitCount) {
+        this.hitCount = hitCount;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -125,6 +138,7 @@ public class Card implements Parcelable{
         parcel.writeString(imageLocation);
         parcel.writeString(format.toString());
         parcel.writeInt(lastSearched);
+        parcel.writeInt(hitCount);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
