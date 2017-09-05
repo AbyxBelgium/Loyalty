@@ -24,9 +24,9 @@ import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 
+import com.abyx.loyalty.R;
 import com.abyx.loyalty.activities.CardActivity;
 import com.abyx.loyalty.contents.Card;
-import com.abyx.loyalty.extra.CardAdapter;
 import com.abyx.loyalty.extra.Constants;
 
 import java.util.ArrayList;
@@ -41,6 +41,7 @@ import java.util.List;
 @TargetApi(25)
 public class LauncherInfoManager {
     private Context context;
+    private List<Card> cards;
 
     public LauncherInfoManager(Context context) {
         this.context = context;
@@ -55,13 +56,15 @@ public class LauncherInfoManager {
      *               the list.
      */
     public void updateDynamicShortcuts(List<Card> cards, int amount) {
-        ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
-
         if (cards.size() < amount) {
             amount = cards.size();
         }
 
+        this.cards = cards;
+
         List<ShortcutInfo> shortcuts = new ArrayList<>();
+
+        ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
 
         for (int i = 0; i < amount; i++) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.EMPTY, context, CardActivity.class);
@@ -70,6 +73,7 @@ public class LauncherInfoManager {
 
             ShortcutInfo shortcut = new ShortcutInfo.Builder(context, cards.get(i).getName() + "-shortcut")
                     .setShortLabel(cards.get(i).getName())
+                    .setIcon(Icon.createWithResource(context, R.drawable.ic_local_grocery_store_gray_24dp))
                     .setIntent(intent)
                     .build();
             shortcuts.add(shortcut);

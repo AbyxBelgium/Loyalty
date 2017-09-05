@@ -165,11 +165,20 @@ public class Database extends ChangeObservable<List<Card>> {
             cursor.moveToFirst();
             Card output = buildCardFromCursor(cursor);
             cursor.close();
-            return output;
+            return updateHitCount(output);
         } else {
             cursor.close();
             return null;
         }
+    }
+
+    /**
+     * Increment this card's hit count by 1.
+     */
+    private Card updateHitCount(Card card) {
+        card.setHitCount(card.getHitCount() + 1);
+        updateCard(card);
+        return card;
     }
 
     public void getAllCardsSortedByName(boolean ascending) {
