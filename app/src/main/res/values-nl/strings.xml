@@ -99,4 +99,5 @@
     <string name="unexpected_error">Onverwachte fout</string>
     <string name="external_storage_exception_message">Externe opslag kon niet geïnitialiseerd worden! Controleer je SD-kaart of interne opslagruimte.</string>
     <string name="external_storage_exception_title">Fout externe opslag</string>
+    <string name="add_card">Kaart toevoegen</string>
 </resources>

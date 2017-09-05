@@ -66,6 +66,7 @@ public class LauncherInfoManager {
 
         ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
 
+
         for (int i = 0; i < amount; i++) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.EMPTY, context, CardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -73,7 +74,7 @@ public class LauncherInfoManager {
 
             ShortcutInfo shortcut = new ShortcutInfo.Builder(context, cards.get(i).getName() + "-shortcut")
                     .setShortLabel(cards.get(i).getName())
-                    .setIcon(Icon.createWithResource(context, R.drawable.ic_local_grocery_store_gray_24dp))
+                    .setIcon(Icon.createWithResource(context, R.drawable.shortcut_store))
                     .setIntent(intent)
                     .build();
             shortcuts.add(shortcut);

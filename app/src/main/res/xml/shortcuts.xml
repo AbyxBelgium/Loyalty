@@ -19,7 +19,7 @@
     <shortcut
         android:shortcutId="create_card"
         android:enabled="true"
-        android:icon="@drawable/ic_add_gray_24dp"
+        android:icon="@drawable/shortcut_add"
         android:shortcutShortLabel="@string/add_card">
         <intent
             android:action="android.intent.action.VIEW"

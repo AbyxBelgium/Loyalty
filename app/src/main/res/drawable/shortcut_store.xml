@@ -1,0 +1,29 @@
+<!--
+  ~ Copyright 2017 Abyx (https://abyx.be)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+        android:width="24dp"
+        android:height="24dp"
+        android:viewportWidth="24.0"
+        android:viewportHeight="24.0">
+    <path
+        android:pathData="M12,12m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0"
+        android:fillAlpha="1"
+        android:fillColor="#f5f5f5"/>
+    <path
+        android:pathData="m9.38,16.597c-0.753,0 -1.363,0.689 -1.363,1.532 0,0.843 0.609,1.532 1.363,1.532 0.753,0 1.369,-0.689 1.369,-1.532 0,-0.843 -0.616,-1.532 -1.369,-1.532zM5.271,4.339l0,1.532 1.369,0 2.465,5.815 -0.924,1.877c-0.11,0.215 -0.171,0.467 -0.171,0.735 0,0.843 0.616,1.532 1.369,1.532l8.217,0 0,-1.532 -7.929,0c-0.096,0 -0.171,-0.084 -0.171,-0.192l0.021,-0.092 0.616,-1.249 5.101,0c0.514,0 0.965,-0.314 1.198,-0.789l2.451,-4.972c0.055,-0.107 0.082,-0.237 0.082,-0.368 0,-0.421 -0.308,-0.766 -0.685,-0.766l-10.127,0 -0.644,-1.532 -2.239,0zM16.227,16.597c-0.753,0 -1.363,0.689 -1.363,1.532 0,0.843 0.609,1.532 1.363,1.532 0.753,0 1.369,-0.689 1.369,-1.532 0,-0.843 -0.616,-1.532 -1.369,-1.532z"
+        android:fillColor="#7D99ED"/>
+</vector>
