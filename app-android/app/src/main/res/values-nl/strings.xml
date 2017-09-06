@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Loyalty</string>
+    <string name="action_settings">Instellingen</string>
+    <string name="add_store">Winkel toevoegen</string>
+    <string name="add_store_hint">Naam</string>
+    <string name="barcode">Barcode:</string>
+    <string name="barcode_noun">Barcode</string>
+    <string name="category">Categorie:</string>
+    <string name="change_logo">Wijzig logo</string>
+    <string name="connect_error_message">Kon geen verbinding maken met de Loyalty API. Merk op dat een internetverbinding vereist is om automatisch een logo te selecteren.</string>
+    <string name="connect_error_title">Kon geen verbinding maken</string>
+    <string name="developer">Ontwikkelt door:</string>
+    <string name="developer_value">ABYX Inc.</string>
+    <string name="done">Klaar</string>
+    <string name="edit">Bewerken</string>
+    <string name="empty_store_name">Geef een geldige winkelnaam in aub</string>
+    <string name="end_result">Loyalty maakt gebruik van de geavanceerde Loyalty API om automatisch het juiste logo voor deze klantenkaart te downloaden. Af en toe gebeurt het echter dat meerdere winkels dezelfde naam dragen waardoor Loyalty niet het juiste logo kan selecteren. Wanneer dit het geval is kan je lang duwen op het logo en handmatig een URL ingeven.</string>
+    <string name="enter_url_message">Geef een geldige URL in die naar een logo verwijst (jpg, png of gif). Laat leeg voor het standaardlogo:</string>
+    <string name="format">Formaat:</string>
+    <string name="icon">Winkel logo url:</string>
+    <string name="leave_blank_for_default">Opmerking: Laat leeg voor standaardlogo.</string>
+    <string name="logo_url">Logo URL</string>
+    <string name="no_barcode_found_error">Er werd geen barcode gevonden! Probeer opnieuw aub&#8230;</string>
+    <string name="not_found_error_message">Het spijt ons, maar we konden geen passend logo vinden voor deze winkel. Door lang op het logo te klikken kan je handmatig één toevoegen.</string>
+    <string name="not_found_error_title">Logo niet gevonden</string>
+    <string name="optional_field_icon_url">Eigen logo toevoegen (optioneel)</string>
+    <string name="remove_all">Verwijder alles</string>
+    <string name="scan_image">Afbeelding scannen</string>
+    <string name="search">Zoeken</string>
+    <string name="sort">Sorteer</string>
+    <string name="store">Winkelnaam</string>
+    <string name="stores">Winkels</string>
+    <string name="title_activity_about">Over</string>
+    <string name="title_activity_add_store">Winkel toevoegen</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="title_activity_edit">Bewerken</string>
+    <string name="title_activity_finish">Klaar</string>
+    <string name="title_activity_scanner">Scan barcode</string>
+    <string name="unexpected_io_error">Een onverwachte leesfout is opgetreden.</string>
+    <string name="version">Versie:</string>
+    <string name="website">Website:</string>
+    <string name="website_value">https://abyx.be</string>
+    <string name="wrong_barcode_input">Ongeldige barcode</string>
+    <string name="store_logo">Winkel logo</string>
+
+    <string-array name="format_array">
+        <item>CODABAR</item>
+        <item>CODE_128</item>
+        <item>CODE_39</item>
+        <item>CODE_93</item>
+        <item>EAN_13</item>
+        <item>EAN_8</item>
+        <item>ITF</item>
+        <item>PDF_417</item>
+        <item>QR_CODE</item>
+        <item>UPC_A</item>
+        <item>UPC_E</item>
+    </string-array>
+    <string name="backup">Backup</string>
+    <string name="backup_summary">Je kan al je eerder opgeslagen klantenkaarten hier backuppen en ze allemaal in 1 keer kopiëren naar een nieuw apparaat. Je hoeft enkel op \"backup\" te drukken om een nieuw backup-bestand aan te maken in de Loyalty-map op je SD-kaart en dit bestand naar een ander apparaat te kopiëren.</string>
+    <string name="backup_title">Backup/Herstel gegevens</string>
+    <string name="create_dir_error_message">Kon benodigde mappen niet aanmaken! Controleer je bestandspermissies en probeer opnieuw aub.</string>
+    <string name="create_dir_error_title">Error bij het aanmaken van een map</string>
+    <string name="nfc_support_detected_message">Loyalty heeft ontdekt dat jouw apparaat NFC and Android Beam ondersteund. Dit betekent dat je klantenkaarten kan delen door de achterkant van 2 apparaten tegen elkaar te houden. Probeer het eens!</string>
+    <string name="nfc_support_detected_title">NFC ondersteuning ontdekt</string>
+    <string name="no_loyalty_file_error_message">Het bestand dat je selecteerde is geen geldig Loyalty-bestand. Selecteer een ander bestand aub.</string>
+    <string name="no_loyalty_file_error_title">Geen Loyalty-bestand</string>
+    <string name="restore">Herstel</string>
+    <string name="restore_summary">Herstel eerder opgeslagen gegevens door op \"herstel\" te drukken en het gewenste bestand te kiezen. Loyalty zal daarna de gegevens lezen en de benodigde logos downloaden. Een eerder gemaakt backup-bestand bevindt zich meestal in de map \"Loyalty\" en heet \"backup.ly\".</string>
+    <string name="restoring">Je gegevens worden hersteld</string>
+    <string name="send_with_nfc">Deel bestand met NFC</string>
+    <string name="started_restore">Herstellen van klantenkaarten gestart!</string>
+    <string name="successful_backup">Backup werd succesvol opgeslagen!</string>
+    <string name="successful_restore">Klantenkaarten werden succesvol hersteld!</string>
+    <string name="title_activity_backup_restore">Backup/Herstel gegevens</string>
+    <string name="title_activity_nfcview">NFC Viewer</string>
+    <string name="unexpected_io_error_message">Een onverwachte leesfout is opgetreden. Probeer opnieuw aub.</string>
+    <string name="unexpected_io_error_title">Onverwachte IO error</string>
+    <string name="title_activity_manual_input">Geef barcode op</string>
+    <string name="scan_barcode">Scan barcode</string>
+    <string name="enter_barcode">Barcode manueel opgeven</string>
+    <string name="camera_permission_denied_message">Je hebt toegang tot de camera geblokkeerd. Loyalty kan werken zonder deze permissie, maar je zal geen barcodes kunnen scannen. Geef me toegang tot de camera om wel barcodes te kunnen scannen.</string>
+    <string name="camera_permission_denied_title">Camera-permissies geweigerd</string>
+    <string name="internal_exception_message">Er is een interne fout opgetreden. Probeer opnieuw aub&#8230;</string>
+    <string name="internal_exception_title">Interne fout</string>
+    <string name="invalid_card_exception">Er werd geprobeerd een ongeldige kaart bij te werken&#8230;</string>
+    <string name="read_permission_denied_message">Lees-permissies geweigerd. Loyalty kan werken zonder deze permissie, maar dan zal je geen nieuwe klantenkaarten kunnen opslaan of bekijken.</string>
+    <string name="read_permission_denied_title">Lees-permissies geweigerd</string>
+    <string name="write_permission_denied_message">Schrijf-permissies geweigerd. Loyalty kan zonder deze permissies werken, maar er zullen geen nieuwe klantenkaarten opgeslagen kunnen worden!</string>
+    <string name="write_permission_denied_title">Schrijf-permissies geweigers</string>
+    <string name="cancel">Annuleren</string>
+    <string name="invalidate_title">Cache leegmaken</string>
+    <string name="no_cards_found">Geen enkele kaart voldoet aan de gegeven criteria.</string>
+    <string name="no_cards_yet">Je bibliotheek is leeg. Klik op de grote plus om een nieuwe kaart toe te voegen.</string>
+    <string name="ok">OK</string>
+    <string name="restore_already_in_library">Kaarten aangegeven in het rood zitten reeds in je bibliotheek.</string>
+    <string name="restore_explanation">Selecteer alle kaarten die je aan je bibliotheek wil toevoegen.</string>
+    <string name="unexpected_error">Onverwachte fout</string>
+    <string name="external_storage_exception_message">Externe opslag kon niet geïnitialiseerd worden! Controleer je SD-kaart of interne opslagruimte.</string>
+    <string name="external_storage_exception_title">Fout externe opslag</string>
+    <string name="add_card">Kaart toevoegen</string>
+    <string name="pin_to_launcher">Launcher snelkoppeling maken</string>
+</resources>
