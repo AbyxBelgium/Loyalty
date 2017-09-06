@@ -226,7 +226,7 @@ public class LogoTask extends AsyncTask<Card, Void, Bitmap> {
             in.close();
             return magicCropped;
         } catch (OutOfMemoryError e) {
-            System.out.println("NOTE: Not enough memory available for processing image. Downscaling image to lower resolution. Factor is " + scaleFactor + ".");
+            System.out.println("NOTE: Not enough memory available to process image. Downscaling image to lower resolution. Factor is " + scaleFactor + ".");
             if (scaleFactor <= 16) {
                 // Scale down image and try to reprocess it.
                 return downloadLogo(url, logoFileName, scaleFactor * 2, card);
