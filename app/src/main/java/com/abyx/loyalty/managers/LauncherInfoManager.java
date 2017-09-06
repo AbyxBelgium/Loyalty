@@ -68,14 +68,10 @@ public class LauncherInfoManager {
 
 
         for (int i = 0; i < amount; i++) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.EMPTY, context, CardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra(Constants.INTENT_CARD_ID_ARG, cards.get(i).getID());
-
             ShortcutInfo shortcut = new ShortcutInfo.Builder(context, cards.get(i).getName() + "-shortcut")
                     .setShortLabel(cards.get(i).getName())
                     .setIcon(Icon.createWithResource(context, R.drawable.shortcut_store))
-                    .setIntent(intent)
+                    .setIntent(createCardShortcutIntent(cards.get(i)))
                     .build();
             shortcuts.add(shortcut);
         }
@@ -96,8 +92,25 @@ public class LauncherInfoManager {
         if (shortcutManager.isRequestPinShortcutSupported()) {
             ShortcutInfo pin = new ShortcutInfo.Builder(context, card.getName() + "_pin")
                     .setShortLabel(card.getName())
+                    .setIntent(createCardShortcutIntent(card))
                     .build();
             shortcutManager.requestPinShortcut(pin, null);
         }
+    }
+
+    /**
+     * Create an Intent that instructs Android to open up the CardActivity with all data from the
+     * desired card.
+     *
+     * @param card Card that should be shown in CardActivity.
+     * @return An Intent that's capable of opening up the CardActivity and showing all of this
+     * Card's information.
+     */
+    private Intent createCardShortcutIntent(Card card) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.EMPTY, context, CardActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra(Constants.INTENT_CARD_ID_ARG, card.getID());
+
+        return intent;
     }
 }
