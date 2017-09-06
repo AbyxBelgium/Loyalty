@@ -21,13 +21,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.activities.CardActivity;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.extra.Constants;
+import com.abyx.loyalty.tasks.LogoTask;
+import com.abyx.loyalty.tasks.TaskListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,12 +91,19 @@ public class LauncherInfoManager {
      */
     @TargetApi(26)
     public void setPinnedShortcut(Card card) {
+        LogoTask logoTask = new LogoTask(context, new LogoTaskListener(card));
+        logoTask.execute(card);
+    }
+
+    @TargetApi(26)
+    private void createPinnedShortcut(Card card, Icon icon) {
         ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
 
         if (shortcutManager.isRequestPinShortcutSupported()) {
             ShortcutInfo pin = new ShortcutInfo.Builder(context, card.getName() + "_pin")
                     .setShortLabel(card.getName())
                     .setIntent(createCardShortcutIntent(card))
+                    .setIcon(icon)
                     .build();
             shortcutManager.requestPinShortcut(pin, null);
         }
@@ -112,5 +123,29 @@ public class LauncherInfoManager {
         intent.putExtra(Constants.INTENT_CARD_ID_ARG, card.getID());
 
         return intent;
+    }
+
+    private class LogoTaskListener implements TaskListener<Bitmap> {
+        public Card card;
+
+        public LogoTaskListener(Card card) {
+            this.card = card;
+        }
+
+        @Override
+        public void onProgressUpdate(double progress) {
+            // Nothing to do here!
+        }
+
+        @Override
+        public void onFailed(@Nullable Throwable exception) {
+            // Use default store logo
+            createPinnedShortcut(card, Icon.createWithResource(context, R.drawable.shortcut_store));
+        }
+
+        @Override
+        public void onDone(Bitmap result) {
+            createPinnedShortcut(card, Icon.createWithBitmap(result));
+        }
     }
 }
