@@ -82,4 +82,20 @@ public class LauncherInfoManager {
 
         shortcutManager.setDynamicShortcuts(shortcuts);
     }
+
+    /**
+     * Make a pinned shortcut for the given card. The logo associated with this card will be used
+     * as Icon. This function is only available on API 26 or higher.
+     *
+     * @param card The card for whom a pinned shortcut should be made.
+     */
+    @TargetApi(26)
+    public void setPinnedShortcut(Card card) {
+        ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+
+        if (shortcutManager.isRequestPinShortcutSupported()) {
+            ShortcutInfo pin = new ShortcutInfo.Builder(context, card.getName() + "_pin").build();
+            shortcutManager.requestPinShortcut(pin, null);
+        }
+    }
 }

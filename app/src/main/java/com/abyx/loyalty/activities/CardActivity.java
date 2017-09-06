@@ -28,11 +28,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.abyx.loyalty.contents.Card;
+import com.abyx.loyalty.contents.Database;
 import com.abyx.loyalty.extra.Constants;
 import com.abyx.loyalty.fragments.CardFragment;
 import com.abyx.loyalty.R;
 import com.abyx.loyalty.fragments.EditFragment;
 import com.abyx.loyalty.managers.DrawableManager;
+import com.abyx.loyalty.managers.ShortcutHandler;
 
 /**
  * This Activity represents one card and shows the barcode and a small logo corresponding with this
@@ -42,7 +44,6 @@ import com.abyx.loyalty.managers.DrawableManager;
  */
 public class CardActivity extends ToolbarActivity implements EditFragment.EditListener {
     private boolean isEditing;
-
     private long cardID;
 
     @Override
@@ -92,6 +93,12 @@ public class CardActivity extends ToolbarActivity implements EditFragment.EditLi
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.replace(R.id.cardContainer, fragment).commit();
             fragment.registerListener(this);
+        } else if (id == R.id.action_pin) {
+            ShortcutHandler handler = new ShortcutHandler(CardActivity.this);
+            Database database = new Database(CardActivity.this);
+            database.openDatabase();
+            handler.setPinnedShortcut(database.getCardByID(cardID));
+            database.closeDatabase();
         }
 
         return super.onOptionsItemSelected(item);

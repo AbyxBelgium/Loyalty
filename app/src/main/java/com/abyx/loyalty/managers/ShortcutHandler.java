@@ -58,4 +58,11 @@ public class ShortcutHandler implements ChangeListener<List<Card>> {
             manager.updateDynamicShortcuts(resource, POPULAR_SHORTCUT_AMOUNT);
         }
     }
+
+    public void setPinnedShortcut(Card card) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            LauncherInfoManager manager = new LauncherInfoManager(context);
+            manager.setPinnedShortcut(card);
+        }
+    }
 }
