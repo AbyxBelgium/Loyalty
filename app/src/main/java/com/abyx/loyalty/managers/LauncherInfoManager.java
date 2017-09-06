@@ -94,7 +94,9 @@ public class LauncherInfoManager {
         ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
 
         if (shortcutManager.isRequestPinShortcutSupported()) {
-            ShortcutInfo pin = new ShortcutInfo.Builder(context, card.getName() + "_pin").build();
+            ShortcutInfo pin = new ShortcutInfo.Builder(context, card.getName() + "_pin")
+                    .setShortLabel(card.getName())
+                    .build();
             shortcutManager.requestPinShortcut(pin, null);
         }
     }
