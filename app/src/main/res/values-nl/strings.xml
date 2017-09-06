@@ -60,7 +60,7 @@
     <string name="backup">Backup</string>
     <string name="backup_summary">Je kan al je eerder opgeslagen klantenkaarten hier backuppen en ze allemaal in 1 keer kopiëren naar een nieuw apparaat. Je hoeft enkel op \"backup\" te drukken om een nieuw backup-bestand aan te maken in de Loyalty-map op je SD-kaart en dit bestand naar een ander apparaat te kopiëren.</string>
     <string name="backup_title">Backup/Herstel gegevens</string>
-    <string name="create_dir_error_message">Kon benodigde mappen niet aanmaken! Controleer je bestandspermissies and probeer opnieuw aub.</string>
+    <string name="create_dir_error_message">Kon benodigde mappen niet aanmaken! Controleer je bestandspermissies en probeer opnieuw aub.</string>
     <string name="create_dir_error_title">Error bij het aanmaken van een map</string>
     <string name="nfc_support_detected_message">Loyalty heeft ontdekt dat jouw apparaat NFC and Android Beam ondersteund. Dit betekent dat je klantenkaarten kan delen door de achterkant van 2 apparaten tegen elkaar te houden. Probeer het eens!</string>
     <string name="nfc_support_detected_title">NFC ondersteuning ontdekt</string>

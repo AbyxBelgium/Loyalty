@@ -84,6 +84,7 @@ public class Database extends ChangeObservable<List<Card>> {
         temp.put(DatabaseContract.COLUMN_BARCODE_FORMAT, card.getFormat().toString());
         temp.put(DatabaseContract.COLUMN_IMAGE_URL, card.getImageURL());
         temp.put(DatabaseContract.COLUMN_LAST_SEARCHED, card.getLastSearched());
+        temp.put(DatabaseContract.COLUMN_HIT_COUNT, card.getHitCount());
         return temp;
     }
 
@@ -153,7 +154,8 @@ public class Database extends ChangeObservable<List<Card>> {
                 DatabaseContract.COLUMN_NAME,
                 DatabaseContract.COLUMN_BARCODE,
                 DatabaseContract.COLUMN_BARCODE_FORMAT,
-                DatabaseContract.COLUMN_IMAGE_URL
+                DatabaseContract.COLUMN_IMAGE_URL,
+                DatabaseContract.COLUMN_HIT_COUNT
         };
 
         String selection = DatabaseContract.COLUMN_ID + " = ?";
@@ -213,7 +215,8 @@ public class Database extends ChangeObservable<List<Card>> {
                 DatabaseContract.COLUMN_NAME,
                 DatabaseContract.COLUMN_BARCODE,
                 DatabaseContract.COLUMN_BARCODE_FORMAT,
-                DatabaseContract.COLUMN_IMAGE_URL
+                DatabaseContract.COLUMN_IMAGE_URL,
+                DatabaseContract.COLUMN_HIT_COUNT
         };
 
         Cursor cursor = database.query(DatabaseContract.TABLE_CARD, projection, null, null, null, null, this.orderBy);

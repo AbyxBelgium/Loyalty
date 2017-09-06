@@ -108,6 +108,7 @@
     <string name="external_storage_exception_title">External storage error</string>
     <string name="external_storage_exception_message">Could not initialize external storage! Check your SD-card or internal storage.</string>
     <string name="add_card">Add card</string>
+    <string name="pin_to_launcher">Pin card to launcher</string>
 
     <!-- No translation needed for these resources: -->
     <string-array name="format_array">

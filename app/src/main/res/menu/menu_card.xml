@@ -2,9 +2,16 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Edit current card -->
     <item
         android:id="@+id/action_edit"
         android:icon="@drawable/ic_edit_white_24dp"
         android:title="@string/edit"
+        app:showAsAction="ifRoom" />
+    <!-- Pin card to launcher -->
+    <item
+        android:id="@+id/action_pin"
+        android:icon="@drawable/ic_sticker_white_24dp"
+        android:title="@string/pin_to_launcher"
         app:showAsAction="ifRoom" />
 </menu>

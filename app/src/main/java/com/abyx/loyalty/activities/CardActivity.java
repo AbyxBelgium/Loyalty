@@ -18,6 +18,7 @@ package com.abyx.loyalty.activities;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.support.annotation.Nullable;
@@ -69,6 +70,12 @@ public class CardActivity extends ToolbarActivity implements EditFragment.EditLi
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_card, menu);
         menu.findItem(R.id.action_edit).setVisible(!isEditing);
+
+        // Pinning shortcuts to launcher is only supported on API 26 or higher.
+        if (Build.VERSION.SDK_INT < 26) {
+            menu.findItem(R.id.action_pin).setVisible(false);
+        }
+
         return true;
     }
 
