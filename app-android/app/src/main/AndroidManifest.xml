@@ -36,8 +36,7 @@
         <activity
             android:name=".activities.CardActivity"
             android:parentActivityName=".activities.MainActivity"
-            android:theme="@style/DetailedTheme"
-            android:screenOrientation="portrait">
+            android:theme="@style/DetailedTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
             </intent-filter>
