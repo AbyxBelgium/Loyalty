@@ -17,11 +17,11 @@
 
 <resources>
     <!-- Booleans -->
-    <bool name="isTablet">true</bool>
+    <bool name="isTablet">false</bool>
 
     <!-- Integers -->
-    <integer name="app_span_count_overview">5</integer>
+    <integer name="app_span_count_overview">1</integer>
 
     <!-- Strings -->
-    <string name="app_layout_manager_overview">android.support.v7.widget.GridLayoutManager</string>
+    <string name="app_layout_manager_overview">android.support.v7.widget.LinearLayoutManager</string>
 </resources>

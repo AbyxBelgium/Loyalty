@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -95,14 +96,14 @@ public class OverviewFragment extends ListFragment<Card> {
 
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
 
-        this.placeholder = (RelativeLayout) view.findViewById(R.id.placeholder);
-        this.placeholderText = (TextView) view.findViewById(R.id.placeholderText);
+        this.placeholder = view.findViewById(R.id.placeholder);
+        this.placeholderText = view.findViewById(R.id.placeholderText);
 
         this.data = new ArrayList<>(listener.requestData());
 
         changePlaceholderVisibility(data);
 
-        mainList = (RecyclerView) view.findViewById(R.id.mainList);
+        mainList = view.findViewById(R.id.mainList);
 
         DrawableManager drawableManager = new DrawableManager();
 
@@ -141,11 +142,6 @@ public class OverviewFragment extends ListFragment<Card> {
         });
 
         mainList.setAdapter(adapter);
-
-        LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        mainList.setLayoutManager(llm);
-
 
         return view;
     }

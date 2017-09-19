@@ -116,9 +116,9 @@ public class CardFragment extends Fragment {
         }
 
         // Now, we look for all views that need to be initialized with a specific value
-        barcodeImage = (ImageView) view.findViewById(R.id.barcodeImage);
-        logoView = (ImageView) view.findViewById(R.id.logoView);
-        progress = (ProgressBar) view.findViewById(R.id.progress);
+        barcodeImage = view.findViewById(R.id.barcodeImage);
+        logoView = view.findViewById(R.id.logoView);
+        progress = view.findViewById(R.id.progress);
         rootView = view.findViewById(R.id.rootLayout);
 
         animations = getArguments().getBoolean(Constants.INTENT_ANIMATIONS);

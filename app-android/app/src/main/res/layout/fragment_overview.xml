@@ -13,7 +13,9 @@
         android:layout_width="match_parent"
         android:id="@+id/mainList"
         android:layout_height="wrap_content"
-        android:divider="@android:color/transparent"/>
+        android:divider="@android:color/transparent"
+        app:layoutManager="@string/app_layout_manager_overview"
+        app:spanCount="@integer/app_span_count_overview"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
