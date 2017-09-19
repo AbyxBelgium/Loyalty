@@ -46,7 +46,7 @@ public class ShortcutHandler implements ChangeListener<List<Card>> {
             Database database = new Database(context);
             database.subscribe(this);
             database.openDatabase();
-            database.getAllCardsSortedByHitCount(true);
+            database.getAllCardsSortedByHitCount(false);
             database.closeDatabase();
         }
     }
