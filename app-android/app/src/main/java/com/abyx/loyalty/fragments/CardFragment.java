@@ -23,6 +23,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -138,6 +139,8 @@ public class CardFragment extends Fragment {
             getActivity().setTitle(data.getName());
 
             if (storeName != null) {
+                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "font/rage-italic.ttf");
+                storeName.setTypeface(typeface);
                 storeName.setText(data.getName());
             }
 

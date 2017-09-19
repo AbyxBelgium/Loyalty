@@ -27,17 +27,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp">
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="25dp"
-            android:paddingStart="25dp"
+            android:paddingLeft="40dp"
+            android:paddingStart="40dp"
             android:orientation="horizontal">
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_marginBottom="20dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/logoContainer">
                 <ImageView
                     android:layout_width="300dp"
                     android:layout_height="300dp"
@@ -52,15 +52,16 @@
                     android:visibility="visible"/>
             </RelativeLayout>
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
                 android:textSize="160sp"
-                android:paddingLeft="16dp"
-                android:paddingStart="16sp"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:textColor="@color/white"
-                android:id="@+id/storeName"/>
-        </LinearLayout>
+                android:id="@+id/storeName"
+                android:layout_toRightOf="@id/logoContainer"
+                android:layout_toEndOf="@id/logoContainer"/>
+        </RelativeLayout>
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
