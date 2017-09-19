@@ -20,7 +20,7 @@
     <bool name="isTablet">true</bool>
 
     <!-- Integers -->
-    <integer name="app_span_count_overview">5</integer>
+    <integer name="app_span_count_overview">6</integer>
 
     <!-- Strings -->
     <string name="app_layout_manager_overview">android.support.v7.widget.GridLayoutManager</string>
