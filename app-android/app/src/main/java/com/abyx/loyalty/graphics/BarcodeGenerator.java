@@ -24,6 +24,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 
+import com.abyx.loyalty.R;
 import com.abyx.loyalty.extra.Constants;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -50,6 +51,7 @@ public class BarcodeGenerator {
 
     public BarcodeGenerator(Context context) {
         this.context = context;
+        defaultFontSize = context.getResources().getInteger(R.integer.barcode_font_size);
     }
 
     /**

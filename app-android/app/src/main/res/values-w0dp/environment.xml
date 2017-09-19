@@ -21,6 +21,9 @@
 
     <!-- Integers -->
     <integer name="app_span_count_overview">1</integer>
+    <integer name="barcode_width">300</integer>
+    <integer name="barcode_height">50</integer>
+    <integer name="barcode_font_size">24</integer>
 
     <!-- Strings -->
     <string name="app_layout_manager_overview">android.support.v7.widget.LinearLayoutManager</string>

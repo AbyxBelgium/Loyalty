@@ -21,6 +21,9 @@
 
     <!-- Integers -->
     <integer name="app_span_count_overview">6</integer>
+    <integer name="barcode_width">500</integer>
+    <integer name="barcode_height">175</integer>
+    <integer name="barcode_font_size">36</integer>
 
     <!-- Strings -->
     <string name="app_layout_manager_overview">android.support.v7.widget.GridLayoutManager</string>

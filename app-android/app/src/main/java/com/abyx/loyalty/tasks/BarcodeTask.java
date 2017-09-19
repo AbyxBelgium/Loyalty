@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
+import com.abyx.loyalty.R;
 import com.abyx.loyalty.contents.Card;
 import com.abyx.loyalty.graphics.BarcodeGenerator;
 import com.google.zxing.WriterException;
@@ -55,7 +56,7 @@ public class BarcodeTask extends AsyncTask<Void, Void, Bitmap> {
         BarcodeGenerator generator = new BarcodeGenerator(context);
 
         try {
-            return generator.renderBarcode(card.getBarcode(), card.getFormat(), 300, 50);
+            return generator.renderBarcode(card.getBarcode(), card.getFormat(), context.getResources().getInteger(R.integer.barcode_width), context.getResources().getInteger(R.integer.barcode_height));
         } catch (WriterException e) {
             exception = e;
         }
