@@ -40,6 +40,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.abyx.loyalty.activities.MainActivity;
@@ -67,6 +68,7 @@ import java.util.concurrent.TimeUnit;
 public class CardFragment extends Fragment {
     private ImageView barcodeImage;
     private ImageView logoView;
+    private TextView storeName;
     private ProgressBar progress;
     private View rootView;
     private boolean animations;
@@ -120,6 +122,7 @@ public class CardFragment extends Fragment {
         logoView = view.findViewById(R.id.logoView);
         progress = view.findViewById(R.id.progress);
         rootView = view.findViewById(R.id.rootLayout);
+        storeName = view.findViewById(R.id.storeName);
 
         animations = getArguments().getBoolean(Constants.INTENT_ANIMATIONS);
 
@@ -133,6 +136,10 @@ public class CardFragment extends Fragment {
 
         if (data != null) {
             getActivity().setTitle(data.getName());
+
+            if (storeName != null) {
+                storeName.setText(data.getName());
+            }
 
             // Resource URL for the logo can be changed when user long presses the current logo
             logoView.setOnLongClickListener(new View.OnLongClickListener() {
