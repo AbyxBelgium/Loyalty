@@ -71,6 +71,7 @@ public class CardActivity extends ToolbarActivity implements EditFragment.EditLi
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_card, menu);
         menu.findItem(R.id.action_edit).setVisible(!isEditing);
+        menu.findItem(R.id.action_pin).setVisible(!isEditing);
 
         // Pinning shortcuts to launcher is only supported on API 26 or higher.
         if (Build.VERSION.SDK_INT < 26) {
