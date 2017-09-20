@@ -77,7 +77,7 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         this.db.unsubscribe(this);
     }
@@ -147,6 +147,15 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this.overviewFragment.multiModeEnabled()) {
+            this.overviewFragment.disableMultiMode();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override

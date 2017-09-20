@@ -39,4 +39,14 @@ public abstract class ListFragment<T> extends Fragment {
      * @param filter A Filter that decides which items should be visible.
      */
     public abstract void filter(Filter<T> filter);
+
+    /**
+     * This method returns whether the RecyclerView inside of this fragment is currently in multi
+     * mode selection state or not.
+     *
+     * @return True when multi-mode is enabled for the RecyclerView inside the fragment
+     */
+    public abstract boolean multiModeEnabled();
+
+    public abstract void disableMultiMode();
 }

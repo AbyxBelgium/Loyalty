@@ -193,6 +193,16 @@ public class OverviewFragment extends ListFragment<Card> {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public boolean multiModeEnabled() {
+        return this.adapter.isMultiModeActivated();
+    }
+
+    @Override
+    public void disableMultiMode() {
+        this.adapter.unCheckAll(true);
+    }
+
     private void filter() {
         List<Card> toRemove = new ArrayList<>();
         for (Card card: this.data) {
