@@ -284,6 +284,8 @@ public class MultiMode {
             }
             this.navigationIcon = toolbar.getNavigationIcon();
             this.logo = toolbar.getLogo();
+
+            this.title = " " + activity.getApplicationContext().getString(R.string.items_selected);
         }
 
         public Builder setMenu(int menuId, @NonNull Callback callback) {

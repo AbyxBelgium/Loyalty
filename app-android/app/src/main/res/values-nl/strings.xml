@@ -101,4 +101,5 @@
     <string name="external_storage_exception_title">Fout externe opslag</string>
     <string name="add_card">Kaart toevoegen</string>
     <string name="pin_to_launcher">Launcher snelkoppeling maken</string>
+    <string name="items_selected">items geselecteerd</string>
 </resources>
