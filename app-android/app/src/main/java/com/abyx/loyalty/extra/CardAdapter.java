@@ -89,8 +89,13 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
 
             imageView2.setImageDrawable(TextDrawable.builder().buildRound("✓", Color.GRAY));
 
-            viewFlipper.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_in));
-            viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_out));
+            if (context.getResources().getBoolean(R.bool.isTablet)) {
+                viewFlipper.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in));
+                viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out));
+            } else {
+                viewFlipper.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_in));
+                viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_out));
+            }
         }
 
         @Override
@@ -149,19 +154,24 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
     public void onBindViewHolder(CardViewHolder holder, int position) {
         Card c = this.cards.get(position);
         holder.textView.setText(c.getName());
+
+        holder.viewFlipper.setInAnimation(null);
+        holder.viewFlipper.setOutAnimation(null);
+
         if (isChecked(position)) {
-            holder.viewFlipper.setInAnimation(null);
-            holder.viewFlipper.setOutAnimation(null);
             holder.viewFlipper.setDisplayedChild(1);
-            holder.viewFlipper.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_in));
-            holder.viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_out));
         } else {
-            holder.viewFlipper.setInAnimation(null);
-            holder.viewFlipper.setOutAnimation(null);
             holder.viewFlipper.setDisplayedChild(0);
+        }
+
+        if (context.getResources().getBoolean(R.bool.isTablet)) {
+            holder.viewFlipper.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_in));
+            holder.viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_out));
+        } else {
             holder.viewFlipper.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_in));
             holder.viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(context, R.anim.flip_left_out));
         }
+
         holder.imageView.setImageDrawable(null);
 
         // Start task to set correct image in ImageView
