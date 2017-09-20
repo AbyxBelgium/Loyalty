@@ -95,14 +95,14 @@ public class OverviewFragment extends ListFragment<Card> {
 
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
 
-        this.placeholder = (RelativeLayout) view.findViewById(R.id.placeholder);
-        this.placeholderText = (TextView) view.findViewById(R.id.placeholderText);
+        this.placeholder = view.findViewById(R.id.placeholder);
+        this.placeholderText = view.findViewById(R.id.placeholderText);
 
         this.data = new ArrayList<>(listener.requestData());
 
         changePlaceholderVisibility(data);
 
-        mainList = (RecyclerView) view.findViewById(R.id.mainList);
+        mainList = view.findViewById(R.id.mainList);
 
         DrawableManager drawableManager = new DrawableManager();
 
@@ -195,6 +195,16 @@ public class OverviewFragment extends ListFragment<Card> {
         filter();
         changePlaceholderVisibility(data);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean multiModeEnabled() {
+        return this.adapter.isMultiModeActivated();
+    }
+
+    @Override
+    public void disableMultiMode() {
+        this.adapter.unCheckAll(true);
     }
 
     private void filter() {

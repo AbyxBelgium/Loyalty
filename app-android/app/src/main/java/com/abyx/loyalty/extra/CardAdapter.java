@@ -77,11 +77,11 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
 
         public CardViewHolder(View itemView) {
             super(itemView, clickListener);
-            textView = (TextView) itemView.findViewById(R.id.textView);
-            imageView = (ImageView) itemView.findViewById(R.id.imageView);
-            imageView2 = (ImageView) itemView.findViewById(R.id.imageView2);
-            rootLayout = (LinearLayout) itemView.findViewById(R.id.rootLayout);
-            viewFlipper = (ViewFlipper) itemView.findViewById(R.id.viewFlipper);
+            textView = itemView.findViewById(R.id.textView);
+            imageView = itemView.findViewById(R.id.imageView);
+            imageView2 = itemView.findViewById(R.id.imageView2);
+            rootLayout = itemView.findViewById(R.id.rootLayout);
+            viewFlipper = itemView.findViewById(R.id.viewFlipper);
 
             DrawableManager drawableManager = new DrawableManager();
             whiteBackground = drawableManager.getDrawable(context, null, R.color.white);
@@ -115,13 +115,17 @@ public class CardAdapter extends BaseAdapter<CardAdapter.CardViewHolder> {
         public void enterState() {
             // Start the animation for this view
             super.enterState();
-            viewFlipper.showNext();
+            viewFlipper.setDisplayedChild(1);
         }
 
         @Override
         public void exitState() {
             super.exitState();
-            viewFlipper.showPrevious();
+            viewFlipper.setDisplayedChild(0);
+        }
+
+        @Override
+        public void defaultState() {
         }
     }
 
