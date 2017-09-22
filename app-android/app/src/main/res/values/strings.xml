@@ -110,6 +110,7 @@
     <string name="add_card">Add card</string>
     <string name="pin_to_launcher">Pin card to launcher</string>
     <string name="items_selected">items selected</string>
+    <string name="error_no_longer_in_library">The requested loyalty card is no longer a part of your library!</string>
 
     <!-- No translation needed for these resources: -->
     <string-array name="format_array">

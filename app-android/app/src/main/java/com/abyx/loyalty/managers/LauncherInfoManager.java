@@ -17,6 +17,7 @@
 package com.abyx.loyalty.managers;
 
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
@@ -106,6 +107,17 @@ public class LauncherInfoManager {
                     .setIcon(icon)
                     .build();
             shortcutManager.requestPinShortcut(pin, null);
+        }
+    }
+
+    @TargetApi(26)
+    public void removePinnedShortcut(Card card) {
+        ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+
+        if (shortcutManager.isRequestPinShortcutSupported()) {
+            List<String> toRemove = new ArrayList<>();
+            toRemove.add(card.getName() + "_pin");
+            shortcutManager.disableShortcuts(toRemove, context.getString(R.string.error_no_longer_in_library));
         }
     }
 

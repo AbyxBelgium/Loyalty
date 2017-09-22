@@ -65,4 +65,11 @@ public class ShortcutHandler implements ChangeListener<List<Card>> {
             manager.setPinnedShortcut(card);
         }
     }
+
+    public void removePinnedShortcut(Card card) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            LauncherInfoManager manager = new LauncherInfoManager(context);
+            manager.removePinnedShortcut(card);
+        }
+    }
 }

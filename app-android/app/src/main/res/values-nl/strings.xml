@@ -102,4 +102,5 @@
     <string name="add_card">Kaart toevoegen</string>
     <string name="pin_to_launcher">Launcher snelkoppeling maken</string>
     <string name="items_selected">items geselecteerd</string>
+    <string name="error_no_longer_in_library">De gevraagde kaart is niet langer aanwezig in je bibliotheek!</string>
 </resources>

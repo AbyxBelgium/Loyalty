@@ -191,10 +191,13 @@ public class MainActivity extends PermissionActivity implements ListInteractor<C
 
     @Override
     public void removeCards(List<Card> cards) {
+        ShortcutHandler shortcutHandler = new ShortcutHandler(MainActivity.this);
+
         db.openDatabase();
         for (Card current: cards) {
             db.deleteCard(current);
             this.data.remove(current);
+            shortcutHandler.removePinnedShortcut(current);
         }
         db.closeDatabase();
         this.overviewFragment.dataChanged(this.data);
